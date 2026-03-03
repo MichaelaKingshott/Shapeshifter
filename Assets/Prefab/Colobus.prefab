@@ -775,8 +775,8 @@ MonoBehaviour:
   walkSpeed: 5
   runSpeed: 8
   rotationSpeed: 10
-  gravity: -20
-  jumpForce: 8
+  gravity: -30
+  jumpForce: 15
   cameraTransform: {fileID: 0}
   animator: {fileID: 8317233869622344689}
   rollSpeed: 12

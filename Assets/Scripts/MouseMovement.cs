@@ -22,13 +22,11 @@ public class MouseMovement : MonoBehaviour, IAnimalAbility
     public float moveThreshold = 0.1f; // minimum speed to trigger walking
     private Animator anim;
 
-
     private Rigidbody rb;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-
         anim = GetComponent<Animator>();
     }
 
@@ -49,7 +47,15 @@ public class MouseMovement : MonoBehaviour, IAnimalAbility
         Vector3 move = camForward * v + camRight * h;
 
         // Movement (XZ)
-        rb.linearVelocity = new Vector3(move.x * moveSpeed, rb.linearVelocity.y, move.z * moveSpeed);
+        if (isInWater)
+        {
+            // Zero horizontal movement
+            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
+        }
+        else
+        {
+            rb.linearVelocity = new Vector3(move.x * moveSpeed, rb.linearVelocity.y, move.z * moveSpeed);
+        }
 
         // Rotation (only if moving)
         if (move != Vector3.zero)
@@ -63,6 +69,7 @@ public class MouseMovement : MonoBehaviour, IAnimalAbility
         {
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
             isGrounded = false;
+            anim.SetTrigger("Jump");  // Trigger jump animation here!
         }
 
         // Apply better jump physics (disabled in water)
@@ -84,13 +91,13 @@ public class MouseMovement : MonoBehaviour, IAnimalAbility
             rb.AddForce(Vector3.down * sinkForce, ForceMode.Acceleration);
         }
 
-        // Horizontal speed for walking animation
+        // Horizontal speed for walking/running animation
         Vector3 horizontalVel = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         float speed = horizontalVel.magnitude;
         anim.SetFloat("Speed", speed < moveThreshold ? 0f : speed);
 
-        // Jumping animation
-        anim.SetBool("IsJumping", !isGrounded);
+        // Update isGrounded bool in Animator for transition out of jump
+        anim.SetBool("isGrounded", isGrounded);
     }
 
     // Ground check
@@ -108,7 +115,7 @@ public class MouseMovement : MonoBehaviour, IAnimalAbility
         if (other.CompareTag("Water"))
         {
             isInWater = true;
-            rb.linearDamping = 2f;
+            rb.linearDamping = 2f;  // changed from linearDamping to drag for Rigidbody
         }
     }
 

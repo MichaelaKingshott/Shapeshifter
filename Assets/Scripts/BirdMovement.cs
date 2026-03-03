@@ -30,9 +30,6 @@ public class BirdMovement : MonoBehaviour, IAnimalAbility
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        rb.useGravity = true;
-        rb.collisionDetectionMode = CollisionDetectionMode.ContinuousDynamic;
-
         anim = GetComponent<Animator>();
     }
 
@@ -42,33 +39,33 @@ public class BirdMovement : MonoBehaviour, IAnimalAbility
         HandleJumpAndGlide();
         HandleStamina();
         UpdateAnimation();
+
+        if (isInWater)
+        {
+            rb.linearVelocity = new Vector3(0, rb.linearVelocity.y, 0); // stop horizontal movement
+            rb.AddForce(Vector3.down * sinkForce, ForceMode.Acceleration); // sink
+        }
     }
 
     private void HandleMovement()
     {
+        if (isInWater) return; // no horizontal movement in water
+
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        Vector3 camForward = Camera.main.transform.forward;
-        camForward.y = 0f;
-        camForward.Normalize();
-
-        Vector3 camRight = Camera.main.transform.right;
-        camRight.y = 0f;
-        camRight.Normalize();
-
+        Vector3 camForward = Camera.main.transform.forward; camForward.y = 0f; camForward.Normalize();
+        Vector3 camRight = Camera.main.transform.right; camRight.y = 0f; camRight.Normalize();
         Vector3 move = (camForward * v + camRight * h).normalized;
 
         if (isGrounded)
         {
-            // Walking
             Vector3 velocity = move * walkSpeed;
             velocity.y = rb.linearVelocity.y;
             rb.linearVelocity = velocity;
         }
         else
         {
-            // Flying / gliding
             Vector3 horizontalVel = move * flySpeed;
             rb.linearVelocity = new Vector3(horizontalVel.x, rb.linearVelocity.y, horizontalVel.z);
         }
@@ -82,16 +79,13 @@ public class BirdMovement : MonoBehaviour, IAnimalAbility
 
     private void HandleJumpAndGlide()
     {
-        if (isInWater)
-        {
-            rb.AddForce(Vector3.down * sinkForce, ForceMode.Acceleration);
-            return;
-        }
+        if (isInWater) return; // cannot jump/fly in water
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded && stamina > 0)
         {
             rb.linearVelocity = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
             rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            anim.SetTrigger("Jump");
             isGrounded = false;
             isGliding = true;
             glideTimer = glideDuration;
@@ -101,12 +95,9 @@ public class BirdMovement : MonoBehaviour, IAnimalAbility
         if (isGliding && !isGrounded)
         {
             glideTimer -= Time.deltaTime;
-
             if (rb.linearVelocity.y < -glideFallSpeed)
                 rb.linearVelocity = new Vector3(rb.linearVelocity.x, -glideFallSpeed, rb.linearVelocity.z);
-
-            if (glideTimer <= 0)
-                isGliding = false;
+            if (glideTimer <= 0) isGliding = false;
         }
     }
 
@@ -118,16 +109,12 @@ public class BirdMovement : MonoBehaviour, IAnimalAbility
 
     private void UpdateAnimation()
     {
-        // Horizontal speed
         Vector3 horizontalVel = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         float speed = horizontalVel.magnitude;
         anim.SetFloat("Speed", speed < moveThreshold ? 0f : speed);
 
-        // Jumping
-        anim.SetBool("IsJumping", !isGrounded && !isGliding);
-
-        // Flying/gliding
-        anim.SetBool("IsFlying", !isGrounded);
+        anim.SetBool("isGrounded", isGrounded);
+        anim.SetBool("isGliding", isGliding);
     }
 
     private void OnCollisionEnter(Collision collision)
@@ -147,19 +134,13 @@ public class BirdMovement : MonoBehaviour, IAnimalAbility
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Water"))
-        {
             isInWater = true;
-            rb.linearDamping = 2f;
-        }
     }
 
     private void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Water"))
-        {
             isInWater = false;
-            rb.linearDamping = 0f;
-        }
     }
 
     public void OnFormActivated()
@@ -170,5 +151,3 @@ public class BirdMovement : MonoBehaviour, IAnimalAbility
 
     public void OnFormDeactivated() => this.enabled = false;
 }
-
-

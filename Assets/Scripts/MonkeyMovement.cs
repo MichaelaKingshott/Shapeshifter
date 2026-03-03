@@ -13,6 +13,10 @@ public class MonkeyMovement : MonoBehaviour
     public float gravity = -20f;
     public float jumpForce = 8f;
 
+    [Header("Water")]
+    public float sinkForce = 6f; // downward speed in water
+    private bool isInWater = false;
+
     [Header("References")]
     public Transform cameraTransform;
     public Animator animator;
@@ -39,7 +43,6 @@ public class MonkeyMovement : MonoBehaviour
     void Start()
     {
         controller = GetComponent<CharacterController>();
-
         if (cameraTransform == null && Camera.main != null)
             cameraTransform = Camera.main.transform;
     }
@@ -54,21 +57,23 @@ public class MonkeyMovement : MonoBehaviour
             case MovementState.Normal:
                 HandleMovement();
                 break;
-
             case MovementState.Rolling:
                 RollMove();
                 break;
+        }
+
+        // Sink in water
+        if (isInWater)
+        {
+            velocity.y = Mathf.Max(velocity.y - sinkForce * Time.deltaTime, -sinkForce);
         }
     }
 
     void GroundCheck()
     {
         grounded = controller.isGrounded;
-
-        if (grounded)
-            coyoteTimer = coyoteTime;
-        else
-            coyoteTimer -= Time.deltaTime;
+        if (grounded) coyoteTimer = coyoteTime;
+        else coyoteTimer -= Time.deltaTime;
 
         if (grounded && velocity.y < 0)
             velocity.y = -2f;
@@ -110,19 +115,29 @@ public class MonkeyMovement : MonoBehaviour
 
         float speed = Input.GetKey(KeyCode.LeftShift) ? runSpeed : walkSpeed;
 
-        if (jumpBufferTimer > 0 && coyoteTimer > 0)
+        Vector3 finalMove;
+
+        if (isInWater)
         {
-            velocity.y = jumpForce;
-            jumpBufferTimer = 0;
-            coyoteTimer = 0;
-            animator?.SetTrigger("Jump");
+            // Stop horizontal movement in water
+            moveDirection = Vector3.zero;
+            finalMove = new Vector3(0, velocity.y, 0);
+        }
+        else
+        {
+            if (jumpBufferTimer > 0 && coyoteTimer > 0)
+            {
+                velocity.y = jumpForce;
+                jumpBufferTimer = 0;
+                coyoteTimer = 0;
+                animator?.SetTrigger("Jump");
+            }
+
+            velocity.y += gravity * Time.deltaTime;
+            finalMove = moveDirection * speed + velocity;
         }
 
-        velocity.y += gravity * Time.deltaTime;
-
-        Vector3 finalMove = moveDirection * speed + velocity;
         controller.Move(finalMove * Time.deltaTime);
-
         animator?.SetFloat("Speed", input.magnitude, 0.1f, Time.deltaTime);
 
         if (Input.GetKeyDown(KeyCode.LeftControl))
@@ -149,8 +164,8 @@ public class MonkeyMovement : MonoBehaviour
     {
         rollTimer -= Time.deltaTime;
 
-        // Apply gravity during roll
-        velocity.y += gravity * Time.deltaTime;
+        if (!isInWater)
+            velocity.y += gravity * Time.deltaTime;
 
         Vector3 move = rollDirection * rollSpeed;
         move.y = velocity.y;
@@ -159,5 +174,17 @@ public class MonkeyMovement : MonoBehaviour
 
         if (rollTimer <= 0f)
             currentState = MovementState.Normal;
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.CompareTag("Water"))
+            isInWater = true;
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.CompareTag("Water"))
+            isInWater = false;
     }
 }

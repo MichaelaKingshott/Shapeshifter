@@ -46,7 +46,6 @@ public class MonkeyMovement : MonoBehaviour, IAnimalAbility
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        // CAMERA RELATIVE MOVEMENT
         Vector3 camForward = Camera.main.transform.forward;
         camForward.y = 0f;
         camForward.Normalize();
@@ -61,7 +60,6 @@ public class MonkeyMovement : MonoBehaviour, IAnimalAbility
 
         if (!isRolling)
         {
-            // Movement
             if (isInWater)
             {
                 rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
@@ -71,14 +69,12 @@ public class MonkeyMovement : MonoBehaviour, IAnimalAbility
                 rb.linearVelocity = new Vector3(move.x * speed, rb.linearVelocity.y, move.z * speed);
             }
 
-            // Rotation
             if (move != Vector3.zero)
             {
                 Quaternion targetRotation = Quaternion.LookRotation(move, Vector3.up);
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
             }
 
-            // Jump
             if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isInWater)
             {
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
@@ -86,7 +82,6 @@ public class MonkeyMovement : MonoBehaviour, IAnimalAbility
                 anim.SetTrigger("Jump");
             }
 
-            // Roll
             if (Input.GetKeyDown(KeyCode.LeftControl))
             {
                 TryRoll(move);
@@ -97,7 +92,6 @@ public class MonkeyMovement : MonoBehaviour, IAnimalAbility
         HandleJumpPhysics();
         HandleWater();
 
-        // Animation
         Vector3 horizontalVel = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
         float animSpeed = horizontalVel.magnitude;
 

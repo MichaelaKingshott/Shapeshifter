@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class CameraController : MonoBehaviour
 {
@@ -16,11 +16,16 @@ public class CameraController : MonoBehaviour
     public float maxY = 60f;
     public float smoothSpeed = 10f;
 
+    [Header("Collision")]
+    public float cameraRadius = 0.2f;
+    public LayerMask collisionLayers;
+
     float yaw = 0f;
     float pitch = 10f;
 
     bool isFirstPerson = false;
     Vector3 currentOffset;
+
     public Camera cam;
 
     void Start()
@@ -56,11 +61,22 @@ public class CameraController : MonoBehaviour
 
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
 
-        // Smoothly transition between offsets
+        // Smooth offset transition
         Vector3 desiredOffset = isFirstPerson ? firstPersonOffset : thirdPersonOffset;
         currentOffset = Vector3.Lerp(currentOffset, desiredOffset, smoothSpeed * Time.deltaTime);
 
-        transform.position = target.position + rotation * currentOffset;
+        Vector3 desiredPosition = target.position + rotation * currentOffset;
+
+        // ⭐ CAMERA COLLISION
+        RaycastHit hit;
+        Vector3 direction = desiredPosition - target.position;
+
+        if (Physics.SphereCast(target.position, cameraRadius, direction.normalized, out hit, direction.magnitude, collisionLayers))
+        {
+            desiredPosition = hit.point - direction.normalized * cameraRadius;
+        }
+
+        transform.position = desiredPosition;
 
         if (isFirstPerson)
         {

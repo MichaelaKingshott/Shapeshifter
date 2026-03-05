@@ -4,6 +4,7 @@ using UnityEngine.SceneManagement;
 public class PauseMenu : MonoBehaviour
 {
     [SerializeField] GameObject pauseMenu;
+    [SerializeField] MonoBehaviour cameraScript;
 
     bool isPaused = false;
 
@@ -21,26 +22,28 @@ public class PauseMenu : MonoBehaviour
     public void Pause()
     {
         pauseMenu.SetActive(true);
-        Time.timeScale = 0f; // Freeze game
+        Time.timeScale = 0f;
+        cameraScript.enabled = false;
         isPaused = true;
     }
 
     public void Resume()
     {
         pauseMenu.SetActive(false);
-        Time.timeScale = 1f; // Resume game
+        Time.timeScale = 1f;
+        cameraScript.enabled = true;
         isPaused = false;
     }
 
     public void Home()
     {
-        Time.timeScale = 1f; // Make sure time resets
+        Time.timeScale = 1f;
         SceneManager.LoadScene("Main Menu");
     }
 
     public void Restart()
     {
-        Time.timeScale = 1f; // Make sure time resets
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

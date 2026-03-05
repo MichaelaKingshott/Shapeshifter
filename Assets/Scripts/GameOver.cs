@@ -3,24 +3,26 @@ using UnityEngine.SceneManagement;
 
 public class GameOver : MonoBehaviour
 {
-	[SerializeField] GameObject gameOver;
+    [SerializeField] GameObject gameOver;
+    [SerializeField] MonoBehaviour cameraScript;
 
-	public void Caught()
+    public void Caught()
     {
         gameOver.SetActive(true);
-        Time.timeScale = 0f; // Freeze game
+        Time.timeScale = 0f;
+        cameraScript.enabled = false; // Freeze camera
     }
 
     public void Home()
     {
-        Time.timeScale = 1f; // Make sure time resets
+        Time.timeScale = 1f;
         SceneManager.LoadScene("Main Menu");
     }
 
     public void Restart()
     {
         gameOver.SetActive(false);
-        Time.timeScale = 1f; // Make sure time resets
+        Time.timeScale = 1f;
         SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
     }
 

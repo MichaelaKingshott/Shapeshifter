@@ -28,6 +28,8 @@ public class CameraController : MonoBehaviour
 
     public Camera cam;
 
+    bool controlsLocked = false;
+
     void Start()
     {
         currentOffset = thirdPersonOffset;
@@ -35,39 +37,24 @@ public class CameraController : MonoBehaviour
         Cursor.visible = false;
     }
 
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.Escape))
-        {
-            Cursor.lockState = CursorLockMode.None;
-            Cursor.visible = true;
-        }
-
-        if (Input.GetMouseButtonDown(0))
-        {
-            Cursor.lockState = CursorLockMode.Locked;
-            Cursor.visible = false;
-        }
-    }
-
     void LateUpdate()
     {
         if (target == null) return;
 
-        // Mouse input
-        yaw += Input.GetAxis("Mouse X") * rotateSpeed;
-        pitch -= Input.GetAxis("Mouse Y") * rotateSpeed;
-        pitch = Mathf.Clamp(pitch, minY, maxY);
+        if (!controlsLocked)
+        {
+            yaw += Input.GetAxis("Mouse X") * rotateSpeed;
+            pitch -= Input.GetAxis("Mouse Y") * rotateSpeed;
+            pitch = Mathf.Clamp(pitch, minY, maxY);
+        }
 
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
 
-        // Smooth offset transition
         Vector3 desiredOffset = isFirstPerson ? firstPersonOffset : thirdPersonOffset;
         currentOffset = Vector3.Lerp(currentOffset, desiredOffset, smoothSpeed * Time.deltaTime);
 
         Vector3 desiredPosition = target.position + rotation * currentOffset;
 
-        // ⭐ CAMERA COLLISION
         RaycastHit hit;
         Vector3 direction = desiredPosition - target.position;
 
@@ -100,5 +87,10 @@ public class CameraController : MonoBehaviour
         {
             cam.cullingMask |= (1 << LayerMask.NameToLayer("PlayerMesh"));
         }
+    }
+
+    public void LockCameraControls(bool locked)
+    {
+        controlsLocked = locked;
     }
 }

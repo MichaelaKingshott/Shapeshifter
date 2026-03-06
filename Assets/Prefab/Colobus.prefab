@@ -1059,7 +1059,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 03871ba81b73fb4439dc0da5bff393ff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
-  keycards: 00000000
+  keycards: 
 --- !u!1 &7853299950699460719
 GameObject:
   m_ObjectHideFlags: 0

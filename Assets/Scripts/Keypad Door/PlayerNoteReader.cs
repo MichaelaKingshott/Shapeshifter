@@ -19,26 +19,22 @@ public class PlayerNoteReader : MonoBehaviour
     void Start()
     {
         notePanel.SetActive(false);
-        popupText.gameObject.SetActive(false);
     }
 
     void Update()
     {
         if (reading)
         {
-            popupText.gameObject.SetActive(false);
-
             if (Input.GetKeyDown(KeyCode.E))
                 CloseNote();
 
             return;
         }
 
-        Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
         bool lookingAtNote = false;
 
-        if (Physics.Raycast(ray, out hit, interactDistance))
+        if (Physics.Raycast(transform.position, transform.forward, out hit, interactDistance))
         {
             PaperNote note = hit.collider.GetComponent<PaperNote>();
 
@@ -51,6 +47,7 @@ public class PlayerNoteReader : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     OpenNote(note);
+                    popupText.gameObject.SetActive(false);
                 }
             }
         }

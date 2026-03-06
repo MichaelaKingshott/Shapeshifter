@@ -30,6 +30,9 @@ public class CameraController : MonoBehaviour
 
     bool controlsLocked = false;
 
+    public MonoBehaviour playerMovement;
+    public MonoBehaviour cameraLook;
+
     void Start()
     {
         currentOffset = thirdPersonOffset;

@@ -733,6 +733,7 @@ GameObject:
   - component: {fileID: 2821204546505474802}
   - component: {fileID: 1430717940334598365}
   - component: {fileID: -7257966511386385941}
+  - component: {fileID: 5936679908090152783}
   m_Layer: 6
   m_Name: Colobus
   m_TagString: Player
@@ -888,6 +889,8 @@ MonoBehaviour:
   rollCooldown: 1.2
   sinkForce: 6
   moveThreshold: 0.1
+  playerMovement: {fileID: -2442136737559047776}
+  cameraLook: {fileID: 0}
 --- !u!114 &2821204546505474802
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1044,6 +1047,19 @@ MonoBehaviour:
   jumpUpForce: 7
   jumpForwardForce: 4
   grabCooldown: 0.3
+--- !u!114 &5936679908090152783
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6182162820492919152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03871ba81b73fb4439dc0da5bff393ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
+  keycards: 0200000000000000
 --- !u!1 &7853299950699460719
 GameObject:
   m_ObjectHideFlags: 0

@@ -35,6 +35,9 @@ public class MonkeyMovement : MonoBehaviour, IAnimalAbility
 
     private Rigidbody rb;
 
+    public MonoBehaviour playerMovement;
+    public MonoBehaviour cameraLook;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();

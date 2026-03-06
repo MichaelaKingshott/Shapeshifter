@@ -8,20 +8,26 @@ public class PlayerNoteReader : MonoBehaviour
     public MonoBehaviour playerMovement;
     public MonoBehaviour cameraLook;
 
-    public GameObject notePanel;
-    public TMP_Text noteText;
+    [SerializeField] GameObject notePanel;
+    [SerializeField] TMP_Text noteText;
+
+    public TMP_Text popupText; // assign in inspector
+    public string readMessage = "Press E to read note";
 
     bool reading = false;
 
     void Start()
     {
         notePanel.SetActive(false);
+        popupText.gameObject.SetActive(false);
     }
 
     void Update()
     {
         if (reading)
         {
+            popupText.gameObject.SetActive(false);
+
             if (Input.GetKeyDown(KeyCode.E))
                 CloseNote();
 
@@ -30,15 +36,28 @@ public class PlayerNoteReader : MonoBehaviour
 
         Ray ray = new Ray(transform.position, transform.forward);
         RaycastHit hit;
+        bool lookingAtNote = false;
 
         if (Physics.Raycast(ray, out hit, interactDistance))
         {
             PaperNote note = hit.collider.GetComponent<PaperNote>();
 
-            if (note != null && Input.GetKeyDown(KeyCode.E))
+            if (note != null)
             {
-                OpenNote(note);
+                popupText.text = readMessage;
+                popupText.gameObject.SetActive(true);
+                lookingAtNote = true;
+
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    OpenNote(note);
+                }
             }
+        }
+
+        if (!lookingAtNote)
+        {
+            popupText.gameObject.SetActive(false);
         }
     }
 

@@ -7,16 +7,18 @@ public class KeycardDoor : MonoBehaviour
     public float speed = 2f;
 
     public KeycardType requiredKeycard;
-
     public PlayerInventory playerInventory;
 
     private bool playerInside = false;
     private bool opening = false;
     private Vector3 targetPosition;
+    public DoorMessageUI doorMessage;
+    public GameObject interactPrompt;
 
     void Start()
     {
         targetPosition = door.position + Vector3.up * openHeight;
+        interactPrompt.SetActive(false);
     }
 
     void Update()
@@ -25,11 +27,12 @@ public class KeycardDoor : MonoBehaviour
         {
             if (playerInventory.HasKeycard(requiredKeycard))
             {
+                playerInventory.RemoveKeycard(requiredKeycard);
                 opening = true;
             }
             else
             {
-                Debug.Log(requiredKeycard + " keycard required");
+                doorMessage.ShowMessage(requiredKeycard + " keycard required");
             }
         }
 
@@ -46,12 +49,18 @@ public class KeycardDoor : MonoBehaviour
     void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
+        {
             playerInside = true;
+            interactPrompt.SetActive(true);
+        }
     }
 
     void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Player"))
+        {
             playerInside = false;
+            interactPrompt.SetActive(false);
+        }
     }
 }

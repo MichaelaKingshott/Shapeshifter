@@ -30,7 +30,7 @@ Transform:
   m_GameObject: {fileID: 4015394440957571309}
   serializedVersion: 2
   m_LocalRotation: {x: 0.19317858, y: -0, z: -0, w: 0.9811636}
-  m_LocalPosition: {x: 0, y: 0.17, z: 0.035}
+  m_LocalPosition: {x: 0, y: 0.136, z: 0.033}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -566,7 +566,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2326
+  m_VersionIndex: 2329
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -690,7 +690,6 @@ GameObject:
   - component: {fileID: 4690872158668688238}
   - component: {fileID: 6704449755030118522}
   - component: {fileID: 4940352762071164845}
-  - component: {fileID: 8228934018264637544}
   m_Layer: 0
   m_Name: Lever
   m_TagString: Untagged
@@ -706,9 +705,9 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 6452509992557821282}
   serializedVersion: 2
-  m_LocalRotation: {x: 1.110223e-17, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 18.959, y: 0.32462823, z: -15.621901}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 3.9787, y: 3.9787, z: 3.9787}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 6655460332507419626}
@@ -926,7 +925,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 10998
+  m_VersionIndex: 11001
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1033,16 +1032,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
---- !u!114 &8228934018264637544
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6452509992557821282}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 75aad639f73deb247854a2b3048135b2, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: '::'
-  targetObject: {fileID: 0}

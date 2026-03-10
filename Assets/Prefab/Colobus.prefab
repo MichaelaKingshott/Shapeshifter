@@ -751,7 +751,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 2.303829, y: 2.303829, z: 2.303829}
+  m_LocalScale: {x: 1.8747472, y: 1.8747472, z: 1.8747472}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 678659275568970032}
@@ -1038,15 +1038,15 @@ MonoBehaviour:
   ledgeDetection: {fileID: 4393764039441026856}
   ledgeClearance: {fileID: 2154364123571083506}
   grabPoint: {fileID: 4130549087683955238}
-  forwardCheckDistance: 0.8
+  forwardCheckDistance: 0.9
   downwardCheckDistance: 1.2
-  clearanceRadius: 0.6
+  clearanceRadius: 0.5
   ledgeLayer:
     serializedVersion: 2
     m_Bits: 1024
   jumpUpForce: 7
   jumpForwardForce: 4
-  grabCooldown: 0.3
+  grabCooldown: 0.1
 --- !u!114 &5936679908090152783
 MonoBehaviour:
   m_ObjectHideFlags: 0

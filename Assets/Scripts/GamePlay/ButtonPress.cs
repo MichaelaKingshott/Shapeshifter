@@ -1,6 +1,6 @@
 using UnityEngine;
 
-public class ButtonSwitch : MonoBehaviour
+public class ButtonPress : MonoBehaviour
 {
     public MovingObject targetObject;
     public bool toggle = true;

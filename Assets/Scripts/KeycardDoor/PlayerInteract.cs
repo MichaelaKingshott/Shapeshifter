@@ -4,12 +4,18 @@ using TMPro;
 public class PlayerInteract : MonoBehaviour
 {
     public float interactDistance = 3f;
-    public PlayerInventory playerInventory;
+
+    PlayerInventory playerInventory;
 
     public TMP_Text popupText;
 
     public string keycardMessage = "Press E to pick up Keycard";
     public string generatorMessage = "Press E to start Generator";
+
+    void Start()
+    {
+        playerInventory = FindFirstObjectByType<PlayerInventory>();
+    }
 
     void Update()
     {

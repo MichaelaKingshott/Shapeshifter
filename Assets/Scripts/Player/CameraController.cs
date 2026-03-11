@@ -20,6 +20,9 @@ public class CameraController : MonoBehaviour
     public float cameraRadius = 0.2f;
     public LayerMask collisionLayers;
 
+    [Header("UI")]
+    public GameObject crosshair;
+
     float yaw = 0f;
     float pitch = 10f;
 
@@ -33,8 +36,14 @@ public class CameraController : MonoBehaviour
     void Start()
     {
         currentOffset = thirdPersonOffset;
+
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        if (crosshair != null)
+        {
+            crosshair.SetActive(false);
+        }
     }
 
     void LateUpdate()
@@ -82,10 +91,16 @@ public class CameraController : MonoBehaviour
         if (value)
         {
             cam.cullingMask &= ~(1 << LayerMask.NameToLayer("PlayerMesh"));
+
+            if (crosshair != null)
+                crosshair.SetActive(true);
         }
         else
         {
             cam.cullingMask |= (1 << LayerMask.NameToLayer("PlayerMesh"));
+
+            if (crosshair != null)
+                crosshair.SetActive(false);
         }
     }
 

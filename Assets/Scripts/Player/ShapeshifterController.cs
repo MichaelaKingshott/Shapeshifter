@@ -14,7 +14,6 @@ public class ShapeshifterController : MonoBehaviour
     private GameObject currentAnimalInstance;
     private AnimalForm currentForm;
 
-    // NEW: Hold reference to active form's abilities
     private IAnimalForm currentAbilityForm;
 
     [SerializeField]
@@ -33,7 +32,6 @@ public class ShapeshifterController : MonoBehaviour
             transform.rotation = currentAnimalInstance.transform.rotation;
         }
 
-        // TEMP input
         if (Input.GetKeyDown(KeyCode.Alpha1)) SwapForm(AnimalForm.Mouse);
         if (Input.GetKeyDown(KeyCode.Alpha2)) SwapForm(AnimalForm.Bird);
         if (Input.GetKeyDown(KeyCode.Alpha3)) SwapForm(AnimalForm.Squid);
@@ -66,6 +64,7 @@ public class ShapeshifterController : MonoBehaviour
         }
 
         GameObject prefabToSpawn = null;
+
         foreach (var data in animalPrefabs)
         {
             if (data.form == newForm)
@@ -86,17 +85,22 @@ public class ShapeshifterController : MonoBehaviour
         foreach (var ability in currentAnimalInstance.GetComponents<IAnimalAbility>())
             ability.OnFormActivated();
 
-        // NEW:
         currentAbilityForm = currentAnimalInstance.GetComponent<IAnimalForm>();
 
         currentForm = newForm;
+
+        // Update camera target
+        CameraController cam = FindFirstObjectByType<CameraController>();
+        if (cam != null)
+            cam.target = currentAnimalInstance.transform;
+
         Debug.Log("Switched to form: " + currentForm);
     }
 
     public AnimalForm GetCurrentForm() => currentForm;
+
     public GameObject GetCurrentAnimalInstance() => currentAnimalInstance;
 
-    // NEW: Enemy calls this to check if the current form is invisible
     public bool IsInvisible()
     {
         if (currentAbilityForm == null)

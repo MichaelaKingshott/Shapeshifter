@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 2154364123571083506}
   m_Layer: 6
-  m_Name: LedgeSphere
+  m_Name: LedgeDetection
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -25,7 +25,7 @@ Transform:
   m_GameObject: {fileID: 49958647411309668}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.593, z: 0.414}
+  m_LocalPosition: {x: 0, y: 0.288, z: 0.242}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -56,7 +56,7 @@ Transform:
   m_GameObject: {fileID: 796846617172500426}
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.431, z: -0.281}
+  m_LocalPosition: {x: 0, y: 0.43, z: 0.53}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -326,37 +326,6 @@ Transform:
   m_Children: []
   m_Father: {fileID: 4771641239026154692}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
---- !u!1 &2864910254976990215
-GameObject:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  serializedVersion: 6
-  m_Component:
-  - component: {fileID: 4130549087683955238}
-  m_Layer: 0
-  m_Name: LedgeClimbTarget
-  m_TagString: Untagged
-  m_Icon: {fileID: 0}
-  m_NavMeshLayer: 0
-  m_StaticEditorFlags: 0
-  m_IsActive: 1
---- !u!4 &4130549087683955238
-Transform:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 2864910254976990215}
-  serializedVersion: 2
-  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.387, z: 0.51}
-  m_LocalScale: {x: 1, y: 1, z: 1}
-  m_ConstrainProportionsScale: 0
-  m_Children: []
-  m_Father: {fileID: 4992758198669102562}
-  m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &2927433883868658256
 GameObject:
   m_ObjectHideFlags: 0
@@ -493,7 +462,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4393764039441026856}
   m_Layer: 0
-  m_Name: LedgeDetection
+  m_Name: LedgeClearance
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -508,7 +477,7 @@ Transform:
   m_GameObject: {fileID: 4582319468034903919}
   serializedVersion: 2
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: 0, y: 0.272, z: 0.539}
+  m_LocalPosition: {x: 0, y: 0.805, z: 0.363}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
   m_Children: []
@@ -733,7 +702,7 @@ GameObject:
   - component: {fileID: 2821204546505474802}
   - component: {fileID: 1430717940334598365}
   - component: {fileID: -7257966511386385941}
-  - component: {fileID: 5936679908090152783}
+  - component: {fileID: 3011549287083374673}
   m_Layer: 6
   m_Name: Colobus
   m_TagString: Player
@@ -761,7 +730,6 @@ Transform:
   - {fileID: 2456458111662058980}
   - {fileID: 8670805380601974049}
   - {fileID: 4393764039441026856}
-  - {fileID: 4130549087683955238}
   - {fileID: 2154364123571083506}
   m_Father: {fileID: 0}
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
@@ -1035,19 +1003,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 1e43ee9463ad86542b66387e1b4bddb9, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::LedgeGrabbing
-  ledgeDetection: {fileID: 4393764039441026856}
-  ledgeClearance: {fileID: 2154364123571083506}
-  grabPoint: {fileID: 4130549087683955238}
+  ledgeDetection: {fileID: 2154364123571083506}
+  ledgeClearance: {fileID: 4393764039441026856}
   forwardCheckDistance: 0.9
-  downwardCheckDistance: 1.2
-  clearanceRadius: 0.5
+  downwardCheckDistance: 1.4
+  sphereRadius: 0.25
+  clearanceRadius: 0.35
   ledgeLayer:
     serializedVersion: 2
     m_Bits: 1024
   jumpUpForce: 7
   jumpForwardForce: 4
-  grabCooldown: 0.1
---- !u!114 &5936679908090152783
+  grabCooldown: 0.25
+--- !u!114 &3011549287083374673
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1056,10 +1024,11 @@ MonoBehaviour:
   m_GameObject: {fileID: 6182162820492919152}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 03871ba81b73fb4439dc0da5bff393ff, type: 3}
+  m_Script: {fileID: 11500000, guid: 20c6cd57ee48fce49b36662346a94f69, type: 3}
   m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
-  keycards: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimalController
+  movementScript: {fileID: 0}
+  cameraLook: {fileID: 0}
 --- !u!1 &7853299950699460719
 GameObject:
   m_ObjectHideFlags: 0

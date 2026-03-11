@@ -12274,10 +12274,21 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 4343143242215335943, guid: 1e006adcc4f47694ba322a3d58f1f1d3, type: 3}
+      propertyPath: playerInteract
+      value: 
+      objectReference: {fileID: 0}
+    - target: {fileID: 4343143242215335943, guid: 1e006adcc4f47694ba322a3d58f1f1d3, type: 3}
+      propertyPath: playerNoteReader
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents: []
+    m_AddedComponents:
+    - targetCorrespondingSourceObject: {fileID: 1449374039803372958, guid: 1e006adcc4f47694ba322a3d58f1f1d3, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 1069984262}
   m_SourcePrefab: {fileID: 100100000, guid: 1e006adcc4f47694ba322a3d58f1f1d3, type: 3}
 --- !u!1 &350543641
 GameObject:
@@ -15442,7 +15453,7 @@ Transform:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 405980081}
   serializedVersion: 2
-  m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
+  m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_ConstrainProportionsScale: 0
@@ -15485,27 +15496,9 @@ MonoBehaviour:
   collisionLayers:
     serializedVersion: 2
     m_Bits: 1561
+  crosshair: {fileID: 67678911}
   cam: {fileID: 405980083}
 --- !u!114 &405980087
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 405980081}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 988aa6df0dfc9424bafb366810f6b260, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::PlayerNoteReader
-  interactDistance: 3
-  playerMovement: {fileID: -2442136737559047776, guid: 84b7c8441f160174fa5c6f94cf397f0a, type: 3}
-  cameraLook: {fileID: 405980086}
-  notePanel: {fileID: 461990762}
-  noteText: {fileID: 2019201932}
-  popupText: {fileID: 1270265520}
-  readMessage: Press E to read note
---- !u!114 &405980088
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -15518,10 +15511,26 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerInteract
   interactDistance: 3
-  playerInventory: {fileID: 5936679908090152783, guid: 84b7c8441f160174fa5c6f94cf397f0a, type: 3}
   popupText: {fileID: 1058275679}
   keycardMessage: Press E to pick up Keycard
   generatorMessage: Press E to start Generator
+--- !u!114 &405980088
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 405980081}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 988aa6df0dfc9424bafb366810f6b260, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerNoteReader
+  interactDistance: 3
+  notePanel: {fileID: 461990762}
+  noteText: {fileID: 2019201932}
+  popupText: {fileID: 1270265520}
+  readMessage: Press E to read note
 --- !u!1001 &406005544
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -18788,6 +18797,11 @@ MonoBehaviour:
   m_SelectedFaces: 
   m_SelectedEdges: []
   m_SelectedVertices: 
+--- !u!1 &509307918 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 1449374039803372958, guid: 1e006adcc4f47694ba322a3d58f1f1d3, type: 3}
+  m_PrefabInstance: {fileID: 325233723}
+  m_PrefabAsset: {fileID: 0}
 --- !u!1 &513127364 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 6452509992557821282, guid: def1f5217917488448e5f5d3454c6dde, type: 3}
@@ -27836,6 +27850,10 @@ PrefabInstance:
       propertyPath: interactPrompt
       value: 
       objectReference: {fileID: 1747929357}
+    - target: {fileID: 4645511528064806604, guid: f7e3fe82d305a07438eb14615a58a46d, type: 3}
+      propertyPath: playerInventory
+      value: 
+      objectReference: {fileID: 1069984262}
     - target: {fileID: 4675249849092787131, guid: f7e3fe82d305a07438eb14615a58a46d, type: 3}
       propertyPath: m_LocalPosition.x
       value: 102.56545
@@ -39401,6 +39419,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: FirstPersonZone
       objectReference: {fileID: 0}
+    - target: {fileID: 5520050167078262440, guid: 6c3a65824e4b37245afc4bdbaf17e287, type: 3}
+      propertyPath: m_IsActive
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 5749488838608201713, guid: 6c3a65824e4b37245afc4bdbaf17e287, type: 3}
       propertyPath: m_LocalScale.x
       value: 1.9057118
@@ -43631,6 +43653,19 @@ Transform:
   m_CorrespondingSourceObject: {fileID: 3140646397659149010, guid: 1e006adcc4f47694ba322a3d58f1f1d3, type: 3}
   m_PrefabInstance: {fileID: 325233723}
   m_PrefabAsset: {fileID: 0}
+--- !u!114 &1069984262
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 509307918}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03871ba81b73fb4439dc0da5bff393ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
+  keycards: 
 --- !u!43 &1072004060
 Mesh:
   m_ObjectHideFlags: 0
@@ -87983,6 +88018,10 @@ PrefabInstance:
       value: 
       objectReference: {fileID: 1747929357}
     - target: {fileID: 4645511528064806604, guid: f7e3fe82d305a07438eb14615a58a46d, type: 3}
+      propertyPath: playerInventory
+      value: 
+      objectReference: {fileID: 1069984262}
+    - target: {fileID: 4645511528064806604, guid: f7e3fe82d305a07438eb14615a58a46d, type: 3}
       propertyPath: requiredKeycard
       value: 1
       objectReference: {fileID: 0}
@@ -88057,8 +88096,8 @@ SceneRoots:
   m_Roots:
   - {fileID: 1548176536}
   - {fileID: 292412486}
-  - {fileID: 405980084}
   - {fileID: 131319737}
+  - {fileID: 405980084}
   - {fileID: 325233723}
   - {fileID: 1347785852}
   - {fileID: 1408307993}

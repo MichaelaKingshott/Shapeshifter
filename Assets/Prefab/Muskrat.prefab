@@ -606,6 +606,7 @@ GameObject:
   - component: {fileID: -7552002475167471728}
   - component: {fileID: 4600994864142230694}
   - component: {fileID: 627073200087747928}
+  - component: {fileID: 1077215128119716084}
   m_Layer: 0
   m_Name: Muskrat
   m_TagString: Untagged
@@ -753,6 +754,20 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 0.48973268, y: 0.48717245, z: 0.85452974}
   m_Center: {x: -0.00975588, y: 0.25641376, z: -0.0073612332}
+--- !u!114 &1077215128119716084
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4950779065795438720}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20c6cd57ee48fce49b36662346a94f69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimalController
+  movementScript: {fileID: -7552002475167471728}
+  cameraLook: {fileID: 0}
 --- !u!1 &7460354150513945985
 GameObject:
   m_ObjectHideFlags: 0

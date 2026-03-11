@@ -466,6 +466,7 @@ GameObject:
   - component: {fileID: 7762924515930192947}
   - component: {fileID: -6172009700461315455}
   - component: {fileID: 5979442358765624745}
+  - component: {fileID: 3547238946412606373}
   m_Layer: 0
   m_Name: Sparrow
   m_TagString: Untagged
@@ -632,6 +633,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 501e6983c59e9f749a0df619eae20f0e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::NightVisionAbility
+--- !u!114 &3547238946412606373
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6788538757290762323}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20c6cd57ee48fce49b36662346a94f69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimalController
+  movementScript: {fileID: 7762924515930192947}
+  cameraLook: {fileID: 0}
 --- !u!1 &6788538757856321312
 GameObject:
   m_ObjectHideFlags: 0

@@ -5,20 +5,20 @@ public class PlayerNoteReader : MonoBehaviour
 {
     public float interactDistance = 3f;
 
-    public MonoBehaviour playerMovement;
-    public MonoBehaviour cameraLook;
-
     [SerializeField] GameObject notePanel;
     [SerializeField] TMP_Text noteText;
 
-    public TMP_Text popupText; // assign in inspector
+    public TMP_Text popupText;
     public string readMessage = "Press E to read note";
 
     bool reading = false;
 
+    ShapeshifterController shapeshifter;
+
     void Start()
     {
         notePanel.SetActive(false);
+        shapeshifter = FindFirstObjectByType<ShapeshifterController>();
     }
 
     void Update()
@@ -64,8 +64,13 @@ public class PlayerNoteReader : MonoBehaviour
         noteText.text = note.noteText;
         reading = true;
 
-        playerMovement.enabled = false;
-        cameraLook.enabled = false;
+        GameObject animal = shapeshifter.GetCurrentAnimalInstance();
+        if (animal != null)
+        {
+            AnimalController controller = animal.GetComponent<AnimalController>();
+            if (controller != null)
+                controller.movementScript.enabled = false;
+        }
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -76,8 +81,13 @@ public class PlayerNoteReader : MonoBehaviour
         notePanel.SetActive(false);
         reading = false;
 
-        playerMovement.enabled = true;
-        cameraLook.enabled = true;
+        GameObject animal = shapeshifter.GetCurrentAnimalInstance();
+        if (animal != null)
+        {
+            AnimalController controller = animal.GetComponent<AnimalController>();
+            if (controller != null)
+                controller.movementScript.enabled = true;
+        }
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

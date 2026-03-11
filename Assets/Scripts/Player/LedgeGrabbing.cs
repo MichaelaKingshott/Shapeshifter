@@ -5,15 +5,14 @@ public class LedgeGrabbing : MonoBehaviour
     [Header("References")]
     public Transform ledgeDetection;
     public Transform ledgeClearance;
-    public Transform grabPoint;
 
     private Rigidbody rb;
     private MonkeyMovement movement;
-    private Collider playerCollider;
 
     [Header("Detection")]
-    public float forwardCheckDistance = 0.7f;
-    public float downwardCheckDistance = 1.2f;
+    public float forwardCheckDistance = 0.9f;
+    public float downwardCheckDistance = 1.4f;
+    public float sphereRadius = 0.25f;
     public float clearanceRadius = 0.35f;
     public LayerMask ledgeLayer;
 
@@ -27,13 +26,14 @@ public class LedgeGrabbing : MonoBehaviour
     private bool isHanging = false;
     private float lastGrabTime;
 
+    private Vector3 hangPosition;
+    private Vector3 wallNormal;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
         movement = GetComponent<MonkeyMovement>();
-        playerCollider = GetComponent<Collider>();
 
-        // Prevent physics flips
         rb.constraints = RigidbodyConstraints.FreezeRotation;
     }
 
@@ -53,28 +53,46 @@ public class LedgeGrabbing : MonoBehaviour
 
     void DetectLedge()
     {
+        // Only grab while falling
+        if (rb.linearVelocity.y > 0)
+            return;
+
         RaycastHit forwardHit;
 
-        // Step 1: Detect wall in front
-        if (Physics.Raycast(ledgeDetection.position, transform.forward, out forwardHit, forwardCheckDistance, ledgeLayer))
+        if (Physics.SphereCast(
+            ledgeDetection.position,
+            sphereRadius,
+            transform.forward,
+            out forwardHit,
+            forwardCheckDistance,
+            ledgeLayer))
         {
             RaycastHit topHit;
 
-            // Step 2: Detect the top of the ledge
             Vector3 downRayStart = forwardHit.point + Vector3.up * 0.6f;
 
-            if (Physics.Raycast(downRayStart, Vector3.down, out topHit, downwardCheckDistance, ledgeLayer))
+            if (Physics.Raycast(
+                downRayStart,
+                Vector3.down,
+                out topHit,
+                downwardCheckDistance,
+                ledgeLayer))
             {
-                // Step 3: Check if space above is free
+                // Check space above ledge
                 if (!Physics.CheckSphere(ledgeClearance.position, clearanceRadius, ledgeLayer))
                 {
-                    GrabLedge(topHit);
+                    float ledgeHeight = topHit.point.y - transform.position.y;
+
+                    if (ledgeHeight < 0.4f)
+                        return;
+
+                    GrabLedge(topHit, forwardHit.normal);
                 }
             }
         }
     }
 
-    void GrabLedge(RaycastHit hit)
+    void GrabLedge(RaycastHit hit, Vector3 normal)
     {
         isHanging = true;
         lastGrabTime = Time.time;
@@ -83,22 +101,21 @@ public class LedgeGrabbing : MonoBehaviour
         rb.angularVelocity = Vector3.zero;
 
         rb.useGravity = false;
-
-        // Freeze movement while hanging
-        rb.constraints = RigidbodyConstraints.FreezeAll;
-
-        // Disable collider so physics can't push player away
-        playerCollider.enabled = false;
+        rb.isKinematic = true;
 
         if (movement != null)
             movement.enabled = false;
 
-        // Snap to grab point
-        transform.position = grabPoint.position;
+        wallNormal = normal;
 
-        // Face the ledge
-        Vector3 wallForward = -hit.normal;
+        hangPosition = hit.point - transform.forward * 0.45f;
+        hangPosition.y -= 0.6f;
+
+        transform.position = hangPosition;
+
+        Vector3 wallForward = -normal;
         wallForward.y = 0;
+
         transform.rotation = Quaternion.LookRotation(wallForward);
     }
 
@@ -120,9 +137,7 @@ public class LedgeGrabbing : MonoBehaviour
         isHanging = false;
         lastGrabTime = Time.time;
 
-        playerCollider.enabled = true;
-
-        rb.constraints = RigidbodyConstraints.FreezeRotation;
+        rb.isKinematic = false;
         rb.useGravity = true;
 
         if (movement != null)
@@ -140,9 +155,7 @@ public class LedgeGrabbing : MonoBehaviour
         isHanging = false;
         lastGrabTime = Time.time;
 
-        playerCollider.enabled = true;
-
-        rb.constraints = RigidbodyConstraints.FreezeRotation;
+        rb.isKinematic = false;
         rb.useGravity = true;
 
         if (movement != null)
@@ -155,6 +168,9 @@ public class LedgeGrabbing : MonoBehaviour
         {
             Gizmos.color = Color.red;
             Gizmos.DrawRay(ledgeDetection.position, transform.forward * forwardCheckDistance);
+
+            Gizmos.color = Color.yellow;
+            Gizmos.DrawWireSphere(ledgeDetection.position + transform.forward * forwardCheckDistance, sphereRadius);
         }
 
         if (ledgeClearance != null)

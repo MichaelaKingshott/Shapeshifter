@@ -78,7 +78,7 @@ public class MonkeyMovement : MonoBehaviour, IAnimalAbility
                 transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
             }
 
-            if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isInWater)
+            if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isInWater && rb.useGravity)
             {
                 rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
                 isGrounded = false;

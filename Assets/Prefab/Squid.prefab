@@ -807,12 +807,15 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d691b916c4bb0854cb8eaff119525211, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  staminaUI: {fileID: 0}
   turnSpeed: 6
-  swimSpeed: 5
-  verticalSwimSpeed: 6
-  hoverStrength: 2
+  swimSpeed: 10
+  swimBurstForce: 6
   waterDrag: 2
-  velocitySmooth: 0.2
+  swimSpamDelay: 0.12
+  maxStamina: 10
+  staminaDrain: 1
+  staminaRegen: 1.5
   walkSpeed: 4
   jumpForce: 5
   moveThreshold: 0.1
@@ -877,7 +880,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimalController
   movementScript: {fileID: 8476123140477135234}
-  cameraLook: {fileID: 0}
 --- !u!1 &7535825155527325181
 GameObject:
   m_ObjectHideFlags: 0

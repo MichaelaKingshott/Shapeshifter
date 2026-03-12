@@ -847,8 +847,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ad489811ff7e024cbdedb4f74964a61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  walkSpeed: 8
-  runSpeed: 12
+  walkSpeed: 5
+  runSpeed: 8
   turnSpeed: 12
   jumpForce: 10
   fallMultiplier: 2.5
@@ -1009,7 +1009,7 @@ MonoBehaviour:
   forwardCheckDistance: 0.9
   downwardCheckDistance: 1.4
   sphereRadius: 0.25
-  clearanceRadius: 0.35
+  clearanceRadius: 0.55
   ledgeLayer:
     serializedVersion: 2
     m_Bits: 1024

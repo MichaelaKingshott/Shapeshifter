@@ -1028,7 +1028,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 20c6cd57ee48fce49b36662346a94f69, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimalController
-  movementScript: {fileID: 0}
+  movementScript: {fileID: -2442136737559047776}
 --- !u!114 &-6130304560573270563
 MonoBehaviour:
   m_ObjectHideFlags: 0

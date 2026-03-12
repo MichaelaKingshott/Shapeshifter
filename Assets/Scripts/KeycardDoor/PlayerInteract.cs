@@ -10,7 +10,6 @@ public class PlayerInteract : MonoBehaviour
     public TMP_Text popupText;
 
     public string keycardMessage = "Press E to pick up Keycard";
-    public string generatorMessage = "Press E to start Generator";
 
     void Start()
     {
@@ -36,21 +35,6 @@ public class PlayerInteract : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     keycard.Pickup(playerInventory);
-                }
-            }
-
-            // GENERATOR
-            GeneratorLever generator = hit.collider.GetComponent<GeneratorLever>();
-
-            if (generator != null)
-            {
-                popupText.text = generatorMessage;
-                popupText.gameObject.SetActive(true);
-                lookingAtItem = true;
-
-                if (Input.GetKeyDown(KeyCode.E))
-                {
-                    generator.Activate();
                 }
             }
         }

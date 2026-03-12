@@ -703,6 +703,7 @@ GameObject:
   - component: {fileID: 1430717940334598365}
   - component: {fileID: -7257966511386385941}
   - component: {fileID: 3011549287083374673}
+  - component: {fileID: -6130304560573270563}
   m_Layer: 6
   m_Name: Colobus
   m_TagString: Player
@@ -846,10 +847,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ad489811ff7e024cbdedb4f74964a61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  walkSpeed: 5
-  runSpeed: 8
+  walkSpeed: 8
+  runSpeed: 12
   turnSpeed: 12
-  jumpForce: 8
+  jumpForce: 10
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
   rollSpeed: 12
@@ -1028,7 +1029,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimalController
   movementScript: {fileID: 0}
-  cameraLook: {fileID: 0}
+--- !u!114 &-6130304560573270563
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6182162820492919152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d33e2efd69501d4aa8ded17be1d1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimalCameraSettings
+  thirdPersonOffset: {x: 0, y: 3, z: -8}
+  lookHeight: 1.5
 --- !u!1 &7853299950699460719
 GameObject:
   m_ObjectHideFlags: 0

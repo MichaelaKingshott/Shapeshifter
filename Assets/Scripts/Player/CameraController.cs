@@ -10,6 +10,9 @@ public class CameraController : MonoBehaviour
     [Header("First Person")]
     public Vector3 firstPersonOffset = new Vector3(0, 1.6f, 0);
 
+    [Header("Look Settings")]
+    public float lookHeight = 1.5f;
+
     [Header("Settings")]
     public float rotateSpeed = 5f;
     public float minY = -30f;
@@ -41,9 +44,7 @@ public class CameraController : MonoBehaviour
         Cursor.visible = false;
 
         if (crosshair != null)
-        {
             crosshair.SetActive(false);
-        }
     }
 
     void LateUpdate()
@@ -60,6 +61,7 @@ public class CameraController : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
 
         Vector3 desiredOffset = isFirstPerson ? firstPersonOffset : thirdPersonOffset;
+
         currentOffset = Vector3.Lerp(currentOffset, desiredOffset, smoothSpeed * Time.deltaTime);
 
         Vector3 desiredPosition = target.position + rotation * currentOffset;
@@ -80,7 +82,7 @@ public class CameraController : MonoBehaviour
         }
         else
         {
-            transform.LookAt(target.position + Vector3.up * 1.5f);
+            transform.LookAt(target.position + Vector3.up * lookHeight);
         }
     }
 
@@ -107,5 +109,13 @@ public class CameraController : MonoBehaviour
     public void LockCameraControls(bool locked)
     {
         controlsLocked = locked;
+    }
+
+    public void ApplyAnimalCameraSettings(AnimalCameraSettings settings)
+    {
+        if (settings == null) return;
+
+        thirdPersonOffset = settings.thirdPersonOffset;
+        lookHeight = settings.lookHeight;
     }
 }

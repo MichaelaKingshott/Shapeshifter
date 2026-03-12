@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class SnakeMovement : MonoBehaviour, IAnimalAbility
+public class BirdMovement : MonoBehaviour, IAnimalAbility
 {
     [Header("Movement")]
     public float moveSpeed = 8f;

@@ -5,7 +5,7 @@ using UnityEngine;
 public enum AnimalForm
 {
     Mouse,
-    Bird,
+    Snake,
     Squid,
     Chameleon,
     Monkey

@@ -117,6 +117,7 @@ GameObject:
   - component: {fileID: 902323452250383516}
   - component: {fileID: 150863311874485196}
   - component: {fileID: 2621021329532306755}
+  - component: {fileID: 9218035075490924401}
   m_Layer: 7
   m_Name: Chameleon
   m_TagString: Player
@@ -412,7 +413,20 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimalController
   movementScript: {fileID: -1325716525416056941}
-  cameraLook: {fileID: 0}
+--- !u!114 &9218035075490924401
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 82586268762273440}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d33e2efd69501d4aa8ded17be1d1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimalCameraSettings
+  thirdPersonOffset: {x: 0, y: 3, z: -5}
+  lookHeight: 1
 --- !u!1 &82586269285217419
 GameObject:
   m_ObjectHideFlags: 0

@@ -25,6 +25,8 @@ public class PauseMenu : MonoBehaviour
         Time.timeScale = 0f;
         cameraScript.enabled = false;
         isPaused = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
     }
 
     public void Resume()

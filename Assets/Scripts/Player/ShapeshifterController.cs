@@ -37,8 +37,8 @@ public class ShapeshifterController : MonoBehaviour
         // Follow the current animal
         if (currentAnimalInstance != null)
         {
-            transform.position = currentAnimalInstance.transform.position;
-            transform.rotation = currentAnimalInstance.transform.rotation;
+           // transform.position = currentAnimalInstance.transform.position;
+           // transform.rotation = currentAnimalInstance.transform.rotation;
         }
 
         // Input for swapping forms

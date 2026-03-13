@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3140646397659149010}
   - component: {fileID: 4343143242215335943}
+  - component: {fileID: 8924545193530971781}
   m_Layer: 0
   m_Name: ShapeShifter
   m_TagString: Untagged
@@ -45,14 +46,27 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   animalPrefabs:
-  - form: 0
-    prefab: {fileID: 4950779065795438720, guid: 8cb75dc2fdd63734988b8358f1314d25, type: 3}
   - form: 1
-    prefab: {fileID: 6788538757290762323, guid: ad4137f595ec8e2449cacca9df7d3735, type: 3}
+    prefab: {fileID: 4807929556901506227, guid: 5b5c678f31981e34f9122b87217da1ac, type: 3}
   - form: 2
     prefab: {fileID: 7511180232019162148, guid: 818c5a1ba0d9810439f11299463f2294, type: 3}
+  - form: 0
+    prefab: {fileID: 4950779065795438720, guid: 8cb75dc2fdd63734988b8358f1314d25, type: 3}
   - form: 3
     prefab: {fileID: 82586268762273440, guid: 2b119807475ab1842b8cb1d9e86bc8bc, type: 3}
   - form: 4
     prefab: {fileID: 6182162820492919152, guid: 84b7c8441f160174fa5c6f94cf397f0a, type: 3}
   startingForm: 4
+--- !u!114 &8924545193530971781
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1449374039803372958}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 03871ba81b73fb4439dc0da5bff393ff, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::PlayerInventory
+  keycards: 

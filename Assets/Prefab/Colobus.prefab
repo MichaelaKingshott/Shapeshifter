@@ -702,8 +702,8 @@ GameObject:
   - component: {fileID: 2821204546505474802}
   - component: {fileID: 1430717940334598365}
   - component: {fileID: -7257966511386385941}
-  - component: {fileID: 3011549287083374673}
-  - component: {fileID: -6130304560573270563}
+  - component: {fileID: -282136634600500827}
+  - component: {fileID: -2127380304949374257}
   m_Layer: 6
   m_Name: Colobus
   m_TagString: Player
@@ -847,10 +847,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0ad489811ff7e024cbdedb4f74964a61, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::PlayerController
-  walkSpeed: 5
-  runSpeed: 8
+  walkSpeed: 4
+  runSpeed: 7
   turnSpeed: 12
-  jumpForce: 10
+  jumpForce: 8
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
   rollSpeed: 12
@@ -1009,14 +1009,28 @@ MonoBehaviour:
   forwardCheckDistance: 0.9
   downwardCheckDistance: 1.4
   sphereRadius: 0.25
-  clearanceRadius: 0.55
+  clearanceRadius: 0.45
   ledgeLayer:
     serializedVersion: 2
     m_Bits: 1024
   jumpUpForce: 7
   jumpForwardForce: 4
   grabCooldown: 0.25
---- !u!114 &3011549287083374673
+--- !u!114 &-282136634600500827
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 6182162820492919152}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 1d33e2efd69501d4aa8ded17be1d1c04, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimalCameraSettings
+  thirdPersonOffset: {x: 0, y: 3, z: -5}
+  lookHeight: 1.5
+--- !u!114 &-2127380304949374257
 MonoBehaviour:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
@@ -1029,20 +1043,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimalController
   movementScript: {fileID: -2442136737559047776}
---- !u!114 &-6130304560573270563
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6182162820492919152}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 1d33e2efd69501d4aa8ded17be1d1c04, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::AnimalCameraSettings
-  thirdPersonOffset: {x: 0, y: 3, z: -8}
-  lookHeight: 1.5
 --- !u!1 &7853299950699460719
 GameObject:
   m_ObjectHideFlags: 0

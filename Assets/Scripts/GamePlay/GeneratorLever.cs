@@ -3,32 +3,63 @@ using TMPro;
 
 public class GeneratorLever : MonoBehaviour
 {
-    private bool used = false;
     private bool playerInRange = false;
+    private bool generatorStarted = false;
 
-    public Transform leverHandle;
-    public Vector3 pulledRotation = new Vector3(-60,0,0);
+    public GameObject puzzleUI;
+
+    public CameraController cameraController;
 
     public TMP_Text popupText;
     public string generatorMessage = "Press E to start Generator";
 
     void Update()
     {
-        if(playerInRange && Input.GetKeyDown(KeyCode.E))
+        if (playerInRange && !generatorStarted && Input.GetKeyDown(KeyCode.E))
         {
-            Activate();
+            OpenPuzzle();
         }
     }
 
-    public void Activate()
+    void OpenPuzzle()
     {
-        if (used) return;
+        puzzleUI.SetActive(true);
 
-        used = true;
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
 
-        leverHandle.localRotation = Quaternion.Euler(pulledRotation);
+        Time.timeScale = 0f;
+
+        cameraController.LockCameraControls(true);
+
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+    }
+
+    public void ActivateGenerator()
+    {
+        if (generatorStarted) return;
+
+        generatorStarted = true;
 
         PowerSystem.instance.SetPower(true);
+
+        ClosePuzzle();
+    }
+
+    void ClosePuzzle()
+    {
+        puzzleUI.SetActive(false);
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        Time.timeScale = 1f;
+                
+        cameraController.LockCameraControls(false);
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     void OnTriggerEnter(Collider other)

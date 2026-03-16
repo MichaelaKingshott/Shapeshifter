@@ -9,7 +9,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6585324533512180165}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7785993795240888550}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: neck.02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -72,7 +72,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2866599969474528431}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: neck.01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -105,7 +105,7 @@ GameObject:
   m_Component:
   - component: {fileID: 4462348340439564167}
   - component: {fileID: 2311683543228773735}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mesh_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -204,7 +204,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8531555221629931683}
   - component: {fileID: 8319246735976726104}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mesh_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -303,7 +303,7 @@ GameObject:
   m_Component:
   - component: {fileID: 8147046413826956854}
   - component: {fileID: 5442504493887559991}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mesh_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -402,7 +402,7 @@ GameObject:
   m_Component:
   - component: {fileID: 480745877412113367}
   - component: {fileID: 4526051182192201800}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Mesh_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -502,14 +502,15 @@ GameObject:
   - component: {fileID: 8999338503545881367}
   - component: {fileID: 3961114142717461643}
   - component: {fileID: 3701583169001772672}
-  - component: {fileID: -3955890776875807592}
   - component: {fileID: -205446329589786660}
   - component: {fileID: 2898711996546190030}
   - component: {fileID: -1435910508267307074}
   - component: {fileID: 2707337298197629861}
-  m_Layer: 0
+  - component: {fileID: -4190701440818467475}
+  - component: {fileID: 6969147120746229949}
+  m_Layer: 6
   m_Name: Taipan
-  m_TagString: Untagged
+  m_TagString: Player
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -587,25 +588,6 @@ Animator:
   m_AllowConstantClipSamplingOptimization: 1
   m_KeepAnimatorStateOnDisable: 0
   m_WriteDefaultValuesOnDisable: 0
---- !u!114 &-3955890776875807592
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4807929556901506227}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 72255f3f07eff1e4796d5acabc09261b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::BirdMovement
-  moveSpeed: 8
-  turnSpeed: 10
-  jumpForce: 8
-  fallMultiplier: 2.5
-  lowJumpMultiplier: 2
-  sinkForce: 5
-  moveThreshold: 0.1
 --- !u!54 &-205446329589786660
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -680,6 +662,38 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::AnimalCameraSettings
   thirdPersonOffset: {x: 0, y: 2.5, z: -4}
   lookHeight: 1.5
+--- !u!114 &-4190701440818467475
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4807929556901506227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 72255f3f07eff1e4796d5acabc09261b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::BirdMovement
+  moveSpeed: 8
+  turnSpeed: 12
+  jumpForce: 8
+  fallMultiplier: 2.5
+  lowJumpMultiplier: 2
+  sinkForce: 6
+  moveThreshold: 0.1
+--- !u!114 &6969147120746229949
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4807929556901506227}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 20c6cd57ee48fce49b36662346a94f69, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::AnimalController
+  movementScript: {fileID: -4190701440818467475}
 --- !u!1 &5062559287153234616
 GameObject:
   m_ObjectHideFlags: 0
@@ -689,7 +703,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 3327578256293065397}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tail.01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -721,7 +735,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4399802892305169450}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -753,7 +767,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4041582921267333190}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -786,7 +800,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8161658182462644725}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tail.03
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -817,7 +831,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 8306261897508883890}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: Rig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -849,7 +863,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6821626466792652791}
-  m_Layer: 0
+  m_Layer: 6
   m_Name: tail.02
   m_TagString: Untagged
   m_Icon: {fileID: 0}

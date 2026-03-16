@@ -5,16 +5,16 @@ public class NightVisionController : MonoBehaviour
 {
     public Material nightVisionMaterial;
 
-    private bool active;
+    public bool Active { get; private set; }
 
     public void EnableNightVision(bool value)
     {
-        active = value;
+        Active = value;
     }
 
     void OnRenderImage(RenderTexture src, RenderTexture dest)
     {
-        if (active && nightVisionMaterial != null)
+        if (Active && nightVisionMaterial != null)
             Graphics.Blit(src, dest, nightVisionMaterial);
         else
             Graphics.Blit(src, dest);

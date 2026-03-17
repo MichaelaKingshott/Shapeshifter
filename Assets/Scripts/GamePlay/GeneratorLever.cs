@@ -7,7 +7,6 @@ public class GeneratorLever : MonoBehaviour
     private bool generatorStarted = false;
 
     public GameObject puzzleUI;
-    public Collider myCollider;
 
     public CameraController cameraController;
 
@@ -61,7 +60,8 @@ public class GeneratorLever : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-        myCollider.gameObject.SetActive(false);
+
+        popupText.gameObject.SetActive(false);
     }
 
     void OnTriggerEnter(Collider other)

@@ -11,8 +11,7 @@ public class NightVisionClue : MonoBehaviour
 
     void Update()
     {
-        if (nightVision == null)
-            return;
+        if (nightVision == null) return;
 
         gameObject.SetActive(nightVision.Active);
     }

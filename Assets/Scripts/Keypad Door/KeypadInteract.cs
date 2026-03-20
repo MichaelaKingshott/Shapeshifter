@@ -5,7 +5,7 @@ public class KeypadInteract : MonoBehaviour
     public GameObject keypadUI;
     public GameObject interactPrompt;
 
-    public CameraController cameraController;
+    [SerializeField] MonoBehaviour cameraScript;
 
     private bool playerNear = false;
     private bool keypadOpen = false;
@@ -38,7 +38,7 @@ public class KeypadInteract : MonoBehaviour
 
         Time.timeScale = 0f;
 
-        cameraController.LockCameraControls(true);
+        cameraScript.enabled = false;
 
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
@@ -52,7 +52,7 @@ public class KeypadInteract : MonoBehaviour
 
         Time.timeScale = 1f;
 
-        cameraController.LockCameraControls(false);
+        cameraScript.enabled = true;
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

@@ -11,7 +11,6 @@ GameObject:
   - component: {fileID: 5235396760921053450}
   - component: {fileID: 1429629987544068106}
   - component: {fileID: 6481255301508263718}
-  - component: {fileID: 2521750536141956533}
   m_Layer: 0
   m_Name: DetectionCircle
   m_TagString: Untagged
@@ -90,28 +89,6 @@ MeshRenderer:
   m_SortingLayer: 0
   m_SortingOrder: 0
   m_AdditionalVertexStreams: {fileID: 0}
---- !u!64 &2521750536141956533
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 4517575960611178192}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 10210, guid: 0000000000000000e000000000000000, type: 0}
 --- !u!1001 &5359915842673162109
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -134,19 +111,19 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6934b8394f672794caaffd8dca6ff34a, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 64.01396
+      value: 5.38
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6934b8394f672794caaffd8dca6ff34a, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 0.05
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6934b8394f672794caaffd8dca6ff34a, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -26.017456
+      value: -66.42
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6934b8394f672794caaffd8dca6ff34a, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.037173185
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6934b8394f672794caaffd8dca6ff34a, type: 3}
       propertyPath: m_LocalRotation.x
@@ -154,7 +131,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6934b8394f672794caaffd8dca6ff34a, type: 3}
       propertyPath: m_LocalRotation.y
-      value: 0.9993088
+      value: 0.7071068
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6934b8394f672794caaffd8dca6ff34a, type: 3}
       propertyPath: m_LocalRotation.z
@@ -166,7 +143,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6934b8394f672794caaffd8dca6ff34a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: 175.739
+      value: 90
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 6934b8394f672794caaffd8dca6ff34a, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -434,12 +411,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70537ac6a3340204e97b474255e93514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDetection
-  detectionTime: 5
+  detectionTime: 3
   loseDetectionSpeed: 1.5
   detectionTrigger: {fileID: 4905865057446863598}
   playerMask:
     serializedVersion: 2
-    m_Bits: 64
+    m_Bits: 192
   detectionSlider: {fileID: 0}
   gameOverManager: {fileID: 0}
 --- !u!4 &5613884763631308950 stripped

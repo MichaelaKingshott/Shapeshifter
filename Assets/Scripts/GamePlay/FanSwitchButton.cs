@@ -5,17 +5,25 @@ public class FanSwitchButton : MonoBehaviour
     public FanSpin fanA;
     public FanSpin fanB;
 
-    public GameObject interactPopup; // 👈 assign in Inspector
+    public GameObject interactPopup;
 
-    private bool state = false;
+    private bool state = false; // false = A on, true = B on
     private bool playerInRange = false;
+
+    public Renderer buttonRenderer;
+
+    // 👇 Assign in Inspector
+    public Material greenMaterial; // Fan A active
+    public Material redMaterial;   // Fan B active
 
     void Start()
     {
         fanA.SetFanState(true);
         fanB.SetFanState(false);
 
-        interactPopup.SetActive(false); // hide at start
+        interactPopup.SetActive(false);
+
+        UpdateButtonMaterial(); // set correct starting color
     }
 
     void Update()
@@ -32,6 +40,24 @@ public class FanSwitchButton : MonoBehaviour
 
         fanA.SetFanState(!state);
         fanB.SetFanState(state);
+
+        UpdateButtonMaterial();
+    }
+
+    void UpdateButtonMaterial()
+    {
+        if (buttonRenderer == null) return;
+
+        // false = Fan A ON → green
+        // true = Fan B ON → red
+        if (state)
+        {
+            buttonRenderer.material = redMaterial;
+        }
+        else
+        {
+            buttonRenderer.material = greenMaterial;
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -39,7 +65,7 @@ public class FanSwitchButton : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-            interactPopup.SetActive(true); // 👈 show popup
+            interactPopup.SetActive(true);
         }
     }
 
@@ -48,7 +74,7 @@ public class FanSwitchButton : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
-            interactPopup.SetActive(false); // 👈 hide popup
+            interactPopup.SetActive(false);
         }
     }
 }

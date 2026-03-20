@@ -39,6 +39,13 @@ public class PlayerGrapple : MonoBehaviour
 
         if (Input.GetMouseButtonUp(0))
             StopGrapple();
+
+        // Clamp rope length so it NEVER extends
+        if (joint != null)
+        {
+            float distance = Vector3.Distance(transform.position, grapplePoint);
+            joint.maxDistance = Mathf.Min(distance, joint.maxDistance);
+        }
     }
 
     void LateUpdate()
@@ -48,9 +55,10 @@ public class PlayerGrapple : MonoBehaviour
 
     void StartGrapple()
     {
+        if (joint != null) return; // prevent stacking
+
         RaycastHit hit;
 
-        // Raycast from camera
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, maxDistance, grappleLayer))
         {
             grapplePoint = hit.point;
@@ -61,16 +69,15 @@ public class PlayerGrapple : MonoBehaviour
 
             float distanceFromPoint = Vector3.Distance(transform.position, grapplePoint);
 
-            // Rope length
-            joint.maxDistance = distanceFromPoint * maxDistanceMultiplier;
-            joint.minDistance = distanceFromPoint * minDistanceMultiplier;
+            // Lock rope length tighter
+            joint.maxDistance = distanceFromPoint * 0.8f;
+            joint.minDistance = 0f;
 
-            // Spring physics
-            joint.spring = spring;
-            joint.damper = damper;
-            joint.massScale = massScale;
+            // Stronger, less stretchy feel
+            joint.spring = 80f;
+            joint.damper = 15f;
+            joint.massScale = 4.5f;
 
-            // Enable rope
             lr.positionCount = 2;
         }
     }

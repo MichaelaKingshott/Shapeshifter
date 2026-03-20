@@ -88,13 +88,17 @@ public class EnemyDetection : MonoBehaviour
     {
         if (!IsPlayer(other.gameObject) || playerCaught) return;
 
-        playerInside = true;
-        player = other.transform;
+        // Avoid setting playerInside to true for multiple enemies
+        if (!playerInside)
+        {
+            playerInside = true;
+            player = other.transform;
 
-        shapeshifter = player.GetComponent<ShapeshifterController>();
+            shapeshifter = player.GetComponent<ShapeshifterController>();
 
-        if (detectionSlider != null)
-            detectionSlider.gameObject.SetActive(true); // Show bar
+            if (detectionSlider != null)
+                detectionSlider.gameObject.SetActive(true); // Show bar
+        }
     }
 
     private void OnTriggerExit(Collider other)
@@ -121,4 +125,3 @@ public class EnemyDetection : MonoBehaviour
             gameOverManager.Caught();
     }
 }
-

@@ -566,7 +566,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2389
+  m_VersionIndex: 2398
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -927,7 +927,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 11016
+  m_VersionIndex: 11025
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1069,3 +1069,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::FanSwitchButton
   fanA: {fileID: 0}
   fanB: {fileID: 0}
+  interactPopup: {fileID: 0}

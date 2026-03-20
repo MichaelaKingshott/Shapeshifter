@@ -1,9 +1,11 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class FanSwitchButton : MonoBehaviour
 {
     public FanSpin fanA;
     public FanSpin fanB;
+
+    public GameObject interactPopup; // 👈 assign in Inspector
 
     private bool state = false;
     private bool playerInRange = false;
@@ -12,6 +14,8 @@ public class FanSwitchButton : MonoBehaviour
     {
         fanA.SetFanState(true);
         fanB.SetFanState(false);
+
+        interactPopup.SetActive(false); // hide at start
     }
 
     void Update()
@@ -35,6 +39,7 @@ public class FanSwitchButton : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
+            interactPopup.SetActive(true); // 👈 show popup
         }
     }
 
@@ -43,6 +48,7 @@ public class FanSwitchButton : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
+            interactPopup.SetActive(false); // 👈 hide popup
         }
     }
 }

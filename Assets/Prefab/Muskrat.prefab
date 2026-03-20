@@ -700,8 +700,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 0961f02ea1eee1a42911d82a8797182f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  moveSpeed: 8
-  turnSpeed: 12
+  moveSpeed: 5
+  turnSpeed: 10
   jumpForce: 5
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
@@ -741,7 +741,7 @@ BoxCollider:
   m_PrefabInstance: {fileID: 0}
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 4950779065795438720}
-  m_Material: {fileID: 0}
+  m_Material: {fileID: 13400000, guid: b9aff9808dc349e4c8337e4bf7fc7e02, type: 2}
   m_IncludeLayers:
     serializedVersion: 2
     m_Bits: 0

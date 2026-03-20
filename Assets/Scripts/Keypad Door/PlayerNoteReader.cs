@@ -14,6 +14,7 @@ public class PlayerNoteReader : MonoBehaviour
     bool reading = false;
 
     ShapeshifterController shapeshifter;
+    public CameraController cameraController;
 
     void Start()
     {
@@ -72,8 +73,10 @@ public class PlayerNoteReader : MonoBehaviour
                 controller.movementScript.enabled = false;
         }
 
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
+        if (cameraController != null)
+            cameraController.LockCameraControls(true);
+
+        Time.timeScale = 0f;
     }
 
     void CloseNote()
@@ -91,5 +94,10 @@ public class PlayerNoteReader : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        if (cameraController != null)
+            cameraController.LockCameraControls(false);
+
+        Time.timeScale = 1f;
     }
 }

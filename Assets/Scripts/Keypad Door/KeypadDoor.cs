@@ -12,18 +12,21 @@ public class KeypadDoor : MonoBehaviour
 
     public void AddNumber(string number)
     {
+        Debug.Log("Button pressed: " + number);
         enteredCode += number;
         displayText.text = enteredCode;
     }
 
     public void ClearCode()
     {
+        Debug.Log("Clear button pressed");
         enteredCode = "";
         displayText.text = "";
     }
 
     public void CheckCode()
     {
+        Debug.Log("Checking code: " + enteredCode);
         if (enteredCode == correctCode)
         {
             OpenDoor();

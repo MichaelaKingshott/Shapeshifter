@@ -14,7 +14,6 @@ public class ShapeshifterController : MonoBehaviour
 
     private GameObject currentAnimalInstance;
     private AnimalForm currentForm = (AnimalForm)(-1);
-
     private IAnimalForm currentAbilityForm;
 
     [SerializeField]
@@ -27,30 +26,22 @@ public class ShapeshifterController : MonoBehaviour
     {
         // Unlock starting animal
         unlockedForms.Add(startingForm);
-
         SwapForm(startingForm);
     }
 
-
     void Update()
     {
-        // Follow the current animal
-        if (currentAnimalInstance != null)
+        // Handle input for swapping forms based on key mappings
+        foreach (AnimalForm form in System.Enum.GetValues(typeof(AnimalForm)))
         {
-           // transform.position = currentAnimalInstance.transform.position;
-           // transform.rotation = currentAnimalInstance.transform.rotation;
+            if (Input.GetKeyDown(GetKeyForForm(form)))
+            {
+                TrySwapForm(form);
+            }
         }
-
-        // Input for swapping forms
-        if (Input.GetKeyDown(KeyCode.Alpha1)) TrySwapForm(AnimalForm.Mouse);
-        if (Input.GetKeyDown(KeyCode.Alpha2)) TrySwapForm(AnimalForm.Monkey);
-        if (Input.GetKeyDown(KeyCode.Alpha3)) TrySwapForm(AnimalForm.Chameleon);
-        if (Input.GetKeyDown(KeyCode.Alpha4)) TrySwapForm(AnimalForm.Snake);
-        if (Input.GetKeyDown(KeyCode.Alpha5)) TrySwapForm(AnimalForm.Squid);
     }
 
-
-    void TrySwapForm(AnimalForm form)
+    public void TrySwapForm(AnimalForm form)
     {
         if (!unlockedForms.Contains(form))
         {
@@ -60,7 +51,6 @@ public class ShapeshifterController : MonoBehaviour
 
         SwapForm(form);
     }
-
 
     public void SwapForm(AnimalForm newForm)
     {
@@ -110,7 +100,6 @@ public class ShapeshifterController : MonoBehaviour
             ability.OnFormActivated();
 
         currentAbilityForm = currentAnimalInstance.GetComponent<IAnimalForm>();
-
         currentForm = newForm;
 
         CameraController cam = FindFirstObjectByType<CameraController>();
@@ -118,7 +107,6 @@ public class ShapeshifterController : MonoBehaviour
         if (cam != null)
         {
             cam.target = currentAnimalInstance.transform;
-
             AnimalCameraSettings settings = currentAnimalInstance.GetComponent<AnimalCameraSettings>();
 
             if (settings != null)
@@ -128,17 +116,33 @@ public class ShapeshifterController : MonoBehaviour
         Debug.Log("Switched to form: " + currentForm);
     }
 
-
     public void UnlockForm(AnimalForm form)
     {
         if (unlockedForms.Contains(form))
             return;
 
         unlockedForms.Add(form);
-
         Debug.Log("Unlocked form: " + form);
     }
 
+    // Return the key mapping for each form
+    public KeyCode GetKeyForForm(AnimalForm form)
+    {
+        switch (form)
+        {
+            case AnimalForm.Mouse: return KeyCode.Alpha1;
+            case AnimalForm.Monkey: return KeyCode.Alpha2;
+            case AnimalForm.Chameleon: return KeyCode.Alpha3;
+            case AnimalForm.Snake: return KeyCode.Alpha4;
+            case AnimalForm.Squid: return KeyCode.Alpha5;
+            default: return KeyCode.None;
+        }
+    }
+
+    public bool IsFormUnlocked(AnimalForm form)
+    {
+        return unlockedForms.Contains(form);
+    }
 
     public AnimalForm GetCurrentForm() => currentForm;
 

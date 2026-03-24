@@ -1,127 +1,63 @@
 ﻿using UnityEngine;
-using UnityEngine.UI;
 
+[RequireComponent(typeof(SphereCollider))]
 public class EnemyDetection : MonoBehaviour
 {
-    [Header("Detection Settings")]
-    public float detectionTime = 3f;
-    public float loseDetectionSpeed = 1.5f;
-
-    public SphereCollider detectionTrigger;
     public LayerMask playerMask;
+    public DetectionManager detectionManager;
 
-    [Header("UI")]
-    public Slider detectionSlider;
-
-    [Header("Game Over")]
-    public GameOver gameOverManager;
-
-    private Transform player;
+    private bool isDetecting = false;
     private ShapeshifterController shapeshifter;
-
-    private bool playerInside = false;
-    private bool playerCaught = false;
-
-    private float detectionTimer = 0f;
 
     private void Awake()
     {
-        if (detectionTrigger == null)
-            detectionTrigger = GetComponent<SphereCollider>();
-
-        detectionTrigger.isTrigger = true;
-
-        if (detectionSlider != null)
-        {
-            detectionSlider.minValue = 0;
-            detectionSlider.maxValue = detectionTime;
-            detectionSlider.value = 0;
-            detectionSlider.gameObject.SetActive(false); // Hide at start
-        }
+        GetComponent<SphereCollider>().isTrigger = true;
     }
 
     private void Update()
     {
-        if (playerCaught) return;
+        if (!isDetecting) return;
 
-        if (playerInside)
+        if (shapeshifter != null && shapeshifter.IsInvisible())
         {
-            // Check invisibility
-            if (shapeshifter != null && shapeshifter.IsInvisible())
-            {
-                playerInside = false;
-                return;
-            }
-
-            detectionTimer += Time.deltaTime;
-        }
-        else
-        {
-            detectionTimer -= Time.deltaTime * loseDetectionSpeed;
-        }
-
-        detectionTimer = Mathf.Clamp(detectionTimer, 0, detectionTime);
-
-        if (detectionSlider != null)
-        {
-            detectionSlider.value = detectionTimer;
-
-            Image fill = detectionSlider.fillRect.GetComponent<Image>();
-
-            if (detectionTimer > detectionTime * 0.7f)
-                fill.color = Color.red;       // Almost caught
-            else
-                fill.color = Color.yellow;    // Detecting
-        }
-
-        // Hide bar when fully drained
-        if (!playerInside && detectionTimer <= 0 && detectionSlider != null)
-            detectionSlider.gameObject.SetActive(false);
-
-        if (detectionTimer >= detectionTime)
-        {
-            PlayerCaught();
+            StopDetection();
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (!IsPlayer(other.gameObject) || playerCaught) return;
+        if (!IsPlayer(other)) return;
 
-        // Avoid setting playerInside to true for multiple enemies
-        if (!playerInside)
-        {
-            playerInside = true;
-            player = other.transform;
+        shapeshifter = other.GetComponent<ShapeshifterController>();
 
-            shapeshifter = player.GetComponent<ShapeshifterController>();
-
-            if (detectionSlider != null)
-                detectionSlider.gameObject.SetActive(true); // Show bar
-        }
+        StartDetection();
     }
 
     private void OnTriggerExit(Collider other)
     {
-        if (!IsPlayer(other.gameObject)) return;
+        if (!IsPlayer(other)) return;
 
-        playerInside = false;
+        StopDetection();
     }
 
-    private bool IsPlayer(GameObject obj)
+    private void StartDetection()
     {
-        return (playerMask.value & (1 << obj.layer)) != 0;
+        if (isDetecting) return;
+
+        isDetecting = true;
+        detectionManager.StartDetecting();
     }
 
-    private void PlayerCaught()
+    private void StopDetection()
     {
-        if (playerCaught) return;
+        if (!isDetecting) return;
 
-        playerCaught = true;
+        isDetecting = false;
+        detectionManager.StopDetecting();
+    }
 
-        Debug.Log("PLAYER CAUGHT!");
-
-        if (gameOverManager != null)
-            gameOverManager.Caught();
+    private bool IsPlayer(Collider col)
+    {
+        return ((1 << col.gameObject.layer) & playerMask) != 0;
     }
 }

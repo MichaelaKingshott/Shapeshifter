@@ -566,7 +566,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2380
+  m_VersionIndex: 2383
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -709,7 +709,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 17.646372, y: 0.32462823, z: -15.621901}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 1.3976998, y: 1.3976998, z: 1.3977}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 1090813607445338087}
@@ -927,7 +927,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 11007
+  m_VersionIndex: 11010
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []

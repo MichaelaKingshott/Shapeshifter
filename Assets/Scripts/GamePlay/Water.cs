@@ -2,24 +2,27 @@
 
 public class Water : MonoBehaviour
 {
-    public float waterDrag = 3f;
+    public float moveSpeed = 2f;
 
-    private void OnTriggerEnter(Collider other)
+    private float targetY;
+
+    void Start()
     {
-        Rigidbody rb = other.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.linearDamping = waterDrag;
-        }
+        targetY = transform.position.y;
     }
 
-    private void OnTriggerExit(Collider other)
+    void Update()
     {
-        Rigidbody rb = other.GetComponent<Rigidbody>();
-        if (rb != null)
-        {
-            rb.linearDamping = 0f;
-        }
+        Vector3 pos = transform.position;
+
+        pos.y = Mathf.MoveTowards(pos.y, targetY, moveSpeed * Time.deltaTime);
+
+        transform.position = pos;
+    }
+
+    public void SetWaterHeight(float newY)
+    {
+        targetY = newY;
     }
 }
 

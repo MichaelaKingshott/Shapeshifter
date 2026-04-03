@@ -2,29 +2,17 @@
 
 public class ButtonPress : MonoBehaviour
 {
-    public FanSpin targetObject;
+    public MovingObject targetObject;
     public bool toggle = true;
 
-    public bool startActivated = true;
-    private bool activated;
+    private bool activated = false;
 
     public GameObject interactPopup;
     private bool playerInRange = false;
 
-    public Renderer buttonRenderer;
-
-    // 👇 NEW: assign your materials in Inspector
-    public Material activeMaterial;   // Green
-    public Material inactiveMaterial; // Red
-
     void Start()
     {
         interactPopup.SetActive(false);
-
-        activated = startActivated;
-        targetObject.SetFanState(activated);
-
-        UpdateButtonMaterial();
     }
 
     void Update()
@@ -37,32 +25,19 @@ public class ButtonPress : MonoBehaviour
 
     public void PressButton()
     {
+        if (targetObject == null) return;
+
         if (toggle)
         {
             activated = !activated;
-            targetObject.SetFanState(activated);
+            targetObject.SetActiveState(activated);
         }
         else
         {
-            activated = true;
-            targetObject.SetFanState(true);
+            targetObject.SetActiveState(true);
         }
 
-        UpdateButtonMaterial();
-    }
-
-    void UpdateButtonMaterial()
-    {
-        if (buttonRenderer == null) return;
-
-        if (activated)
-        {
-            buttonRenderer.material = activeMaterial;
-        }
-        else
-        {
-            buttonRenderer.material = inactiveMaterial;
-        }
+        Debug.Log("Button pressed!");
     }
 
     void OnTriggerEnter(Collider other)

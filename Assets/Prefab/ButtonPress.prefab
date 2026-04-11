@@ -566,7 +566,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2386
+  m_VersionIndex: 2392
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -689,7 +689,6 @@ GameObject:
   - component: {fileID: 6889770539255961009}
   - component: {fileID: 7401470064940584741}
   - component: {fileID: 62790283579616985}
-  - component: {fileID: 8691391617425190705}
   - component: {fileID: 8130010190402936020}
   - component: {fileID: 8257770437235386042}
   m_Layer: 12
@@ -927,7 +926,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 11013
+  m_VersionIndex: 11019
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1012,28 +1011,6 @@ MeshFilter:
   m_PrefabAsset: {fileID: 0}
   m_GameObject: {fileID: 7144637366906346622}
   m_Mesh: {fileID: 0}
---- !u!64 &8691391617425190705
-MeshCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7144637366906346622}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 0
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 5
-  m_Convex: 0
-  m_CookingOptions: 30
-  m_Mesh: {fileID: 0}
 --- !u!65 &8130010190402936020
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -1053,8 +1030,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.4, y: 0.4, z: 0.4}
-  m_Center: {x: 0, y: 0.033968255, z: 1.978012e-26}
+  m_Size: {x: 1, y: 1, z: 1}
+  m_Center: {x: 0, y: 0, z: 0}
 --- !u!114 &8257770437235386042
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -1069,3 +1046,4 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::ButtonPress
   targetObject: {fileID: 0}
   toggle: 1
+  interactPopup: {fileID: 0}

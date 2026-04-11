@@ -6,6 +6,7 @@ public class PowerSystem : MonoBehaviour
     public static PowerSystem instance;
 
     public Light[] lights;
+    public VentBlocker[] vents;
 
     void Awake()
     {
@@ -17,6 +18,18 @@ public class PowerSystem : MonoBehaviour
         foreach (Light l in lights)
         {
             l.enabled = state;
+        }
+
+        if (state)
+        {
+            StartCoroutine(OpenVentsDelayed());
+        }
+        else
+        {
+            foreach (VentBlocker v in vents)
+            {
+                v.SetOpen(false);
+            }
         }
     }
 
@@ -37,5 +50,15 @@ public class PowerSystem : MonoBehaviour
         }
 
         SetPower(false);
+    }
+
+    IEnumerator OpenVentsDelayed()
+    {
+        yield return new WaitForSeconds(1.5f); // dramatic delay
+
+        foreach (VentBlocker v in vents)
+        {
+            v.SetOpen(true);
+        }
     }
 }

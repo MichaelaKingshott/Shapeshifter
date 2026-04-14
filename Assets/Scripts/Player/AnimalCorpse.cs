@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class AnimalCorpse : MonoBehaviour
 {
@@ -7,11 +7,23 @@ public class AnimalCorpse : MonoBehaviour
     private bool playerInRange;
     private ShapeshifterController player;
 
+    void Start()
+    {
+        // If already consumed before → destroy immediately
+        if (GameManager.Instance.consumedCorpses.Contains(animalType))
+        {
+            Destroy(gameObject);
+        }
+    }
+
     void Update()
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
             player.UnlockForm(animalType);
+
+            // MARK AS CONSUMED
+            GameManager.Instance.consumedCorpses.Add(animalType);
 
             InteractionPromptUI.Instance.HidePrompt();
 

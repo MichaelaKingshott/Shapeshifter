@@ -37,7 +37,7 @@ public class PlayerNoteReader : MonoBehaviour
 
         if (Physics.Raycast(transform.position, transform.forward, out hit, interactDistance))
         {
-            PaperNote note = hit.collider.GetComponent<PaperNote>();
+            PaperNote note = hit.collider.GetComponentInParent<PaperNote>();
 
             if (note != null)
             {
@@ -57,6 +57,14 @@ public class PlayerNoteReader : MonoBehaviour
         {
             popupText.gameObject.SetActive(false);
         }
+    }
+
+    // 🟡 NEW: Called by tongue
+    public void TryOpenNoteFromTongue(PaperNote note)
+    {
+        if (reading) return;
+
+        OpenNote(note);
     }
 
     void OpenNote(PaperNote note)

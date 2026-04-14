@@ -65,6 +65,9 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 18ca9bb298f01d44f8eff8428815f18b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2163861649999137744}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 18ca9bb298f01d44f8eff8428815f18b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 6235709490112937855}
   m_SourcePrefab: {fileID: 100100000, guid: 18ca9bb298f01d44f8eff8428815f18b, type: 3}
 --- !u!1 &1759872893164074225 stripped
 GameObject:
@@ -132,3 +135,15 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimalCorpse
   animalType: 3
+--- !u!114 &6235709490112937855
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759872893164074225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5c459d25eb5ec43408f6db05104bc2dd, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Checkpoint

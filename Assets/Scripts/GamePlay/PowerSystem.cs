@@ -8,6 +8,8 @@ public class PowerSystem : MonoBehaviour
     public Light[] lights;
     public VentBlocker[] vents;
 
+    private Coroutine ventRoutine;
+
     void Awake()
     {
         instance = this;
@@ -20,9 +22,16 @@ public class PowerSystem : MonoBehaviour
             l.enabled = state;
         }
 
+        // Stop any pending vent opening
+        if (ventRoutine != null)
+        {
+            StopCoroutine(ventRoutine);
+            ventRoutine = null;
+        }
+
         if (state)
         {
-            StartCoroutine(OpenVentsDelayed());
+            ventRoutine = StartCoroutine(OpenVentsDelayed());
         }
         else
         {
@@ -40,7 +49,7 @@ public class PowerSystem : MonoBehaviour
 
     IEnumerator FlickerAndShutdown()
     {
-        for(int i = 0; i < 5; i++)
+        for (int i = 0; i < 5; i++)
         {
             SetPower(false);
             yield return new WaitForSeconds(0.15f);
@@ -54,7 +63,7 @@ public class PowerSystem : MonoBehaviour
 
     IEnumerator OpenVentsDelayed()
     {
-        yield return new WaitForSeconds(1.5f); // dramatic delay
+        yield return new WaitForSeconds(1.5f);
 
         foreach (VentBlocker v in vents)
         {

@@ -19,19 +19,33 @@ public class ShapeshifterController : MonoBehaviour
     [SerializeField]
     private AnimalForm startingForm = AnimalForm.Mouse;
 
-    private HashSet<AnimalForm> unlockedForms = new HashSet<AnimalForm>();
-
+    private HashSet<AnimalForm> unlockedForms => GameManager.Instance.unlockedForms;
 
     void Start()
     {
-        // Unlock starting animal
-        unlockedForms.Add(startingForm);
-        SwapForm(startingForm);
+        ApplyPersistentData();
+    }
+
+    public void ApplyPersistentData()
+    {
+        // Ensure at least starting form
+        if (unlockedForms.Count == 0)
+        {
+            unlockedForms.Add(startingForm);
+        }
+
+        // Move to checkpoint
+        if (GameManager.Instance.hasCheckpoint)
+        {
+            transform.position = GameManager.Instance.checkpointPosition;
+        }
+
+        // Restore form
+        SwapForm(GameManager.Instance.currentForm);
     }
 
     void Update()
     {
-        // Handle input for swapping forms based on key mappings
         foreach (AnimalForm form in System.Enum.GetValues(typeof(AnimalForm)))
         {
             if (Input.GetKeyDown(GetKeyForForm(form)))
@@ -93,7 +107,6 @@ public class ShapeshifterController : MonoBehaviour
             return;
         }
 
-        // IMPORTANT FIX: parent to ShapeShifter
         currentAnimalInstance = Instantiate(prefabToSpawn, spawnPos, spawnRot, transform);
 
         foreach (var ability in currentAnimalInstance.GetComponents<IAnimalAbility>())
@@ -101,6 +114,9 @@ public class ShapeshifterController : MonoBehaviour
 
         currentAbilityForm = currentAnimalInstance.GetComponent<IAnimalForm>();
         currentForm = newForm;
+
+        // SAVE CURRENT FORM
+        GameManager.Instance.currentForm = newForm;
 
         CameraController cam = FindFirstObjectByType<CameraController>();
 
@@ -112,8 +128,6 @@ public class ShapeshifterController : MonoBehaviour
             if (settings != null)
                 cam.ApplyAnimalCameraSettings(settings);
         }
-
-        Debug.Log("Switched to form: " + currentForm);
     }
 
     public void UnlockForm(AnimalForm form)
@@ -125,7 +139,6 @@ public class ShapeshifterController : MonoBehaviour
         Debug.Log("Unlocked form: " + form);
     }
 
-    // Return the key mapping for each form
     public KeyCode GetKeyForForm(AnimalForm form)
     {
         switch (form)
@@ -156,4 +169,3 @@ public class ShapeshifterController : MonoBehaviour
         return currentAbilityForm.IsInvisible;
     }
 }
-

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class TongueController : MonoBehaviour
 {
@@ -13,9 +13,12 @@ public class TongueController : MonoBehaviour
     private bool tongueActive;
     private float timer;
 
+    private PlayerNoteReader noteReader; // NEW
+
     void Start()
     {
         lr.positionCount = 0;
+        noteReader = FindFirstObjectByType<PlayerNoteReader>(); // NEW
     }
 
     void Update()
@@ -51,14 +54,21 @@ public class TongueController : MonoBehaviour
 
             hitPoint = hit.point;
 
-            // Press buttons
+            // 🟡 OPEN NOTES WITH TONGUE
+            PaperNote note = hit.collider.GetComponentInParent<PaperNote>();
+            if (note != null && noteReader != null)
+            {
+                noteReader.TryOpenNoteFromTongue(note);
+            }
+
+            // 🔵 Press buttons
             IPressable pressable = hit.collider.GetComponentInParent<IPressable>();
             if (pressable != null)
             {
                 pressable.Press();
             }
 
-            // Grab objects
+            // 🟢 Grab objects
             IGrabbable grabbable = hit.collider.GetComponentInParent<IGrabbable>();
             if (grabbable != null)
             {

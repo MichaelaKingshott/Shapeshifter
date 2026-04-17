@@ -6,9 +6,17 @@ public class PowerTrigger : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
-            PowerSystem.instance.TriggerBlackout();
+            ShapeshifterController player = other.GetComponentInParent<ShapeshifterController>();
 
-            Destroy(gameObject);
+            if (player != null && player.IsFormUnlocked(AnimalForm.Snake))
+            {
+                PowerSystem.instance.TriggerBlackout();
+                Destroy(gameObject);
+            }
+            else
+            {
+                Debug.Log("Snake form not unlocked yet.");
+            }
         }
     }
 }

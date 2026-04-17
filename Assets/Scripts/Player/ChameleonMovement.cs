@@ -1,7 +1,7 @@
 ﻿using UnityEngine;
 using System.Collections;
 
-public class ChameleonMovement : MonoBehaviour, IAnimalAbility
+public class ChameleonMovement : MonoBehaviour, IAnimalAbility, IAnimalForm
 {
     [Header("Movement")]
     public float moveSpeed = 4f;
@@ -12,16 +12,16 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility
     public float invisDuration = 3f;
     public float cooldown = 5f;
 
-    [Header("Outline Materials")]
+    [Header("Materials")]
     public Material normalMaterial;
     public Material outlineMaterial;
 
     private Renderer[] renderers;
-    private Collider[] colliders;
     private Rigidbody rb;
     private bool isInvisible = false;
     private bool canUseInvisibility = true;
     private bool isGrounded = true;
+
     public Collider groundCollider;
 
     [Header("Animation")]
@@ -36,9 +36,13 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility
     {
         rb = GetComponent<Rigidbody>();
         renderers = GetComponentsInChildren<Renderer>();
-        colliders = GetComponentsInChildren<Collider>();
-        if (groundCollider == null && colliders.Length > 0) groundCollider = colliders[0];
         anim = GetComponent<Animator>();
+
+        if (groundCollider == null)
+        {
+            Collider[] cols = GetComponentsInChildren<Collider>();
+            if (cols.Length > 0) groundCollider = cols[0];
+        }
     }
 
     void Update()
@@ -49,20 +53,26 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility
 
         if (isInWater)
         {
-            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f); // stop horizontal movement
-            rb.AddForce(Vector3.down * sinkForce, ForceMode.Acceleration); // sink
+            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
+            rb.AddForce(Vector3.down * sinkForce, ForceMode.Acceleration);
         }
     }
 
     private void HandleMovement()
     {
-        if (isInWater) return; // no horizontal movement in water
+        if (isInWater) return;
 
         float h = Input.GetAxis("Horizontal");
         float v = Input.GetAxis("Vertical");
 
-        Vector3 camForward = Camera.main.transform.forward; camForward.y = 0f; camForward.Normalize();
-        Vector3 camRight = Camera.main.transform.right; camRight.y = 0f; camRight.Normalize();
+        Vector3 camForward = Camera.main.transform.forward;
+        camForward.y = 0f;
+        camForward.Normalize();
+
+        Vector3 camRight = Camera.main.transform.right;
+        camRight.y = 0f;
+        camRight.Normalize();
+
         Vector3 move = camForward * v + camRight * h;
 
         rb.linearVelocity = new Vector3(move.x * moveSpeed, rb.linearVelocity.y, move.z * moveSpeed);
@@ -79,7 +89,7 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility
 
     private void HandleJump()
     {
-        if (isInWater) return; // cannot jump in water
+        if (isInWater) return;
 
         if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
         {
@@ -94,7 +104,9 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility
     private void HandleInvisibility()
     {
         if (Input.GetKeyDown(KeyCode.C) && canUseInvisibility && !isInvisible)
+        {
             StartCoroutine(BecomeInvisible());
+        }
     }
 
     private IEnumerator BecomeInvisible()
@@ -102,27 +114,31 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility
         isInvisible = true;
         canUseInvisibility = false;
 
-        foreach (Renderer r in renderers) r.material = outlineMaterial;
-        foreach (Collider c in colliders) if (c != groundCollider) c.enabled = false;
+        // Visual change
+        foreach (Renderer r in renderers)
+            r.material = outlineMaterial;
 
         yield return new WaitForSeconds(invisDuration);
 
-        foreach (Renderer r in renderers) r.material = normalMaterial;
-        foreach (Collider c in colliders) c.enabled = true;
+        foreach (Renderer r in renderers)
+            r.material = normalMaterial;
 
         isInvisible = false;
+
         yield return new WaitForSeconds(cooldown);
         canUseInvisibility = true;
     }
 
     private void OnCollisionEnter(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground")) isGrounded = true;
+        if (collision.gameObject.CompareTag("Ground"))
+            isGrounded = true;
     }
 
     private void OnCollisionExit(Collision collision)
     {
-        if (collision.gameObject.CompareTag("Ground")) isGrounded = false;
+        if (collision.gameObject.CompareTag("Ground"))
+            isGrounded = false;
     }
 
     private void OnTriggerEnter(Collider other)
@@ -138,10 +154,16 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility
     }
 
     public void OnFormActivated() => this.enabled = true;
+
     public void OnFormDeactivated()
     {
-        foreach (Renderer r in renderers) r.material = normalMaterial;
-        foreach (Collider c in colliders) c.enabled = true;
+        foreach (Renderer r in renderers)
+            r.material = normalMaterial;
+
+        isInvisible = false;
         this.enabled = false;
     }
+
+    // ✅ REQUIRED BY INTERFACE
+    public bool IsInvisible => isInvisible;
 }

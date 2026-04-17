@@ -8,13 +8,18 @@ public class FanSwitchButton : MonoBehaviour
     public GameObject interactPopup;
 
     private bool state = false; // false = A on, true = B on
-    private bool playerInRange = false;
 
     public Renderer buttonRenderer;
 
-    // 👇 Assign in Inspector
     public Material greenMaterial; // Fan A active
     public Material redMaterial;   // Fan B active
+
+    // 👇 Raycast settings
+    public float interactDistance = 3f;
+    public LayerMask interactLayer;
+    public Camera playerCamera;
+
+    private bool isLookingAtButton = false;
 
     void Start()
     {
@@ -22,16 +27,38 @@ public class FanSwitchButton : MonoBehaviour
         fanB.SetFanState(false);
 
         interactPopup.SetActive(false);
-
-        UpdateButtonMaterial(); // set correct starting color
+        UpdateButtonMaterial();
     }
 
     void Update()
     {
-        if (playerInRange && Input.GetKeyDown(KeyCode.E))
+        CheckRaycast();
+
+        if (isLookingAtButton && Input.GetKeyDown(KeyCode.E))
         {
             PressButton();
         }
+    }
+
+    void CheckRaycast()
+    {
+        Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
+        RaycastHit hit;
+
+        if (Physics.Raycast(ray, out hit, interactDistance, interactLayer))
+        {
+            // Check if THIS object was hit
+            if (hit.collider.gameObject == gameObject)
+            {
+                isLookingAtButton = true;
+                interactPopup.SetActive(true);
+                return;
+            }
+        }
+
+        // If we didn't hit this button
+        isLookingAtButton = false;
+        interactPopup.SetActive(false);
     }
 
     public void PressButton()
@@ -48,33 +75,9 @@ public class FanSwitchButton : MonoBehaviour
     {
         if (buttonRenderer == null) return;
 
-        // false = Fan A ON → green
-        // true = Fan B ON → red
         if (state)
-        {
             buttonRenderer.material = redMaterial;
-        }
         else
-        {
             buttonRenderer.material = greenMaterial;
-        }
-    }
-
-    void OnTriggerEnter(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = true;
-            interactPopup.SetActive(true);
-        }
-    }
-
-    void OnTriggerExit(Collider other)
-    {
-        if (other.CompareTag("Player"))
-        {
-            playerInRange = false;
-            interactPopup.SetActive(false);
-        }
     }
 }

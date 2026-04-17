@@ -20,14 +20,19 @@ public class AnimalCorpse : MonoBehaviour
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
+            // Unlock form
             player.UnlockForm(animalType);
 
-            // MARK AS CONSUMED
+            // Mark as consumed
             GameManager.Instance.consumedCorpses.Add(animalType);
+
+            // ✅ SET CHECKPOINT HERE
+            GameManager.Instance.checkpointPosition = player.transform.position;
+            GameManager.Instance.hasCheckpoint = true;
 
             InteractionPromptUI.Instance.HidePrompt();
 
-            Debug.Log("Consumed corpse and unlocked: " + animalType);
+            Debug.Log("Consumed corpse, unlocked: " + animalType + " + CHECKPOINT SET");
 
             Destroy(gameObject);
         }

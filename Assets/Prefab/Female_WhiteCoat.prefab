@@ -381,10 +381,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 70537ac6a3340204e97b474255e93514, type: 3}
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::EnemyDetection
-  loseDetectionSpeed: 1.5
   playerMask:
     serializedVersion: 2
-    m_Bits: 192
+    m_Bits: 64
   detectionManager: {fileID: 0}
 --- !u!4 &5613884763631308950 stripped
 Transform:

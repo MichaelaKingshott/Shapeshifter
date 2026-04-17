@@ -6,9 +6,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Instance;
 
-    // ✅ THIS IS WHAT YOUR ERROR IS ABOUT — MUST EXIST
     public HashSet<AnimalForm> unlockedForms = new HashSet<AnimalForm>();
-
     public HashSet<AnimalForm> consumedCorpses = new HashSet<AnimalForm>();
 
     public Vector3 checkpointPosition;

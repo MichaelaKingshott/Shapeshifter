@@ -14,7 +14,7 @@ public class Checkpoint : MonoBehaviour
         {
             activated = true;
 
-            GameManager.Instance.checkpointPosition = transform.position;
+            GameManager.Instance.checkpointPosition = player.transform.position;
             GameManager.Instance.hasCheckpoint = true;
 
             Debug.Log("Checkpoint reached!");

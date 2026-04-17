@@ -34,7 +34,7 @@ public class ShapeshifterController : MonoBehaviour
             unlockedForms.Add(startingForm);
         }
 
-        // Move to checkpoint
+        // ✅ Move to checkpoint safely
         if (GameManager.Instance.hasCheckpoint)
         {
             transform.position = GameManager.Instance.checkpointPosition;

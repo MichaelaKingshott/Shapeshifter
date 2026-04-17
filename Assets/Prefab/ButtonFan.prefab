@@ -14,6 +14,7 @@ GameObject:
   - component: {fileID: 7628813603827783411}
   - component: {fileID: 365395222125649359}
   - component: {fileID: 6899553088323994367}
+  - component: {fileID: 4220581302498315463}
   m_Layer: 12
   m_Name: Cube (1)
   m_TagString: Untagged
@@ -676,6 +677,29 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
+--- !u!114 &4220581302498315463
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1905942455785986166}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 721167d5c6e1644458d5a0b717d26972, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::FanSwitchButton
+  fanA: {fileID: 0}
+  fanB: {fileID: 0}
+  interactPopup: {fileID: 0}
+  buttonRenderer: {fileID: 0}
+  greenMaterial: {fileID: 0}
+  redMaterial: {fileID: 0}
+  interactDistance: 3
+  interactLayer:
+    serializedVersion: 2
+    m_Bits: 0
+  playerCamera: {fileID: 0}
 --- !u!1 &7144637366906346622
 GameObject:
   m_ObjectHideFlags: 0
@@ -690,8 +714,6 @@ GameObject:
   - component: {fileID: 7401470064940584741}
   - component: {fileID: 62790283579616985}
   - component: {fileID: 8691391617425190705}
-  - component: {fileID: 8130010190402936020}
-  - component: {fileID: -935070711512972669}
   m_Layer: 12
   m_Name: ButtonFan
   m_TagString: Untagged
@@ -1034,39 +1056,3 @@ MeshCollider:
   m_Convex: 0
   m_CookingOptions: 30
   m_Mesh: {fileID: 0}
---- !u!65 &8130010190402936020
-BoxCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7144637366906346622}
-  m_Material: {fileID: 0}
-  m_IncludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_ExcludeLayers:
-    serializedVersion: 2
-    m_Bits: 0
-  m_LayerOverridePriority: 0
-  m_IsTrigger: 1
-  m_ProvidesContacts: 0
-  m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 0.4, y: 0.4, z: 0.4}
-  m_Center: {x: 0, y: 0.033968255, z: 1.978012e-26}
---- !u!114 &-935070711512972669
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 7144637366906346622}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 721167d5c6e1644458d5a0b717d26972, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: Assembly-CSharp::FanSwitchButton
-  fanA: {fileID: 0}
-  fanB: {fileID: 0}
-  interactPopup: {fileID: 0}

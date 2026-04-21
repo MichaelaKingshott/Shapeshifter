@@ -7,32 +7,16 @@ public class AnimalCorpse : MonoBehaviour
     private bool playerInRange;
     private ShapeshifterController player;
 
-    void Start()
-    {
-        // If already consumed before → destroy immediately
-        if (GameManager.Instance.consumedCorpses.Contains(animalType))
-        {
-            Destroy(gameObject);
-        }
-    }
-
     void Update()
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
-            // Unlock form
             player.UnlockForm(animalType);
 
-            // Mark as consumed
-            GameManager.Instance.consumedCorpses.Add(animalType);
-
-            // ✅ SET CHECKPOINT HERE
-            GameManager.Instance.checkpointPosition = player.transform.position;
-            GameManager.Instance.hasCheckpoint = true;
+            // ⭐ SET CHECKPOINT HERE
+            player.SetCheckpoint(transform.position);
 
             InteractionPromptUI.Instance.HidePrompt();
-
-            Debug.Log("Consumed corpse, unlocked: " + animalType + " + CHECKPOINT SET");
 
             Destroy(gameObject);
         }

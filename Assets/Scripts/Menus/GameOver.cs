@@ -1,11 +1,20 @@
+﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class GameOver : MonoBehaviour
 {
     [SerializeField] GameObject gameOver;
     [SerializeField] MonoBehaviour cameraScript;
     [SerializeField] MonoBehaviour pauseScript;
+
+    private ShapeshifterController player;
+
+    void Start()
+    {
+        player = FindFirstObjectByType<ShapeshifterController>();
+    }
 
     public void Caught()
     {
@@ -17,7 +26,6 @@ public class GameOver : MonoBehaviour
         if (pauseScript != null)
             pauseScript.enabled = false;
 
-        // Show mouse cursor
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
@@ -31,9 +39,28 @@ public class GameOver : MonoBehaviour
     public void Restart()
     {
         gameOver.SetActive(false);
+
         Time.timeScale = 1f;
 
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+        StartCoroutine(RespawnNextFrame());
+    }
+
+    private IEnumerator RespawnNextFrame()
+    {
+        yield return null; // wait 1 frame
+
+        if (player != null)
+        {
+            player.RespawnAtCheckpoint();
+        }
+
+        cameraScript.enabled = true;
+
+        if (pauseScript != null)
+            pauseScript.enabled = true;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void QuitGame()

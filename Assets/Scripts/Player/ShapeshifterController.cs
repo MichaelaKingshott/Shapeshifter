@@ -19,29 +19,23 @@ public class ShapeshifterController : MonoBehaviour
     [SerializeField]
     private AnimalForm startingForm = AnimalForm.Mouse;
 
-    private HashSet<AnimalForm> unlockedForms => GameManager.Instance.unlockedForms;
+    private HashSet<AnimalForm> unlockedForms = new HashSet<AnimalForm>();
+
+    // ⭐ CHECKPOINT SYSTEM
+    private Vector3 lastCheckpointPosition;
+    private bool hasCheckpoint = false;
+
+    public System.Action OnRespawn;
 
     void Start()
     {
-        ApplyPersistentData();
-    }
+        unlockedForms.Add(startingForm);
 
-    public void ApplyPersistentData()
-    {
-        // Ensure at least starting form
-        if (unlockedForms.Count == 0)
-        {
-            unlockedForms.Add(startingForm);
-        }
+        SwapForm(startingForm);
 
-        // ✅ Move to checkpoint safely
-        if (GameManager.Instance.hasCheckpoint)
-        {
-            transform.position = GameManager.Instance.checkpointPosition;
-        }
-
-        // Restore form
-        SwapForm(GameManager.Instance.currentForm);
+        // ⭐ after spawn, use actual animal position
+        if (currentAnimalInstance != null)
+            SetCheckpoint(currentAnimalInstance.transform.position);
     }
 
     void Update()
@@ -115,9 +109,6 @@ public class ShapeshifterController : MonoBehaviour
         currentAbilityForm = currentAnimalInstance.GetComponent<IAnimalForm>();
         currentForm = newForm;
 
-        // SAVE CURRENT FORM
-        GameManager.Instance.currentForm = newForm;
-
         CameraController cam = FindFirstObjectByType<CameraController>();
 
         if (cam != null)
@@ -130,13 +121,41 @@ public class ShapeshifterController : MonoBehaviour
         }
     }
 
+    // ⭐ SET CHECKPOINT
+    public void SetCheckpoint(Vector3 position)
+    {
+        lastCheckpointPosition = position + Vector3.up * 1.5f; // slight offset
+        hasCheckpoint = true;
+    }
+
+    // ⭐ RESPAWN
+    public void RespawnAtCheckpoint()
+    {
+        if (!hasCheckpoint)
+        {
+            Debug.Log("No checkpoint set.");
+            return;
+        }
+
+        if (currentAnimalInstance != null)
+        {
+            currentAnimalInstance.transform.position = lastCheckpointPosition;
+        }
+        else
+        {
+            transform.position = lastCheckpointPosition;
+        }
+
+        // ⭐ notify everything
+        OnRespawn?.Invoke();
+    }
+
     public void UnlockForm(AnimalForm form)
     {
         if (unlockedForms.Contains(form))
             return;
 
         unlockedForms.Add(form);
-        Debug.Log("Unlocked form: " + form);
     }
 
     public KeyCode GetKeyForForm(AnimalForm form)
@@ -158,7 +177,6 @@ public class ShapeshifterController : MonoBehaviour
     }
 
     public AnimalForm GetCurrentForm() => currentForm;
-
     public GameObject GetCurrentAnimalInstance() => currentAnimalInstance;
 
     public bool IsInvisible()

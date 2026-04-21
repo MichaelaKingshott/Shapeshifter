@@ -23,17 +23,22 @@ public class PlayerGrapple : MonoBehaviour
     private SpringJoint joint;
     private Rigidbody rb;
 
+    // Highlight system
+    private GameObject currentGrapple;
+    private Color originalColor;
+    private Renderer currentRenderer;
+
     void Start()
     {
         rb = GetComponent<Rigidbody>();
 
-        // Works even if this is a prefab
         if (cam == null)
             cam = Camera.main;
     }
 
     void Update()
     {
+
         if (Input.GetMouseButtonDown(0))
             StartGrapple();
 
@@ -55,12 +60,14 @@ public class PlayerGrapple : MonoBehaviour
 
     void StartGrapple()
     {
-        if (joint != null) return; // prevent stacking
+        if (joint != null) return;
 
         RaycastHit hit;
 
         if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, maxDistance, grappleLayer))
         {
+            if (!hit.collider.CompareTag("Grapple")) return;
+
             grapplePoint = hit.point;
 
             joint = gameObject.AddComponent<SpringJoint>();
@@ -69,14 +76,12 @@ public class PlayerGrapple : MonoBehaviour
 
             float distanceFromPoint = Vector3.Distance(transform.position, grapplePoint);
 
-            // Lock rope length tighter
-            joint.maxDistance = distanceFromPoint * 0.8f;
+            joint.maxDistance = distanceFromPoint * maxDistanceMultiplier;
             joint.minDistance = 0f;
 
-            // Stronger, less stretchy feel
             joint.spring = 80f;
             joint.damper = 15f;
-            joint.massScale = 4.5f;
+            joint.massScale = massScale;
 
             lr.positionCount = 2;
         }

@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Water
   - Ground
+  - Grapple
   layers:
   - Default
   - TransparentFX

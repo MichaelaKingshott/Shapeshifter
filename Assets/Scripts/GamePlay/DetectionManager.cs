@@ -14,6 +14,8 @@ public class DetectionManager : MonoBehaviour
 
     private Image fillImage;
 
+    private ShapeshifterController player;
+
     private void Start()
     {
         if (detectionSlider != null)
@@ -24,6 +26,14 @@ public class DetectionManager : MonoBehaviour
             detectionSlider.gameObject.SetActive(false);
 
             fillImage = detectionSlider.fillRect.GetComponent<Image>();
+        }
+
+        // ⭐ HOOK INTO RESPAWN EVENT
+        player = FindFirstObjectByType<ShapeshifterController>();
+
+        if (player != null)
+        {
+            player.OnRespawn += ResetDetection;
         }
     }
 
@@ -81,5 +91,19 @@ public class DetectionManager : MonoBehaviour
 
         if (gameOverManager != null)
             gameOverManager.Caught();
+    }
+
+    // ⭐ THIS FIXES YOUR PROBLEM
+    public void ResetDetection()
+    {
+        detectionTimer = 0f;
+        enemiesDetecting = 0;
+        playerCaught = false;
+
+        if (detectionSlider != null)
+        {
+            detectionSlider.value = 0;
+            detectionSlider.gameObject.SetActive(false);
+        }
     }
 }

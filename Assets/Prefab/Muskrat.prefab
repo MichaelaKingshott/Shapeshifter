@@ -701,7 +701,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   moveSpeed: 5
-  turnSpeed: 10
+  turnSpeed: 5
   jumpForce: 5
   fallMultiplier: 2.5
   lowJumpMultiplier: 2

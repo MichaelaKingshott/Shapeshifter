@@ -1,5 +1,7 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.SceneManagement;
+using UnityEngine.EventSystems;
 
 public class PauseMenu : MonoBehaviour
 {
@@ -7,6 +9,13 @@ public class PauseMenu : MonoBehaviour
     [SerializeField] MonoBehaviour cameraScript;
 
     bool isPaused = false;
+
+    private ShapeshifterController player;
+
+    void Start()
+    {
+        player = FindFirstObjectByType<ShapeshifterController>();
+    }
 
     void Update()
     {
@@ -39,7 +48,6 @@ public class PauseMenu : MonoBehaviour
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
-
     }
 
     public void Home()
@@ -52,7 +60,24 @@ public class PauseMenu : MonoBehaviour
     {
         pauseMenu.SetActive(false);
         Time.timeScale = 1f;
-        SceneManager.LoadScene(SceneManager.GetActiveScene().buildIndex);
+
+        StartCoroutine(RespawnNextFrame());
+    }
+
+    private IEnumerator RespawnNextFrame()
+    {
+        yield return null;
+
+        if (player != null)
+        {
+            player.RespawnAtCheckpoint();
+        }
+
+        cameraScript.enabled = true;
+        isPaused = false;
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
     }
 
     public void QuitGame()

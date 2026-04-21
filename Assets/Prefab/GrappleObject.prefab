@@ -15,6 +15,8 @@ GameObject:
   - component: {fileID: 7719227869532041482}
   - component: {fileID: 5251172837782577367}
   - component: {fileID: 2943527545142459972}
+  - component: {fileID: 4232434735034233466}
+  - component: {fileID: -1089329912871022128}
   m_Layer: 9
   m_Name: GrappleObject
   m_TagString: Grapple
@@ -698,3 +700,33 @@ BoxCollider:
   serializedVersion: 3
   m_Size: {x: 2.338808, y: 0.7154511, z: 1.587203}
   m_Center: {x: 0, y: 0, z: 0}
+--- !u!114 &4232434735034233466
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4122268771909418107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []
+--- !u!114 &-1089329912871022128
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 4122268771909418107}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 565f5c6d350db1342b9f429d090784e3, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::GrappleOutlineInit

@@ -1,4 +1,4 @@
-using UnityEngine;
+﻿using UnityEngine;
 
 public class PlayerGrapple : MonoBehaviour
 {
@@ -10,7 +10,6 @@ public class PlayerGrapple : MonoBehaviour
 
     [Header("Grapple Settings")]
     public float maxDistance = 40f;
-
     public float maxDistanceMultiplier = 0.8f;
     public float minDistanceMultiplier = 0.25f;
 
@@ -25,8 +24,7 @@ public class PlayerGrapple : MonoBehaviour
 
     // Highlight system
     private GameObject currentGrapple;
-    private Color originalColor;
-    private Renderer currentRenderer;
+    private Outline currentOutline;
 
     void Start()
     {
@@ -38,6 +36,7 @@ public class PlayerGrapple : MonoBehaviour
 
     void Update()
     {
+        CheckForGrappleTarget();
 
         if (Input.GetMouseButtonDown(0))
             StartGrapple();
@@ -45,7 +44,7 @@ public class PlayerGrapple : MonoBehaviour
         if (Input.GetMouseButtonUp(0))
             StopGrapple();
 
-        // Clamp rope length so it NEVER extends
+        // Prevent rope extending
         if (joint != null)
         {
             float distance = Vector3.Distance(transform.position, grapplePoint);
@@ -58,6 +57,51 @@ public class PlayerGrapple : MonoBehaviour
         DrawRope();
     }
 
+    // =========================
+    // 🎯 TARGET DETECTION
+    // =========================
+    void CheckForGrappleTarget()
+    {
+        RaycastHit hit;
+
+        if (Physics.Raycast(cam.transform.position, cam.transform.forward, out hit, maxDistance, grappleLayer))
+        {
+            if (hit.collider.CompareTag("Grapple"))
+            {
+                GameObject newTarget = hit.collider.gameObject;
+
+                if (currentGrapple != newTarget)
+                {
+                    ClearHighlight();
+
+                    currentGrapple = newTarget;
+                    currentOutline = currentGrapple.GetComponent<Outline>();
+
+                    if (currentOutline != null)
+                        currentOutline.enabled = true;
+                }
+
+                return;
+            }
+        }
+
+        ClearHighlight();
+    }
+
+    void ClearHighlight()
+    {
+        if (currentOutline != null)
+        {
+            currentOutline.enabled = false;
+        }
+
+        currentGrapple = null;
+        currentOutline = null;
+    }
+
+    // =========================
+    // 🪝 GRAPPLE LOGIC
+    // =========================
     void StartGrapple()
     {
         if (joint != null) return;

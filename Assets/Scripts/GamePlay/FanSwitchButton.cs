@@ -1,6 +1,6 @@
 ﻿using UnityEngine;
 
-public class FanSwitchButton : MonoBehaviour
+public class FanSwitchButton : MonoBehaviour, IPressable
 {
     public FanSpin fanA;
     public FanSpin fanB;
@@ -36,7 +36,7 @@ public class FanSwitchButton : MonoBehaviour
 
         if (isLookingAtButton && Input.GetKeyDown(KeyCode.E))
         {
-            PressButton();
+            Press();
         }
     }
 
@@ -61,7 +61,7 @@ public class FanSwitchButton : MonoBehaviour
         interactPopup.SetActive(false);
     }
 
-    public void PressButton()
+    public void Press()
     {
         state = !state;
 

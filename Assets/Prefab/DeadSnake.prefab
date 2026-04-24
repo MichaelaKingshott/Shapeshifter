@@ -85,7 +85,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimalCorpse
   animalType: 1
-  corpseID: Snake1
 --- !u!65 &135188642342665427
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -132,5 +131,5 @@ Rigidbody:
   m_UseGravity: 0
   m_IsKinematic: 1
   m_Interpolate: 0
-  m_Constraints: 0
+  m_Constraints: 112
   m_CollisionDetection: 0

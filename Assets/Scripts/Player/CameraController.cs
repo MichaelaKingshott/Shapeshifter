@@ -61,7 +61,6 @@ public class CameraController : MonoBehaviour
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
 
         Vector3 desiredOffset = isFirstPerson ? firstPersonOffset : thirdPersonOffset;
-
         currentOffset = Vector3.Lerp(currentOffset, desiredOffset, smoothSpeed * Time.deltaTime);
 
         Vector3 desiredPosition = target.position + rotation * currentOffset;
@@ -78,7 +77,12 @@ public class CameraController : MonoBehaviour
 
         if (isFirstPerson)
         {
+            // Camera rotation (full pitch + yaw)
             transform.rotation = rotation;
+
+            // 🔥 KEY FIX: Rotate player to match camera yaw
+            Quaternion targetRotation = Quaternion.Euler(0f, yaw, 0f);
+            target.rotation = Quaternion.Slerp(target.rotation, targetRotation, 15f * Time.deltaTime);
         }
         else
         {

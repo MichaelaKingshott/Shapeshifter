@@ -1,6 +1,5 @@
 ﻿using UnityEngine;
 using System.Collections;
-using TMPro;
 
 public class Valve : MonoBehaviour
 {
@@ -17,10 +16,11 @@ public class Valve : MonoBehaviour
     public float turnDuration = 1.5f;
 
     [Header("UI")]
-    public GameObject interactPrompt; // drag your UI text here
+    public GameObject interactPrompt;
 
     private bool playerInRange = false;
     private bool isTurning = false;
+    private bool hasBeenUsed = false; // NEW
 
     void Start()
     {
@@ -32,14 +32,13 @@ public class Valve : MonoBehaviour
 
     void Update()
     {
-        // Spin valve
         if (isTurning)
         {
             transform.Rotate(Vector3.up * rotateSpeed * Time.deltaTime);
         }
 
-        // Input
-        if (playerInRange && Input.GetKeyDown(interactKey) && !isTurning)
+        // Prevent reuse here
+        if (playerInRange && Input.GetKeyDown(interactKey) && !isTurning && !hasBeenUsed)
         {
             Activate();
         }
@@ -47,6 +46,7 @@ public class Valve : MonoBehaviour
 
     void Activate()
     {
+        hasBeenUsed = true; // mark as used immediately
         StartCoroutine(TurnValve());
     }
 
@@ -77,7 +77,7 @@ public class Valve : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.CompareTag("Player"))
+        if (other.CompareTag("Player") && !hasBeenUsed)
         {
             playerInRange = true;
 

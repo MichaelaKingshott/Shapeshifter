@@ -52,6 +52,10 @@ PrefabInstance:
       propertyPath: m_Name
       value: DeadSnake
       objectReference: {fileID: 0}
+    - target: {fileID: 5866666021909216657, guid: 59f05ce7e8f01db448f74d11b071a69a, type: 3}
+      propertyPath: m_Controller
+      value: 
+      objectReference: {fileID: 0}
     m_RemovedComponents:
     - {fileID: 5866666021909216657, guid: 59f05ce7e8f01db448f74d11b071a69a, type: 3}
     m_RemovedGameObjects: []

@@ -10,7 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 82586268567828826}
   - component: {fileID: 82586268567828827}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Mesh_LOD1
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -426,6 +426,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimalCameraSettings
   thirdPersonOffset: {x: 0, y: 3, z: -5}
+  firstPersonOffset: {x: 0, y: 0.5, z: 0}
   lookHeight: 1
 --- !u!1 &82586269285217419
 GameObject:
@@ -437,7 +438,7 @@ GameObject:
   m_Component:
   - component: {fileID: 82586269285217416}
   - component: {fileID: 82586269285217417}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Mesh_LOD2
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -537,7 +538,7 @@ GameObject:
   m_Component:
   - component: {fileID: 82586269825741037}
   - component: {fileID: 82586269825741034}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Mesh_LOD3
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -637,7 +638,7 @@ GameObject:
   m_Component:
   - component: {fileID: 82586270259224067}
   - component: {fileID: 82586270259224064}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Mesh_LOD0
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -736,7 +737,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 2832166141564592750}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: tail.02
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -767,7 +768,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6045127215273897264}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: leg.F.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -798,7 +799,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 766575209219985451}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: Rig
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -830,7 +831,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4751367393033344479}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: body
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -867,7 +868,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6182469376096070323}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: leg.B.R
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -898,7 +899,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 4965663152497320371}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: root
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -961,7 +962,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6326229213055938348}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: tail.01
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -993,7 +994,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 1730670543712301746}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: leg.B.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1024,7 +1025,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6726633446663450102}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: head
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -1055,7 +1056,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 6836810353964715444}
-  m_Layer: 6
+  m_Layer: 8
   m_Name: leg.F.L
   m_TagString: Untagged
   m_Icon: {fileID: 0}

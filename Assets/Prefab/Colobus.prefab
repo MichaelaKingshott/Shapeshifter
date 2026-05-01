@@ -940,6 +940,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimalCameraSettings
   thirdPersonOffset: {x: 0, y: 3, z: -5}
+  firstPersonOffset: {x: 0, y: 1.6, z: 0.1}
   lookHeight: 1.5
 --- !u!114 &-2127380304949374257
 MonoBehaviour:

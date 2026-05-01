@@ -3,12 +3,13 @@ using TMPro;
 
 public class PlayerInteract : MonoBehaviour
 {
+    public Camera cam;
     public float interactDistance = 3f;
+    public float sphereRadius = 0.15f;
 
     PlayerInventory playerInventory;
 
     public TMP_Text popupText;
-
     public string keycardMessage = "Press E to pick up Keycard";
 
     void Start()
@@ -18,13 +19,13 @@ public class PlayerInteract : MonoBehaviour
 
     void Update()
     {
-        RaycastHit hit;
+        Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+
         bool lookingAtItem = false;
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit, interactDistance))
+        if (Physics.SphereCast(ray, sphereRadius, out RaycastHit hit, interactDistance))
         {
-            // KEYCARD
-            Keycard keycard = hit.collider.GetComponent<Keycard>();
+            Keycard keycard = hit.collider.GetComponentInParent<Keycard>();
 
             if (keycard != null)
             {

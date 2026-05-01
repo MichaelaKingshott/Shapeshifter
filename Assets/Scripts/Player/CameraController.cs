@@ -20,21 +20,21 @@ public class CameraController : MonoBehaviour
     public float smoothSpeed = 10f;
 
     [Header("Collision")]
-    public float cameraRadius = 0.2f;
+    public float cameraRadius = 0.5f;
     public LayerMask collisionLayers;
 
     [Header("UI")]
     public GameObject crosshair;
 
-    float yaw = 0f;
-    float pitch = 10f;
-
-    bool isFirstPerson = false;
-    Vector3 currentOffset;
-
     public Camera cam;
 
-    bool controlsLocked = false;
+    private float yaw = 0f;
+    private float pitch = 10f;
+
+    private bool isFirstPerson = false;
+    private Vector3 currentOffset;
+
+    private bool controlsLocked = false;
 
     void Start()
     {
@@ -45,6 +45,9 @@ public class CameraController : MonoBehaviour
 
         if (crosshair != null)
             crosshair.SetActive(false);
+
+        // 🔥 Ensure correct startup rendering state
+        ApplyCullingState();
     }
 
     void LateUpdate()
@@ -65,24 +68,50 @@ public class CameraController : MonoBehaviour
 
         Vector3 desiredPosition = target.position + rotation * currentOffset;
 
-        RaycastHit hit;
         Vector3 direction = desiredPosition - target.position;
 
-        if (Physics.SphereCast(target.position, cameraRadius, direction.normalized, out hit, direction.magnitude, collisionLayers))
+        // Check for collision with other objects (e.g., walls, terrain)
+        if (Physics.SphereCast(
+            target.position,
+            cameraRadius,
+            direction.normalized,
+            out RaycastHit hit,
+            direction.magnitude,
+            collisionLayers))
         {
-            desiredPosition = hit.point - direction.normalized * cameraRadius;
+            if (direction.magnitude > hit.distance)
+            {
+                desiredPosition = target.position + direction.normalized * (hit.distance - cameraRadius);
+            }
+        }
+
+        RaycastHit floorHit;
+
+        // Cast DOWN from ABOVE the target (guaranteed to hit floor)
+        Vector3 rayOrigin = target.position + Vector3.up * 2f;
+
+        if (Physics.Raycast(rayOrigin, Vector3.down, out floorHit, 10f, collisionLayers))
+        {
+            float minHeight = floorHit.point.y + cameraRadius;
+
+            if (desiredPosition.y < minHeight)
+            {
+                desiredPosition.y = minHeight;
+            }
         }
 
         transform.position = desiredPosition;
 
         if (isFirstPerson)
         {
-            // Camera rotation (full pitch + yaw)
             transform.rotation = rotation;
 
-            // 🔥 KEY FIX: Rotate player to match camera yaw
             Quaternion targetRotation = Quaternion.Euler(0f, yaw, 0f);
-            target.rotation = Quaternion.Slerp(target.rotation, targetRotation, 15f * Time.deltaTime);
+            target.rotation = Quaternion.Slerp(
+                target.rotation,
+                targetRotation,
+                15f * Time.deltaTime
+            );
         }
         else
         {
@@ -94,20 +123,28 @@ public class CameraController : MonoBehaviour
     {
         isFirstPerson = value;
 
-        if (value)
-        {
-            cam.cullingMask &= ~(1 << LayerMask.NameToLayer("PlayerMesh"));
+        ApplyCullingState();
 
-            if (crosshair != null)
-                crosshair.SetActive(true);
+        if (crosshair != null)
+            crosshair.SetActive(value);
+    }
+
+    private void ApplyCullingState()
+    {
+        if (cam == null) return;
+
+        int playerLayer = LayerMask.NameToLayer("PlayerMesh");
+
+        if (playerLayer == -1)
+        {
+            Debug.LogError("Layer 'PlayerMesh' does not exist!");
+            return;
         }
+
+        if (isFirstPerson)
+            cam.cullingMask &= ~(1 << playerLayer);
         else
-        {
-            cam.cullingMask |= (1 << LayerMask.NameToLayer("PlayerMesh"));
-
-            if (crosshair != null)
-                crosshair.SetActive(false);
-        }
+            cam.cullingMask |= (1 << playerLayer);
     }
 
     public void LockCameraControls(bool locked)
@@ -120,6 +157,9 @@ public class CameraController : MonoBehaviour
         if (settings == null) return;
 
         thirdPersonOffset = settings.thirdPersonOffset;
+        firstPersonOffset = settings.firstPersonOffset;
         lookHeight = settings.lookHeight;
+
+        currentOffset = isFirstPerson ? firstPersonOffset : thirdPersonOffset;
     }
 }

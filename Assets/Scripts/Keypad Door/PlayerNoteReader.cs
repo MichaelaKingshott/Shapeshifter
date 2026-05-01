@@ -3,7 +3,9 @@ using TMPro;
 
 public class PlayerNoteReader : MonoBehaviour
 {
+    public Camera cam;
     public float interactDistance = 3f;
+    public float sphereRadius = 0.15f;
 
     [SerializeField] GameObject notePanel;
     [SerializeField] TMP_Text noteText;
@@ -32,10 +34,11 @@ public class PlayerNoteReader : MonoBehaviour
             return;
         }
 
-        RaycastHit hit;
+        Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
+
         bool lookingAtNote = false;
 
-        if (Physics.Raycast(transform.position, transform.forward, out hit, interactDistance))
+        if (Physics.SphereCast(ray, sphereRadius, out RaycastHit hit, interactDistance))
         {
             PaperNote note = hit.collider.GetComponentInParent<PaperNote>();
 
@@ -59,11 +62,9 @@ public class PlayerNoteReader : MonoBehaviour
         }
     }
 
-    // 🟡 NEW: Called by tongue
     public void TryOpenNoteFromTongue(PaperNote note)
     {
         if (reading) return;
-
         OpenNote(note);
     }
 

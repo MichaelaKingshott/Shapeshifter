@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: ae5c0cff04cf1cd4faa0a80efc449312
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 2100000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 342204
+  packageName: SCI-FI Chemical Laboratory Vol. 1
+  packageVersion: 1.0.0
+  assetPath: Assets/SCIFIChemicalLabVol1/SCIFICL1_Built/Materials/TX_SCI_FI_Chemical_Laboratory_1_9.mat
+  uploadId: 811822

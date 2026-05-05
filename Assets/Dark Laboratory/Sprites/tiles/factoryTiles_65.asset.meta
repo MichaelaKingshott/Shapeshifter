@@ -1,0 +1,15 @@
+fileFormatVersion: 2
+guid: e3c8c07687afdcc44a104edd14813e69
+NativeFormatImporter:
+  externalObjects: {}
+  mainObjectFileID: 11400000
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 226512
+  packageName: 2d Dark Laboratory
+  packageVersion: 1.11
+  assetPath: Assets/Dark Laboratory/Sprites/tiles/factoryTiles_65.asset
+  uploadId: 610231

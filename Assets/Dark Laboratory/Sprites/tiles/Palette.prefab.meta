@@ -1,0 +1,14 @@
+fileFormatVersion: 2
+guid: 3cd44e428cf230346a8f8c006f221f5b
+PrefabImporter:
+  externalObjects: {}
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
+AssetOrigin:
+  serializedVersion: 1
+  productId: 226512
+  packageName: 2d Dark Laboratory
+  packageVersion: 1.11
+  assetPath: Assets/Dark Laboratory/Sprites/tiles/Palette.prefab
+  uploadId: 610231

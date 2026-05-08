@@ -2,31 +2,36 @@
 
 public class FanSwitchButton : MonoBehaviour, IPressable
 {
+    [Header("Fans")]
     public FanSpin fanA;
     public FanSpin fanB;
 
+    [Header("UI")]
     public GameObject interactPopup;
 
-    private bool state = false; // false = A on, true = B on
-
+    [Header("Button Visuals")]
     public Renderer buttonRenderer;
-
     public Material greenMaterial; // Fan A active
     public Material redMaterial;   // Fan B active
 
-    // 👇 Raycast settings
+    [Header("Interaction")]
     public float interactDistance = 3f;
     public LayerMask interactLayer;
     public Camera playerCamera;
 
+    private bool state = false; // false = A on, true = B on
     private bool isLookingAtButton = false;
 
     void Start()
     {
+        // Initial fan states
         fanA.SetFanState(true);
         fanB.SetFanState(false);
 
-        interactPopup.SetActive(false);
+        // Hide popup initially
+        if (interactPopup != null)
+            interactPopup.SetActive(false);
+
         UpdateButtonMaterial();
     }
 
@@ -45,35 +50,46 @@ public class FanSwitchButton : MonoBehaviour, IPressable
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
 
+        bool hitThisButton = false;
+
         if (Physics.Raycast(ray, out hit, interactDistance, interactLayer))
         {
-            // Check if THIS object was hit
-            if (hit.collider.gameObject == gameObject)
+            // Look for FanSwitchButton on hit object or its parents
+            FanSwitchButton button = hit.collider.GetComponentInParent<FanSwitchButton>();
+
+            if (button == this)
             {
-                isLookingAtButton = true;
-                interactPopup.SetActive(true);
-                return;
+                hitThisButton = true;
             }
         }
 
-        // If we didn't hit this button
-        isLookingAtButton = false;
-        interactPopup.SetActive(false);
+        // Update interaction state
+        isLookingAtButton = hitThisButton;
+
+        // Show/hide popup
+        if (interactPopup != null)
+        {
+            interactPopup.SetActive(hitThisButton);
+        }
     }
 
     public void Press()
     {
+        // Toggle state
         state = !state;
 
+        // Switch fans
         fanA.SetFanState(!state);
         fanB.SetFanState(state);
 
+        // Update button color
         UpdateButtonMaterial();
     }
 
     void UpdateButtonMaterial()
     {
-        if (buttonRenderer == null) return;
+        if (buttonRenderer == null)
+            return;
 
         if (state)
             buttonRenderer.material = redMaterial;

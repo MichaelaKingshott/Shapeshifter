@@ -10,43 +10,43 @@ PrefabInstance:
     m_Modifications:
     - target: {fileID: -8679921383154817045, guid: f4b33658976e00e44b5ee3ca1bc89c63, type: 3}
       propertyPath: m_LocalScale.x
-      value: 1.1831921
+      value: 1.852524
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f4b33658976e00e44b5ee3ca1bc89c63, type: 3}
       propertyPath: m_LocalScale.y
-      value: 3.4032485
+      value: 5.328466
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f4b33658976e00e44b5ee3ca1bc89c63, type: 3}
       propertyPath: m_LocalScale.z
-      value: 2.9716072
+      value: 4.652646
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f4b33658976e00e44b5ee3ca1bc89c63, type: 3}
       propertyPath: m_LocalPosition.x
-      value: -0.777
+      value: 197.54245
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f4b33658976e00e44b5ee3ca1bc89c63, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.176
+      value: -13.44
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f4b33658976e00e44b5ee3ca1bc89c63, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -2.241
+      value: -15.084921
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f4b33658976e00e44b5ee3ca1bc89c63, type: 3}
       propertyPath: m_LocalRotation.w
-      value: 0.25984633
+      value: 0.50325334
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f4b33658976e00e44b5ee3ca1bc89c63, type: 3}
       propertyPath: m_LocalRotation.x
-      value: -0.65763205
+      value: -0.49672532
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f4b33658976e00e44b5ee3ca1bc89c63, type: 3}
       propertyPath: m_LocalRotation.y
-      value: -0.6576322
+      value: -0.49672544
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f4b33658976e00e44b5ee3ca1bc89c63, type: 3}
       propertyPath: m_LocalRotation.z
-      value: 0.25984627
+      value: 0.5032534
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f4b33658976e00e44b5ee3ca1bc89c63, type: 3}
       propertyPath: m_LocalEulerAnglesHint.x
@@ -54,7 +54,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f4b33658976e00e44b5ee3ca1bc89c63, type: 3}
       propertyPath: m_LocalEulerAnglesHint.y
-      value: -136.88
+      value: -89.252
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: f4b33658976e00e44b5ee3ca1bc89c63, type: 3}
       propertyPath: m_LocalEulerAnglesHint.z
@@ -99,8 +99,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 0.07776107, y: 0.3182986, z: 0.25819638}
-  m_Center: {x: 0.00012417696, y: 0.15911897, z: 0}
+  m_Size: {x: 0.5964817, y: 0.5326066, z: 0.48998943}
+  m_Center: {x: 0.2594848, y: 0.1525109, z: -0.0030785291}
 --- !u!114 &-24995231614305759
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -115,6 +115,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: Assembly-CSharp::NoteInteraction
   promptUI: {fileID: 0}
   noteUI: {fileID: 0}
-  noteText: 
+  noteText: "Subject 67\n\nSpecies - Loligo vulgaris\n\nAbility - Swim upward [Spam
+    Space] to get across large areas of water but be careful of your stamina useage.
+    \n\nHeight -  16 inches\n\nWeight - 700 kg"
   noteTextUI: {fileID: 0}
   cameraController: {fileID: 0}

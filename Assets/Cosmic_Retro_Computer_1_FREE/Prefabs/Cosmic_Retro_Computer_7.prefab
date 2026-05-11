@@ -22,15 +22,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4a2371edfce86e946a1d4718611f07ea, type: 3}
       propertyPath: m_LocalPosition.x
-      value: 30.65
+      value: 33.129997
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4a2371edfce86e946a1d4718611f07ea, type: 3}
       propertyPath: m_LocalPosition.y
-      value: 4.19
+      value: 1.3601701
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4a2371edfce86e946a1d4718611f07ea, type: 3}
       propertyPath: m_LocalPosition.z
-      value: -72.41
+      value: -73.15001
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: 4a2371edfce86e946a1d4718611f07ea, type: 3}
       propertyPath: m_LocalRotation.w
@@ -78,15 +78,15 @@ PrefabInstance:
     m_AddedComponents:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 4a2371edfce86e946a1d4718611f07ea, type: 3}
       insertIndex: -1
-      addedObject: {fileID: 6516681230482392873}
+      addedObject: {fileID: 585878551174773277}
   m_SourcePrefab: {fileID: 100100000, guid: 4a2371edfce86e946a1d4718611f07ea, type: 3}
 --- !u!1 &7754135464258298107 stripped
 GameObject:
   m_CorrespondingSourceObject: {fileID: 919132149155446097, guid: 4a2371edfce86e946a1d4718611f07ea, type: 3}
   m_PrefabInstance: {fileID: 7448198208650665386}
   m_PrefabAsset: {fileID: 0}
---- !u!65 &6516681230482392873
-BoxCollider:
+--- !u!64 &585878551174773277
+MeshCollider:
   m_ObjectHideFlags: 0
   m_CorrespondingSourceObject: {fileID: 0}
   m_PrefabInstance: {fileID: 0}
@@ -103,6 +103,7 @@ BoxCollider:
   m_IsTrigger: 0
   m_ProvidesContacts: 0
   m_Enabled: 1
-  serializedVersion: 3
-  m_Size: {x: 1.1581306, y: 0.9053544, z: 0.62557167}
-  m_Center: {x: -0.00025746226, y: 0.45266688, z: 0.048702776}
+  serializedVersion: 5
+  m_Convex: 0
+  m_CookingOptions: 30
+  m_Mesh: {fileID: 4721881803270084878, guid: 4a2371edfce86e946a1d4718611f07ea, type: 3}

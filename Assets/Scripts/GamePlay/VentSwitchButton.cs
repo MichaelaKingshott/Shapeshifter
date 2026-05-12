@@ -11,6 +11,10 @@ public class VentSwitchButton : MonoBehaviour
     public Material greenMaterial; // vent open
     public Material redMaterial;   // vent closed
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip buttonClickSound;
+
     [Header("Raycast")]
     public float interactDistance = 3f;
     public LayerMask interactLayer;
@@ -80,6 +84,10 @@ public class VentSwitchButton : MonoBehaviour
 
     public void Press()
     {
+        // Play click sound
+        if (audioSource != null && buttonClickSound != null)
+            audioSource.PlayOneShot(buttonClickSound, 1f);
+
         state = !state;
 
         vent.SetOpen(state);

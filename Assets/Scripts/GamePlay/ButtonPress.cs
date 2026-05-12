@@ -17,6 +17,10 @@ public class ButtonPress : MonoBehaviour
     public Material onMaterial;   // Green
     public Material offMaterial;  // Red
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip buttonClickSound;
+
     private bool activated = false;
     private bool playerInRange = false;
 
@@ -75,6 +79,12 @@ public class ButtonPress : MonoBehaviour
     {
         if (targetObject == null)
             return;
+
+        // PLAY BUTTON SOUND
+        if (audioSource != null && buttonClickSound != null)
+        {
+            audioSource.PlayOneShot(buttonClickSound);
+        }
 
         if (toggle)
         {

@@ -14,6 +14,10 @@ public class FanSwitchButton : MonoBehaviour, IPressable
     public Material greenMaterial;
     public Material redMaterial;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip buttonClickSound;
+
     [Header("Interaction")]
     public float interactDistance = 3f;
     public LayerMask interactLayer;
@@ -84,6 +88,10 @@ public class FanSwitchButton : MonoBehaviour, IPressable
 
     public void Press()
     {
+        // Play click sound
+        if (audioSource != null && buttonClickSound != null)
+            audioSource.PlayOneShot(buttonClickSound, 1f);
+
         state = !state;
 
         fanA.SetFanState(!state);

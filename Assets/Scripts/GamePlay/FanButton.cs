@@ -9,6 +9,10 @@ public class FanButton : MonoBehaviour
     public Material onMaterial;   // Green
     public Material offMaterial;  // Red
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip buttonClickSound;
+
     private bool playerInRange;
 
     private InteractableHighlight highlight;
@@ -31,6 +35,10 @@ public class FanButton : MonoBehaviour
     void ToggleFan()
     {
         if (targetFan == null) return;
+
+        // Play click sound
+        if (audioSource != null && buttonClickSound != null)
+            audioSource.PlayOneShot(buttonClickSound, 1f);
 
         bool newState = !targetFan.isOn;
         targetFan.SetFanState(newState);

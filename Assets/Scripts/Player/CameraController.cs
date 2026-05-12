@@ -46,7 +46,7 @@ public class CameraController : MonoBehaviour
         if (crosshair != null)
             crosshair.SetActive(false);
 
-        // 🔥 Ensure correct startup rendering state
+        // Ensure correct startup rendering state
         ApplyCullingState();
     }
 
@@ -63,59 +63,51 @@ public class CameraController : MonoBehaviour
 
         Quaternion rotation = Quaternion.Euler(pitch, yaw, 0);
 
-        Vector3 desiredOffset = isFirstPerson ? firstPersonOffset : thirdPersonOffset;
-        currentOffset = Vector3.Lerp(currentOffset, desiredOffset, smoothSpeed * Time.deltaTime);
+        Vector3 desiredOffset =
+            isFirstPerson ? firstPersonOffset : thirdPersonOffset;
 
-        Vector3 desiredPosition = target.position + rotation * currentOffset;
+        currentOffset = Vector3.Lerp(
+            currentOffset,
+            desiredOffset,
+            smoothSpeed * Time.deltaTime
+        );
 
-        Vector3 direction = desiredPosition - target.position;
+        Vector3 pivot = target.position + Vector3.up * lookHeight;
 
-        // Check for collision with other objects (e.g., walls, terrain)
-        if (Physics.SphereCast(
-            target.position,
-            cameraRadius,
-            direction.normalized,
-            out RaycastHit hit,
-            direction.magnitude,
-            collisionLayers))
+        Vector3 desiredPosition =
+            pivot + rotation * currentOffset;
+
+        // Collision only in third person
+        if (!isFirstPerson)
         {
-            if (direction.magnitude > hit.distance)
+            Vector3 direction = desiredPosition - pivot;
+
+            if (Physics.SphereCast(
+                pivot,
+                cameraRadius,
+                direction.normalized,
+                out RaycastHit hit,
+                direction.magnitude,
+                collisionLayers))
             {
-                desiredPosition = target.position + direction.normalized * (hit.distance - cameraRadius);
-            }
-        }
-
-        RaycastHit floorHit;
-
-        // Cast DOWN from ABOVE the target (guaranteed to hit floor)
-        Vector3 rayOrigin = target.position + Vector3.up * 2f;
-
-        if (Physics.Raycast(rayOrigin, Vector3.down, out floorHit, 10f, collisionLayers))
-        {
-            float minHeight = floorHit.point.y + cameraRadius;
-
-            if (desiredPosition.y < minHeight)
-            {
-                desiredPosition.y = minHeight;
+                desiredPosition =
+                    pivot + direction.normalized * (hit.distance - cameraRadius);
             }
         }
 
         transform.position = desiredPosition;
+        transform.rotation = rotation;
 
+        // Make player face camera direction ONLY in first person
         if (isFirstPerson)
         {
-            transform.rotation = rotation;
+            Vector3 forward = transform.forward;
+            forward.y = 0f;
 
-            Quaternion targetRotation = Quaternion.Euler(0f, yaw, 0f);
-            target.rotation = Quaternion.Slerp(
-                target.rotation,
-                targetRotation,
-                15f * Time.deltaTime
-            );
-        }
-        else
-        {
-            transform.LookAt(target.position + Vector3.up * lookHeight);
+            if (forward.sqrMagnitude > 0.001f)
+            {
+                target.rotation = Quaternion.LookRotation(forward);
+            }
         }
     }
 

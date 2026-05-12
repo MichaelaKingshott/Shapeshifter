@@ -16,105 +16,193 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility, IAnimalForm
     public Material normalMaterial;
     public Material outlineMaterial;
 
-    private Renderer[] renderers;
-    private Rigidbody rb;
-    private bool isInvisible = false;
-    private bool canUseInvisibility = true;
-    private bool isGrounded = true;
-
-    public Collider groundCollider;
-
     [Header("Animation")]
     public float moveThreshold = 0.1f;
-    private Animator anim;
 
     [Header("Water")]
     public float sinkForce = 6f;
+
+    public Collider groundCollider;
+
+    private Renderer[] renderers;
+    private Rigidbody rb;
+    private Animator anim;
+    private Camera cam;
+
+    private bool isInvisible = false;
+    private bool canUseInvisibility = true;
+    private bool isGrounded = true;
     private bool isInWater = false;
+
+    private Vector3 moveInput;
+    private bool jumpPressed;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
-        renderers = GetComponentsInChildren<Renderer>();
         anim = GetComponent<Animator>();
+
+        renderers = GetComponentsInChildren<Renderer>();
+
+        FindCamera();
 
         if (groundCollider == null)
         {
             Collider[] cols = GetComponentsInChildren<Collider>();
-            if (cols.Length > 0) groundCollider = cols[0];
+
+            if (cols.Length > 0)
+                groundCollider = cols[0];
         }
     }
 
     void Update()
     {
-        HandleMovement();
-        HandleJump();
-        HandleInvisibility();
-
-        if (isInWater)
+        if (cam == null)
         {
-            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
-            rb.AddForce(Vector3.down * sinkForce, ForceMode.Acceleration);
+            FindCamera();
+
+            if (cam == null)
+                return;
         }
+
+        ReadInput();
+        HandleInvisibility();
+        UpdateAnimations();
     }
 
-    private void HandleMovement()
+    void FixedUpdate()
     {
-        if (isInWater) return;
+        if (cam == null)
+            return;
 
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        Move();
+        HandleJump();
+        HandleWater();
+    }
 
-        Vector3 camForward = Camera.main.transform.forward;
+    void FindCamera()
+    {
+        if (Camera.main != null)
+            cam = Camera.main;
+    }
+
+    void ReadInput()
+    {
+        float h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
+
+        Vector3 camForward = cam.transform.forward;
         camForward.y = 0f;
         camForward.Normalize();
 
-        Vector3 camRight = Camera.main.transform.right;
+        Vector3 camRight = cam.transform.right;
         camRight.y = 0f;
         camRight.Normalize();
 
-        Vector3 move = camForward * v + camRight * h;
+        moveInput =
+            (camForward * v + camRight * h).normalized;
 
-        rb.linearVelocity = new Vector3(move.x * moveSpeed, rb.linearVelocity.y, move.z * moveSpeed);
-
-        if (move != Vector3.zero)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(move, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
-        }
-
-        float horizontalSpeed = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z).magnitude;
-        anim.SetFloat("Speed", horizontalSpeed < moveThreshold ? 0f : horizontalSpeed);
+        if (Input.GetKeyDown(KeyCode.Space))
+            jumpPressed = true;
     }
 
-    private void HandleJump()
+    void Move()
     {
-        if (isInWater) return;
-
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (isInWater)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isGrounded = false;
-            anim.SetTrigger("Jump");
+            rb.linearVelocity = new Vector3(
+                0f,
+                rb.linearVelocity.y,
+                0f
+            );
+
+            return;
         }
+
+        rb.linearVelocity = new Vector3(
+            moveInput.x * moveSpeed,
+            rb.linearVelocity.y,
+            moveInput.z * moveSpeed
+        );
+
+        if (moveInput.sqrMagnitude > 0.01f)
+        {
+            Quaternion targetRotation =
+                Quaternion.LookRotation(moveInput);
+
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                turnSpeed * Time.fixedDeltaTime
+            );
+        }
+    }
+
+    void HandleJump()
+    {
+        if (!jumpPressed)
+            return;
+
+        jumpPressed = false;
+
+        if (!isGrounded || isInWater)
+            return;
+
+        rb.AddForce(
+            Vector3.up * jumpForce,
+            ForceMode.Impulse
+        );
+
+        isGrounded = false;
+
+        anim.SetTrigger("Jump");
+    }
+
+    void HandleWater()
+    {
+        if (!isInWater)
+            return;
+
+        rb.AddForce(
+            Vector3.down * sinkForce,
+            ForceMode.Acceleration
+        );
+    }
+
+    void UpdateAnimations()
+    {
+        Vector3 horizontalVel =
+            new Vector3(
+                rb.linearVelocity.x,
+                0f,
+                rb.linearVelocity.z
+            );
+
+        float speed = horizontalVel.magnitude;
+
+        anim.SetFloat(
+            "Speed",
+            speed < moveThreshold ? 0f : speed
+        );
 
         anim.SetBool("isGrounded", isGrounded);
     }
 
-    private void HandleInvisibility()
+    void HandleInvisibility()
     {
-        if (Input.GetKeyDown(KeyCode.C) && canUseInvisibility && !isInvisible)
+        if (Input.GetKeyDown(KeyCode.C) &&
+            canUseInvisibility &&
+            !isInvisible)
         {
             StartCoroutine(BecomeInvisible());
         }
     }
 
-    private IEnumerator BecomeInvisible()
+    IEnumerator BecomeInvisible()
     {
         isInvisible = true;
         canUseInvisibility = false;
 
-        // Visual change
         foreach (Renderer r in renderers)
             r.material = outlineMaterial;
 
@@ -126,34 +214,41 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility, IAnimalForm
         isInvisible = false;
 
         yield return new WaitForSeconds(cooldown);
+
         canUseInvisibility = true;
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
             isGrounded = true;
     }
 
-    private void OnCollisionExit(Collision collision)
+    void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
             isGrounded = false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Water"))
+        {
             isInWater = true;
+            rb.linearDamping = 2f;
+        }
     }
 
-    private void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Water"))
+        {
             isInWater = false;
+            rb.linearDamping = 0f;
+        }
     }
 
-    public void OnFormActivated() => this.enabled = true;
+    public void OnFormActivated() => enabled = true;
 
     public void OnFormDeactivated()
     {
@@ -161,9 +256,9 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility, IAnimalForm
             r.material = normalMaterial;
 
         isInvisible = false;
-        this.enabled = false;
+
+        enabled = false;
     }
 
-    // ✅ REQUIRED BY INTERFACE
     public bool IsInvisible => isInvisible;
 }

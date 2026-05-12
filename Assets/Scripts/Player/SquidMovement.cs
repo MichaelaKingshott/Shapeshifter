@@ -8,12 +8,6 @@ public class SquidMovement : MonoBehaviour, IAnimalAbility
     [Header("General")]
     public float turnSpeed = 6f;
 
-    private Rigidbody rb;
-    private Animator anim;
-
-    private bool isInWater = false;
-    private bool isGrounded = false;
-
     [Header("Swimming")]
     public float swimSpeed = 6f;
     public float swimBurstForce = 6f;
@@ -21,14 +15,11 @@ public class SquidMovement : MonoBehaviour, IAnimalAbility
 
     [Header("Swim Spam")]
     public float swimSpamDelay = 0.12f;
-    private float lastSwimPress;
 
     [Header("Stamina")]
     public float maxStamina = 5f;
     public float staminaDrain = 1f;
     public float staminaRegen = 2f;
-
-    private float stamina;
 
     [Header("Walking")]
     public float walkSpeed = 3f;
@@ -37,12 +28,27 @@ public class SquidMovement : MonoBehaviour, IAnimalAbility
     [Header("Animation")]
     public float moveThreshold = 0.1f;
 
+    private Rigidbody rb;
+    private Animator anim;
+    private Camera cam;
+
+    private bool isInWater = false;
+    private bool isGrounded = false;
+
+    private float stamina;
+    private float lastSwimPress;
+
+    private Vector3 moveInput;
+    private bool jumpPressed;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
 
         stamina = maxStamina;
+
+        FindCamera();
 
         if (staminaUI == null)
             staminaUI = FindFirstObjectByType<SquidStaminaUI>();
@@ -53,173 +59,210 @@ public class SquidMovement : MonoBehaviour, IAnimalAbility
 
     void Update()
     {
+        if (cam == null)
+        {
+            FindCamera();
+
+            if (cam == null)
+                return;
+        }
+
+        ReadInput();
+        UpdateAnimations();
+    }
+
+    void FixedUpdate()
+    {
         if (isInWater)
             HandleSwimming();
         else
             HandleWalking();
     }
 
-    void HandleSwimming()
+    void FindCamera()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        if (Camera.main != null)
+            cam = Camera.main;
+    }
 
-        Vector3 camForward = Camera.main.transform.forward;
-        camForward.y = 0;
+    void ReadInput()
+    {
+        float h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
+
+        Vector3 camForward = cam.transform.forward;
+        camForward.y = 0f;
         camForward.Normalize();
 
-        Vector3 camRight = Camera.main.transform.right;
-        camRight.y = 0;
+        Vector3 camRight = cam.transform.right;
+        camRight.y = 0f;
         camRight.Normalize();
 
-        Vector3 move = camForward * v + camRight * h;
+        moveInput =
+            (camForward * v + camRight * h).normalized;
 
+        if (Input.GetKeyDown(KeyCode.Space))
+            jumpPressed = true;
+    }
+
+    void HandleSwimming()
+    {
         Vector3 velocity = rb.linearVelocity;
 
         if (stamina > 0)
         {
-            velocity.x = move.x * swimSpeed;
-            velocity.z = move.z * swimSpeed;
+            velocity.x = moveInput.x * swimSpeed;
+            velocity.z = moveInput.z * swimSpeed;
         }
         else
         {
-            velocity.x = 0;
-            velocity.z = 0;
+            velocity.x = 0f;
+            velocity.z = 0f;
         }
 
         rb.linearVelocity = velocity;
 
-        if (Input.GetKeyDown(KeyCode.Space) &&
+        if (jumpPressed &&
             stamina > 0 &&
             Time.time > lastSwimPress + swimSpamDelay)
         {
-            rb.AddForce(Vector3.up * swimBurstForce, ForceMode.Impulse);
+            rb.AddForce(
+                Vector3.up * swimBurstForce,
+                ForceMode.Impulse
+            );
 
             stamina -= staminaDrain;
+
             lastSwimPress = Time.time;
         }
 
-        if (move.magnitude < 0.1f && !Input.GetKey(KeyCode.Space))
+        jumpPressed = false;
+
+        if (moveInput.sqrMagnitude < 0.01f)
         {
-            stamina += staminaRegen * Time.deltaTime;
+            stamina += staminaRegen * Time.fixedDeltaTime;
         }
 
-        stamina = Mathf.Clamp(stamina, 0, maxStamina);
+        stamina = Mathf.Clamp(
+            stamina,
+            0f,
+            maxStamina
+        );
 
         if (staminaUI != null)
-            staminaUI.UpdateStamina(stamina / maxStamina);
-
-        Vector3 flatMove = new Vector3(move.x, 0, move.z);
-
-        if (flatMove != Vector3.zero)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(flatMove);
+            staminaUI.UpdateStamina(
+                stamina / maxStamina
+            );
+        }
+
+        if (moveInput.sqrMagnitude > 0.01f)
+        {
+            Quaternion targetRotation =
+                Quaternion.LookRotation(moveInput);
 
             transform.rotation = Quaternion.Slerp(
                 transform.rotation,
                 targetRotation,
-                turnSpeed * Time.deltaTime
+                turnSpeed * Time.fixedDeltaTime
             );
         }
-
-        float horizontalSpeed = flatMove.magnitude;
-
-        anim.SetFloat("Speed", horizontalSpeed < moveThreshold ? 0 : horizontalSpeed);
-        anim.SetBool("isSwimming", true);
-        anim.SetBool("isGrounded", false);
     }
 
     void HandleWalking()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        Vector3 velocity =
+            moveInput * walkSpeed;
 
-        Vector3 camForward = Camera.main.transform.forward;
-        camForward.y = 0;
-        camForward.Normalize();
-
-        Vector3 camRight = Camera.main.transform.right;
-        camRight.y = 0;
-        camRight.Normalize();
-
-        Vector3 move = (camForward * v + camRight * h).normalized;
-
-        Vector3 velocity = move * walkSpeed;
         velocity.y = rb.linearVelocity.y;
 
         rb.linearVelocity = velocity;
 
-        if (move != Vector3.zero)
+        if (moveInput.sqrMagnitude > 0.01f)
         {
-            Quaternion targetRotation = Quaternion.LookRotation(move);
+            Quaternion targetRotation =
+                Quaternion.LookRotation(moveInput);
 
             transform.rotation = Quaternion.Slerp(
                 transform.rotation,
                 targetRotation,
-                turnSpeed * Time.deltaTime
+                turnSpeed * Time.fixedDeltaTime
             );
         }
 
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded)
+        if (jumpPressed && isGrounded)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
+            rb.AddForce(
+                Vector3.up * jumpForce,
+                ForceMode.Impulse
+            );
 
             anim.SetTrigger("Jump");
+
             isGrounded = false;
         }
 
-        Vector3 horizontalVel = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+        jumpPressed = false;
+    }
+
+    void UpdateAnimations()
+    {
+        Vector3 horizontalVel =
+            new Vector3(
+                rb.linearVelocity.x,
+                0f,
+                rb.linearVelocity.z
+            );
+
         float speed = horizontalVel.magnitude;
 
-        anim.SetFloat("Speed", speed < moveThreshold ? 0 : speed);
-        anim.SetBool("isSwimming", false);
+        anim.SetFloat(
+            "Speed",
+            speed < moveThreshold ? 0f : speed
+        );
+
+        anim.SetBool("isSwimming", isInWater);
         anim.SetBool("isGrounded", isGrounded);
     }
 
-    private void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
             isGrounded = true;
     }
 
-    private void OnCollisionExit(Collision collision)
+    void OnCollisionExit(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
             isGrounded = false;
     }
 
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Water"))
         {
             isInWater = true;
 
-            if (staminaUI != null)
-                staminaUI.SetVisible(true);
-
-            rb.useGravity = true;
             rb.linearDamping = waterDrag;
 
-            rb.constraints =
-                RigidbodyConstraints.FreezeRotationX |
-                RigidbodyConstraints.FreezeRotationZ;
+            if (staminaUI != null)
+                staminaUI.SetVisible(true);
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Water"))
         {
             isInWater = false;
 
+            rb.linearDamping = 0f;
+
             if (staminaUI != null)
                 staminaUI.SetVisible(false);
 
-            rb.useGravity = true;
-            rb.linearDamping = 0;
-
             anim.SetBool("isSwimming", false);
-            anim.SetFloat("Speed", 0);
+            anim.SetFloat("Speed", 0f);
         }
     }
 

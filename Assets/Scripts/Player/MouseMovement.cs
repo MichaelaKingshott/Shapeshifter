@@ -8,7 +8,6 @@ public class MouseMovement : MonoBehaviour, IAnimalAbility
 
     [Header("Jumping")]
     public float jumpForce = 8f;
-    private bool isGrounded = true;
 
     [Header("Jump Feel")]
     public float fallMultiplier = 2.5f;
@@ -16,110 +15,198 @@ public class MouseMovement : MonoBehaviour, IAnimalAbility
 
     [Header("Water")]
     public float sinkForce = 6f;
-    private bool isInWater = false;
 
     [Header("Animation")]
-    public float moveThreshold = 0.1f; // minimum speed to trigger walking
-    private Animator anim;
+    public float moveThreshold = 0.1f;
 
     private Rigidbody rb;
+    private Animator anim;
+    private Camera cam;
+
+    private bool isGrounded = true;
+    private bool isInWater = false;
+
+    private Vector3 moveInput;
+    private bool jumpPressed;
 
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
         anim = GetComponent<Animator>();
+
+        FindCamera();
     }
 
     void Update()
     {
-        float h = Input.GetAxis("Horizontal");
-        float v = Input.GetAxis("Vertical");
+        if (cam == null)
+        {
+            FindCamera();
 
-        // --- CAMERA-RELATIVE MOVEMENT ---
-        Vector3 camForward = Camera.main.transform.forward;
+            if (cam == null)
+                return;
+        }
+
+        ReadInput();
+        UpdateAnimations();
+    }
+
+    void FixedUpdate()
+    {
+        Move();
+        HandleJump();
+        HandleJumpPhysics();
+        HandleWater();
+    }
+
+    void FindCamera()
+    {
+        if (Camera.main != null)
+            cam = Camera.main;
+    }
+
+    void ReadInput()
+    {
+        float h = Input.GetAxisRaw("Horizontal");
+        float v = Input.GetAxisRaw("Vertical");
+
+        Vector3 camForward = cam.transform.forward;
         camForward.y = 0f;
         camForward.Normalize();
 
-        Vector3 camRight = Camera.main.transform.right;
+        Vector3 camRight = cam.transform.right;
         camRight.y = 0f;
         camRight.Normalize();
 
-        Vector3 move = camForward * v + camRight * h;
+        moveInput =
+            (camForward * v + camRight * h).normalized;
 
-        // Movement (XZ)
+        if (Input.GetKeyDown(KeyCode.Space))
+            jumpPressed = true;
+    }
+
+    void Move()
+    {
         if (isInWater)
         {
-            // Zero horizontal movement
-            rb.linearVelocity = new Vector3(0f, rb.linearVelocity.y, 0f);
-        }
-        else
-        {
-            rb.linearVelocity = new Vector3(move.x * moveSpeed, rb.linearVelocity.y, move.z * moveSpeed);
+            rb.linearVelocity = new Vector3(
+                0f,
+                rb.linearVelocity.y,
+                0f
+            );
+
+            return;
         }
 
-        // Rotation (only if moving)
-        if (move != Vector3.zero)
-        {
-            Quaternion targetRotation = Quaternion.LookRotation(move, Vector3.up);
-            transform.rotation = Quaternion.Slerp(transform.rotation, targetRotation, turnSpeed * Time.deltaTime);
-        }
+        rb.linearVelocity = new Vector3(
+            moveInput.x * moveSpeed,
+            rb.linearVelocity.y,
+            moveInput.z * moveSpeed
+        );
 
-        // Jump (disabled in water)
-        if (Input.GetKeyDown(KeyCode.Space) && isGrounded && !isInWater)
+        if (moveInput.sqrMagnitude > 0.01f)
         {
-            rb.AddForce(Vector3.up * jumpForce, ForceMode.Impulse);
-            isGrounded = false;
-            anim.SetTrigger("Jump");  // Trigger jump animation here!
-        }
+            Quaternion targetRotation =
+                Quaternion.LookRotation(moveInput);
 
-        // Apply better jump physics (disabled in water)
+            transform.rotation = Quaternion.Slerp(
+                transform.rotation,
+                targetRotation,
+                turnSpeed * Time.fixedDeltaTime
+            );
+        }
+    }
+
+    void HandleJump()
+    {
+        if (!jumpPressed)
+            return;
+
+        jumpPressed = false;
+
+        if (!isGrounded || isInWater)
+            return;
+
+        rb.AddForce(
+            Vector3.up * jumpForce,
+            ForceMode.Impulse
+        );
+
+        isGrounded = false;
+
+        anim.SetTrigger("Jump");
+    }
+
+    void HandleJumpPhysics()
+    {
+        if (isInWater)
+            return;
+
+        if (rb.linearVelocity.y < 0)
+        {
+            rb.linearVelocity +=
+                Vector3.up *
+                Physics.gravity.y *
+                (fallMultiplier - 1f) *
+                Time.fixedDeltaTime;
+        }
+        else if (rb.linearVelocity.y > 0 &&
+                 !Input.GetKey(KeyCode.Space))
+        {
+            rb.linearVelocity +=
+                Vector3.up *
+                Physics.gravity.y *
+                (lowJumpMultiplier - 1f) *
+                Time.fixedDeltaTime;
+        }
+    }
+
+    void HandleWater()
+    {
         if (!isInWater)
-        {
-            if (rb.linearVelocity.y < 0)
-            {
-                rb.linearVelocity += Vector3.up * Physics.gravity.y * (fallMultiplier - 1) * Time.deltaTime;
-            }
-            else if (rb.linearVelocity.y > 0 && !Input.GetKey(KeyCode.Space))
-            {
-                rb.linearVelocity += Vector3.up * Physics.gravity.y * (lowJumpMultiplier - 1) * Time.deltaTime;
-            }
-        }
+            return;
 
-        // Sink in water
-        if (isInWater)
-        {
-            rb.AddForce(Vector3.down * sinkForce, ForceMode.Acceleration);
-        }
+        rb.AddForce(
+            Vector3.down * sinkForce,
+            ForceMode.Acceleration
+        );
+    }
 
-        // Horizontal speed for walking/running animation
-        Vector3 horizontalVel = new Vector3(rb.linearVelocity.x, 0, rb.linearVelocity.z);
+    void UpdateAnimations()
+    {
+        Vector3 horizontalVel =
+            new Vector3(
+                rb.linearVelocity.x,
+                0f,
+                rb.linearVelocity.z
+            );
+
         float speed = horizontalVel.magnitude;
-        anim.SetFloat("Speed", speed < moveThreshold ? 0f : speed);
 
-        // Update isGrounded bool in Animator for transition out of jump
+        anim.SetFloat(
+            "Speed",
+            speed < moveThreshold ? 0f : speed
+        );
+
         anim.SetBool("isGrounded", isGrounded);
     }
 
-    // Ground check
-    private void OnCollisionEnter(Collision collision)
+    void OnCollisionEnter(Collision collision)
     {
         if (collision.gameObject.CompareTag("Ground"))
-        {
             isGrounded = true;
-        }
     }
 
-    // Water check
-    private void OnTriggerEnter(Collider other)
+    void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Water"))
         {
             isInWater = true;
-            rb.linearDamping = 2f;  // changed from linearDamping to drag for Rigidbody
+            rb.linearDamping = 2f;
         }
     }
 
-    private void OnTriggerExit(Collider other)
+    void OnTriggerExit(Collider other)
     {
         if (other.CompareTag("Water"))
         {
@@ -128,10 +215,9 @@ public class MouseMovement : MonoBehaviour, IAnimalAbility
         }
     }
 
-    public void OnFormActivated() => this.enabled = true;
-    public void OnFormDeactivated() => this.enabled = false;
+    public void OnFormActivated() => enabled = true;
+    public void OnFormDeactivated() => enabled = false;
 }
-
 
 
 

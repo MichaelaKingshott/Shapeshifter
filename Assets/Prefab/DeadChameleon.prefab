@@ -65,6 +65,12 @@ PrefabInstance:
     - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 18ca9bb298f01d44f8eff8428815f18b, type: 3}
       insertIndex: -1
       addedObject: {fileID: 2163861649999137744}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 18ca9bb298f01d44f8eff8428815f18b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8660927719126671890}
+    - targetCorrespondingSourceObject: {fileID: 919132149155446097, guid: 18ca9bb298f01d44f8eff8428815f18b, type: 3}
+      insertIndex: -1
+      addedObject: {fileID: 8375426121577208935}
   m_SourcePrefab: {fileID: 100100000, guid: 18ca9bb298f01d44f8eff8428815f18b, type: 3}
 --- !u!1 &1759872893164074225 stripped
 GameObject:
@@ -132,4 +138,33 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::AnimalCorpse
   animalType: 3
-  corpseID: Chameleon1
+--- !u!114 &8660927719126671890
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759872893164074225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34e059c9cce025d48bc8d255673f4da4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+--- !u!114 &8375426121577208935
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1759872893164074225}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

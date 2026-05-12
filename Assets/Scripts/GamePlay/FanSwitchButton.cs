@@ -11,26 +11,28 @@ public class FanSwitchButton : MonoBehaviour, IPressable
 
     [Header("Button Visuals")]
     public Renderer buttonRenderer;
-    public Material greenMaterial; // Fan A active
-    public Material redMaterial;   // Fan B active
+    public Material greenMaterial;
+    public Material redMaterial;
 
     [Header("Interaction")]
     public float interactDistance = 3f;
     public LayerMask interactLayer;
     public Camera playerCamera;
 
-    private bool state = false; // false = A on, true = B on
+    private bool state = false;
     private bool isLookingAtButton = false;
+
+    private InteractableHighlight highlight;
 
     void Start()
     {
-        // Initial fan states
         fanA.SetFanState(true);
         fanB.SetFanState(false);
 
-        // Hide popup initially
         if (interactPopup != null)
             interactPopup.SetActive(false);
+
+        highlight = GetComponentInChildren<InteractableHighlight>();
 
         UpdateButtonMaterial();
     }
@@ -54,19 +56,26 @@ public class FanSwitchButton : MonoBehaviour, IPressable
 
         if (Physics.Raycast(ray, out hit, interactDistance, interactLayer))
         {
-            // Look for FanSwitchButton on hit object or its parents
-            FanSwitchButton button = hit.collider.GetComponentInParent<FanSwitchButton>();
+            FanSwitchButton button =
+                hit.collider.GetComponentInParent<FanSwitchButton>();
 
             if (button == this)
             {
                 hitThisButton = true;
+
+                if (highlight != null)
+                    highlight.ShowHighlight();
             }
         }
 
-        // Update interaction state
+        if (!hitThisButton)
+        {
+            if (highlight != null)
+                highlight.HideHighlight();
+        }
+
         isLookingAtButton = hitThisButton;
 
-        // Show/hide popup
         if (interactPopup != null)
         {
             interactPopup.SetActive(hitThisButton);
@@ -75,14 +84,11 @@ public class FanSwitchButton : MonoBehaviour, IPressable
 
     public void Press()
     {
-        // Toggle state
         state = !state;
 
-        // Switch fans
         fanA.SetFanState(!state);
         fanB.SetFanState(state);
 
-        // Update button color
         UpdateButtonMaterial();
     }
 

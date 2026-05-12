@@ -18,6 +18,8 @@ public class PlayerNoteReader : MonoBehaviour
     ShapeshifterController shapeshifter;
     public CameraController cameraController;
 
+    private InteractableHighlight currentHighlight;
+
     void Start()
     {
         notePanel.SetActive(false);
@@ -38,6 +40,12 @@ public class PlayerNoteReader : MonoBehaviour
 
         bool lookingAtNote = false;
 
+        if (currentHighlight != null)
+        {
+            currentHighlight.HideHighlight();
+            currentHighlight = null;
+        }
+
         if (Physics.SphereCast(ray, sphereRadius, out RaycastHit hit, interactDistance))
         {
             PaperNote note = hit.collider.GetComponentInParent<PaperNote>();
@@ -52,6 +60,15 @@ public class PlayerNoteReader : MonoBehaviour
                 {
                     OpenNote(note);
                     popupText.gameObject.SetActive(false);
+                }
+
+                InteractableHighlight highlight =
+                    note.GetComponent<InteractableHighlight>();
+
+                if (highlight != null)
+                {
+                    highlight.ShowHighlight();
+                    currentHighlight = highlight;
                 }
             }
         }

@@ -31,6 +31,8 @@ public class Wheel : MonoBehaviour
     private int currentStep = 0;
     private float targetAngle = 0f;
 
+    private InteractableHighlight highlight;
+
     void Start()
     {
         // Snap to nearest valid step on start
@@ -45,6 +47,8 @@ public class Wheel : MonoBehaviour
 
         if (wheelRenderer != null)
             wheelRenderer.material.color = defaultColor;
+
+        highlight = GetComponent<InteractableHighlight>();
     }
 
     void Update()
@@ -138,6 +142,9 @@ public class Wheel : MonoBehaviour
 
             if (interactPrompt != null)
                 interactPrompt.SetActive(true);
+
+            if (highlight != null)
+                highlight.ShowHighlight();
         }
     }
 
@@ -149,6 +156,9 @@ public class Wheel : MonoBehaviour
 
             if (interactPrompt != null)
                 interactPrompt.SetActive(false);
+
+            if (highlight != null)
+                highlight.HideHighlight();
         }
     }
 }

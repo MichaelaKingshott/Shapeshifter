@@ -7,16 +7,27 @@ public class AnimalCorpse : MonoBehaviour
     private bool playerInRange;
     private ShapeshifterController player;
 
+    private InteractableHighlight highlight;
+
+    void Start()
+    {
+        highlight = GetComponentInChildren<InteractableHighlight>();
+    }
+
     void Update()
     {
         if (playerInRange && Input.GetKeyDown(KeyCode.E))
         {
             player.UnlockForm(animalType);
 
-            // ⭐ SET CHECKPOINT HERE
+            // Set checkpoint
             player.SetCheckpoint(transform.position);
 
             InteractionPromptUI.Instance.HidePrompt();
+
+            // Hide highlight before destroy
+            if (highlight != null)
+                highlight.HideHighlight();
 
             Destroy(gameObject);
         }
@@ -24,7 +35,8 @@ public class AnimalCorpse : MonoBehaviour
 
     private void OnTriggerEnter(Collider other)
     {
-        ShapeshifterController controller = other.GetComponentInParent<ShapeshifterController>();
+        ShapeshifterController controller =
+            other.GetComponentInParent<ShapeshifterController>();
 
         if (controller != null)
         {
@@ -32,12 +44,17 @@ public class AnimalCorpse : MonoBehaviour
             playerInRange = true;
 
             InteractionPromptUI.Instance.ShowPrompt("Press E to consume");
+
+            // SHOW HIGHLIGHT
+            if (highlight != null)
+                highlight.ShowHighlight();
         }
     }
 
     private void OnTriggerExit(Collider other)
     {
-        ShapeshifterController controller = other.GetComponentInParent<ShapeshifterController>();
+        ShapeshifterController controller =
+            other.GetComponentInParent<ShapeshifterController>();
 
         if (controller == player)
         {
@@ -45,6 +62,10 @@ public class AnimalCorpse : MonoBehaviour
             player = null;
 
             InteractionPromptUI.Instance.HidePrompt();
+
+            // HIDE HIGHLIGHT
+            if (highlight != null)
+                highlight.HideHighlight();
         }
     }
 }

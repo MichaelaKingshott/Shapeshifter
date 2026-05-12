@@ -12,10 +12,17 @@ public class ButtonPress : MonoBehaviour
     [Header("Interaction")]
     public float interactDistance = 3f;
 
+    [Header("Visuals")]
+    public Renderer buttonRenderer;
+    public Material onMaterial;   // Green
+    public Material offMaterial;  // Red
+
     private bool activated = false;
     private bool playerInRange = false;
 
     private Transform player;
+
+    private InteractableHighlight highlight;
 
     void Start()
     {
@@ -26,11 +33,14 @@ public class ButtonPress : MonoBehaviour
 
         if (playerObj != null)
             player = playerObj.transform;
+
+        highlight = GetComponentInChildren<InteractableHighlight>();
+
+        UpdateVisual();
     }
 
     void Update()
     {
-        // Extra safety distance check
         if (player != null)
         {
             float distance = Vector3.Distance(transform.position, player.position);
@@ -41,6 +51,9 @@ public class ButtonPress : MonoBehaviour
 
                 if (interactPopup != null)
                     interactPopup.SetActive(false);
+
+                if (highlight != null)
+                    highlight.HideHighlight();
             }
         }
 
@@ -48,6 +61,14 @@ public class ButtonPress : MonoBehaviour
         {
             PressButton();
         }
+    }
+
+    void UpdateVisual()
+    {
+        if (buttonRenderer == null)
+            return;
+
+        buttonRenderer.material = activated ? onMaterial : offMaterial;
     }
 
     public void PressButton()
@@ -58,12 +79,15 @@ public class ButtonPress : MonoBehaviour
         if (toggle)
         {
             activated = !activated;
-            targetObject.SetActiveState(activated);
         }
         else
         {
-            targetObject.SetActiveState(true);
+            activated = true;
         }
+
+        targetObject.SetActiveState(activated);
+
+        UpdateVisual();
 
         Debug.Log("Button pressed!");
     }
@@ -76,6 +100,9 @@ public class ButtonPress : MonoBehaviour
 
             if (interactPopup != null)
                 interactPopup.SetActive(true);
+
+            if (highlight != null)
+                highlight.ShowHighlight();
         }
     }
 
@@ -87,6 +114,9 @@ public class ButtonPress : MonoBehaviour
 
             if (interactPopup != null)
                 interactPopup.SetActive(false);
+
+            if (highlight != null)
+                highlight.HideHighlight();
         }
     }
 }

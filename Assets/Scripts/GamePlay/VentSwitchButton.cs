@@ -19,10 +19,14 @@ public class VentSwitchButton : MonoBehaviour
     private bool isLookingAtButton = false;
     private bool state = false; // false = closed, true = open
 
+    private InteractableHighlight highlight;
+
     void Start()
     {
         if (interactPopup != null)
             interactPopup.SetActive(false);
+
+        highlight = GetComponentInChildren<InteractableHighlight>();
 
         UpdateButtonMaterial();
         vent.SetOpen(false);
@@ -43,23 +47,35 @@ public class VentSwitchButton : MonoBehaviour
         Ray ray = new Ray(playerCamera.transform.position, playerCamera.transform.forward);
         RaycastHit hit;
 
+        bool hitThisButton = false;
+
         if (Physics.Raycast(ray, out hit, interactDistance, interactLayer))
         {
-            if (hit.collider.gameObject == gameObject)
+            VentSwitchButton button =
+                hit.collider.GetComponentInParent<VentSwitchButton>();
+
+            if (button == this)
             {
-                isLookingAtButton = true;
+                hitThisButton = true;
+
+                if (highlight != null)
+                    highlight.ShowHighlight();
 
                 if (interactPopup != null)
                     interactPopup.SetActive(true);
-
-                return;
             }
         }
 
-        isLookingAtButton = false;
+        if (!hitThisButton)
+        {
+            if (highlight != null)
+                highlight.HideHighlight();
 
-        if (interactPopup != null)
-            interactPopup.SetActive(false);
+            if (interactPopup != null)
+                interactPopup.SetActive(false);
+        }
+
+        isLookingAtButton = hitThisButton;
     }
 
     public void Press()

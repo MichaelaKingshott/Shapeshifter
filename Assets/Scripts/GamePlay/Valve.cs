@@ -22,12 +22,16 @@ public class Valve : MonoBehaviour
     private bool isTurning = false;
     private bool hasBeenUsed = false; // NEW
 
+    private InteractableHighlight highlight;
+
     void Start()
     {
         if (interactPrompt != null)
         {
             interactPrompt.SetActive(false);
         }
+
+        highlight = GetComponent<InteractableHighlight>();
     }
 
     void Update()
@@ -82,9 +86,10 @@ public class Valve : MonoBehaviour
             playerInRange = true;
 
             if (interactPrompt != null)
-            {
                 interactPrompt.SetActive(true);
-            }
+
+            if (highlight != null)
+                highlight.ShowHighlight();
         }
     }
 
@@ -95,9 +100,10 @@ public class Valve : MonoBehaviour
             playerInRange = false;
 
             if (interactPrompt != null)
-            {
                 interactPrompt.SetActive(false);
-            }
+
+            if (highlight != null)
+                highlight.HideHighlight();
         }
     }
 }

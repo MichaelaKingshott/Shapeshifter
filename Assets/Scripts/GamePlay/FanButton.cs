@@ -11,9 +11,13 @@ public class FanButton : MonoBehaviour
 
     private bool playerInRange;
 
+    private InteractableHighlight highlight;
+
     void Start()
     {
         UpdateVisual();
+
+        highlight = GetComponent<InteractableHighlight>();
     }
 
     void Update()
@@ -46,7 +50,11 @@ public class FanButton : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
+
             InteractionPromptUI.Instance.ShowPrompt("Press E to toggle fan");
+
+            if (highlight != null)
+                highlight.ShowHighlight();
         }
     }
 
@@ -55,7 +63,11 @@ public class FanButton : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
+
             InteractionPromptUI.Instance.HidePrompt();
+
+            if (highlight != null)
+                highlight.HideHighlight();
         }
-    }
+    }   
 }

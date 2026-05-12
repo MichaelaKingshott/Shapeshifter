@@ -13,6 +13,8 @@ GameObject:
   - component: {fileID: 3475566388726264895}
   - component: {fileID: 6099899142757023332}
   - component: {fileID: 5540080022675367362}
+  - component: {fileID: 5474776000423955114}
+  - component: {fileID: -873909310386709494}
   m_Layer: 0
   m_Name: ValvePuzzle2
   m_TagString: Untagged
@@ -125,11 +127,42 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: Assembly-CSharp::Wheel
   interactKey: 101
-  rotateSpeed: 120
-  targetAngle: 90
-  tolerance: 5
+  stepAngle: 90
+  turnSpeed: 5
+  rotationAxis: {x: 0, y: 0, z: 1}
+  correctStep: 1
   puzzleManager: {fileID: 0}
   interactPrompt: {fileID: 0}
   wheelRenderer: {fileID: 3475566388726264895}
   defaultColor: {r: 1, g: 1, b: 1, a: 1}
   correctColor: {r: 0, g: 1, b: 0, a: 1}
+--- !u!114 &5474776000423955114
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7769251044784320375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34e059c9cce025d48bc8d255673f4da4, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::InteractableHighlight
+--- !u!114 &-873909310386709494
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7769251044784320375}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 5fea29bb7c508c244a1f805a5fd3fc4d, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: Assembly-CSharp::Outline
+  outlineMode: 1
+  outlineColor: {r: 1, g: 1, b: 1, a: 1}
+  outlineWidth: 5
+  precomputeOutline: 0
+  bakeKeys: []
+  bakeValues: []

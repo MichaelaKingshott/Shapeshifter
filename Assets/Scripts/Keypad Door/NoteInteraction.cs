@@ -19,10 +19,14 @@ public class NoteInteraction : MonoBehaviour
     private bool playerInRange = false;
     private bool noteOpen = false;
 
+    private InteractableHighlight highlight;
+
     void Start()
     {
         promptUI.SetActive(false);
         noteUI.SetActive(false);
+
+        highlight = GetComponentInChildren<InteractableHighlight>();
     }
 
     void Update()
@@ -72,8 +76,12 @@ public class NoteInteraction : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
+
             if (!noteOpen)
                 promptUI.SetActive(true);
+
+            if (highlight != null)
+                highlight.ShowHighlight();
         }
     }
 
@@ -82,7 +90,11 @@ public class NoteInteraction : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
+
             promptUI.SetActive(false);
+
+            if (highlight != null)
+                highlight.HideHighlight();
         }
     }
 }

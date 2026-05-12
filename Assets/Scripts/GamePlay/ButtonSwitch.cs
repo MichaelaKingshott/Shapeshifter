@@ -7,6 +7,23 @@ public class ButtonSwitch : MonoBehaviour, IPressable
 
     private bool activated = false;
 
+    [Header("Visuals")]
+    public Renderer buttonRenderer;
+    public Material onMaterial;   // Green
+    public Material offMaterial;  // Red
+
+    private void Start()
+    {
+        UpdateVisual();
+    }
+
+    void UpdateVisual()
+    {
+        if (buttonRenderer == null) return;
+
+        buttonRenderer.material = activated ? onMaterial : offMaterial;
+    }
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player") || other.CompareTag("InvisiblePlayer"))
@@ -22,12 +39,15 @@ public class ButtonSwitch : MonoBehaviour, IPressable
         if (toggle)
         {
             activated = !activated;
-            targetObject.SetActiveState(activated);
         }
         else
         {
-            targetObject.SetActiveState(true);
+            activated = true;
         }
+
+        targetObject.SetActiveState(activated);
+
+        UpdateVisual();
 
         Debug.Log("Button pressed!");
     }

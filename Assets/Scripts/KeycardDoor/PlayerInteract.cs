@@ -12,6 +12,8 @@ public class PlayerInteract : MonoBehaviour
     public TMP_Text popupText;
     public string keycardMessage = "Press E to pick up Keycard";
 
+    private InteractableHighlight currentHighlight;
+
     void Start()
     {
         playerInventory = FindFirstObjectByType<PlayerInventory>();
@@ -22,6 +24,12 @@ public class PlayerInteract : MonoBehaviour
         Ray ray = cam.ViewportPointToRay(new Vector3(0.5f, 0.5f, 0f));
 
         bool lookingAtItem = false;
+
+        if (currentHighlight != null)
+        {
+            currentHighlight.HideHighlight();
+            currentHighlight = null;
+        }
 
         if (Physics.SphereCast(ray, sphereRadius, out RaycastHit hit, interactDistance))
         {
@@ -36,6 +44,15 @@ public class PlayerInteract : MonoBehaviour
                 if (Input.GetKeyDown(KeyCode.E))
                 {
                     keycard.Pickup(playerInventory);
+                }
+
+                InteractableHighlight highlight =
+                    keycard.GetComponent<InteractableHighlight>();
+
+                if (highlight != null)
+                {
+                    highlight.ShowHighlight();
+                    currentHighlight = highlight;
                 }
             }
         }

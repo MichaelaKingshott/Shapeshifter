@@ -32,7 +32,7 @@ Transform:
   serializedVersion: 2
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0.29206467, y: 0, z: 0}
-  m_LocalScale: {x: 5.123993, y: 5.3366385, z: 5.123993}
+  m_LocalScale: {x: 5.123993, y: 5.2613163, z: 5.123993}
   m_ConstrainProportionsScale: 0
   m_Children:
   - {fileID: 3343968016346555215}
@@ -144,7 +144,7 @@ MonoBehaviour:
   door: {fileID: 8331530142728413029}
   openHeight: 10
   speed: 2
-  requiredKeycard: 2
+  requiredKeycard: 0
   playerInventory: {fileID: 0}
   doorMessage: {fileID: 0}
   interactPrompt: {fileID: 0}

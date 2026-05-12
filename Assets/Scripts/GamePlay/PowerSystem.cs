@@ -11,6 +11,17 @@ public class PowerSystem : MonoBehaviour
     [Header("Vents")]
     public VentBlocker[] vents;
 
+    [Header("Cutscene Cameras")]
+    public GameObject mainCamera;
+    public GameObject ventCamera;
+
+    [Header("Cutscene Settings")]
+    public float ventCameraTime = 3f;
+    public float delayBeforeVentOpens = 1f;
+
+    [Header("Player")]
+    public GameObject activePlayer;
+
     private Coroutine ventRoutine;
 
     private void Awake()
@@ -35,7 +46,7 @@ public class PowerSystem : MonoBehaviour
                 l.enabled = state;
         }
 
-        // Stop any pending vent opening
+        // Stop pending vent sequence
         if (ventRoutine != null)
         {
             StopCoroutine(ventRoutine);
@@ -80,7 +91,7 @@ public class PowerSystem : MonoBehaviour
 
         SetPower(false);
 
-        DestroyBlackoutEnemies(); // 👈 enemies removed here
+        DestroyBlackoutEnemies();
     }
 
     // ---------------------------
@@ -101,16 +112,46 @@ public class PowerSystem : MonoBehaviour
     }
 
     // ---------------------------
-    // VENTS
+    // VENT OPENING + CUTSCENE
     // ---------------------------
     private IEnumerator OpenVentsDelayed()
     {
-        yield return new WaitForSeconds(1.5f);
+        // Wait after power returns
+        yield return new WaitForSeconds(0.5f);
 
+        // SWITCH CAMERA IMMEDIATELY
+        if (mainCamera != null)
+            mainCamera.SetActive(false);
+
+        if (ventCamera != null)
+            ventCamera.SetActive(true);
+
+        // Freeze player AFTER camera switch
+        if (activePlayer != null)
+            activePlayer.SetActive(false);
+
+        // Small pause so player sees the vent first
+        yield return new WaitForSeconds(delayBeforeVentOpens);
+
+        // Open vents
         foreach (VentBlocker v in vents)
         {
             if (v != null)
                 v.SetOpen(true);
         }
+
+        // Let player watch the vent open
+        yield return new WaitForSeconds(ventCameraTime);
+
+        // Return to gameplay
+        if (ventCamera != null)
+            ventCamera.SetActive(false);
+
+        if (mainCamera != null)
+            mainCamera.SetActive(true);
+
+        // Re-enable player
+        if (activePlayer != null)
+            activePlayer.SetActive(true);
     }
 }

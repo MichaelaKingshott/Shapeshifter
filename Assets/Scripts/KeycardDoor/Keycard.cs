@@ -4,9 +4,17 @@ public class Keycard : MonoBehaviour, IGrabbable
 {
     public KeycardType keycardType;
 
+    [Header("Audio")]
+    public AudioClip pickupSound;
+
     public void Pickup(PlayerInventory player)
     {
         player.AddKeycard(keycardType);
+
+        // PLAY PICKUP SOUND
+        if (pickupSound != null)
+            AudioSource.PlayClipAtPoint(pickupSound, transform.position);
+
         Destroy(gameObject);
     }
 

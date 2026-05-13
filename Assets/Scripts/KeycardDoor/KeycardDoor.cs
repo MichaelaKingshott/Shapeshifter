@@ -2,47 +2,51 @@ using UnityEngine;
 
 public class KeycardDoor : MonoBehaviour
 {
-    public Transform door;
-    public float openHeight = 4f;
-    public float speed = 2f;
+    [Header("Door")]
+    public SlidingDoor slidingDoor;
 
+    [Header("Keycard")]
     public KeycardType requiredKeycard;
     public PlayerInventory playerInventory;
 
-    private bool playerInside = false;
-    private bool opening = false;
-    private Vector3 targetPosition;
+    [Header("UI")]
     public DoorMessageUI doorMessage;
     public GameObject interactPrompt;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip deniedSound;
+
+    private bool playerInside = false;
+
     void Start()
     {
-        targetPosition = door.position + Vector3.up * openHeight;
-        interactPrompt.SetActive(false);
+        if (interactPrompt != null)
+            interactPrompt.SetActive(false);
     }
 
     void Update()
     {
         if (playerInside && Input.GetKeyDown(KeyCode.E))
         {
-            if (playerInventory.HasKeycard(requiredKeycard))
+            if (playerInventory != null &&
+                playerInventory.HasKeycard(requiredKeycard))
             {
                 playerInventory.RemoveKeycard(requiredKeycard);
-                opening = true;
+
+                // OPEN THE DOOR
+                if (slidingDoor != null)
+                    slidingDoor.OpenDoor();
             }
             else
             {
-                doorMessage.ShowMessage(requiredKeycard + " keycard required");
-            }
-        }
+                if (doorMessage != null)
+                    doorMessage.ShowMessage(requiredKeycard + " keycard required");
 
-        if (opening)
-        {
-            door.position = Vector3.MoveTowards(
-                door.position,
-                targetPosition,
-                speed * Time.deltaTime
-            );
+                // PLAY DENIED SOUND
+                if (audioSource != null && deniedSound != null)
+                    audioSource.PlayOneShot(deniedSound);
+            }
         }
     }
 
@@ -51,7 +55,9 @@ public class KeycardDoor : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInside = true;
-            interactPrompt.SetActive(true);
+
+            if (interactPrompt != null)
+                interactPrompt.SetActive(true);
         }
     }
 
@@ -60,7 +66,9 @@ public class KeycardDoor : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInside = false;
-            interactPrompt.SetActive(false);
+
+            if (interactPrompt != null)
+                interactPrompt.SetActive(false);
         }
     }
 }

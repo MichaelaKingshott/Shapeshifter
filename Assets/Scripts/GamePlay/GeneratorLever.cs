@@ -12,6 +12,12 @@ public class GeneratorLever : MonoBehaviour
     [Header("Settings")]
     public string generatorMessage = "Press E to start Generator";
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip openSound;
+    public AudioClip closeSound;
+    public AudioClip generatorStartSound;
+
     private bool playerInRange = false;
     private bool generatorStarted = false;
     private bool puzzleOpen = false;
@@ -37,6 +43,10 @@ public class GeneratorLever : MonoBehaviour
 
         puzzleUI.SetActive(true);
 
+        // PLAY OPEN SOUND
+        if (audioSource != null && openSound != null)
+            audioSource.PlayOneShot(openSound);
+
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
 
@@ -55,6 +65,10 @@ public class GeneratorLever : MonoBehaviour
 
         generatorStarted = true;
 
+        // PLAY GENERATOR START SOUND
+        if (audioSource != null && generatorStartSound != null)
+            audioSource.PlayOneShot(generatorStartSound);
+
         PowerSystem.instance.SetPower(true);
 
         ClosePuzzle();
@@ -65,6 +79,10 @@ public class GeneratorLever : MonoBehaviour
         puzzleOpen = false;
 
         puzzleUI.SetActive(false);
+
+        // PLAY CLOSE SOUND
+        if (audioSource != null && closeSound != null)
+            audioSource.PlayOneShot(closeSound);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;

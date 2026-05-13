@@ -9,6 +9,9 @@ public class AnimalCorpse : MonoBehaviour
 
     private InteractableHighlight highlight;
 
+    [Header("Audio")]
+    public AudioClip consumeSound;
+
     void Start()
     {
         highlight = GetComponentInChildren<InteractableHighlight>();
@@ -28,6 +31,10 @@ public class AnimalCorpse : MonoBehaviour
             // Hide highlight before destroy
             if (highlight != null)
                 highlight.HideHighlight();
+
+            // PLAY SOUND
+            if (consumeSound != null)
+                AudioSource.PlayClipAtPoint(consumeSound, transform.position);
 
             Destroy(gameObject);
         }

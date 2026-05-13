@@ -3,9 +3,15 @@ using UnityEngine.UI;
 
 public class DetectionManager : MonoBehaviour
 {
+    [Header("Detection")]
     public float detectionTime = 3f;
     public Slider detectionSlider;
     public GameOver gameOverManager;
+
+    [Header("Detection Music")]
+    public AudioSource musicSource;
+    public AudioClip detectionMusic;
+    public float fadeSpeed = 2f;
 
     private float detectionTimer = 0f;
     private bool playerCaught = false;
@@ -15,6 +21,8 @@ public class DetectionManager : MonoBehaviour
     private Image fillImage;
 
     private ShapeshifterController player;
+
+    private bool musicPlaying = false;
 
     private void Start()
     {
@@ -28,7 +36,15 @@ public class DetectionManager : MonoBehaviour
             fillImage = detectionSlider.fillRect.GetComponent<Image>();
         }
 
-        // ⭐ HOOK INTO RESPAWN EVENT
+        // MUSIC SETUP
+        if (musicSource != null)
+        {
+            musicSource.clip = detectionMusic;
+            musicSource.loop = true;
+            musicSource.volume = 0f;
+        }
+
+        // RESPawn hookup
         player = FindFirstObjectByType<ShapeshifterController>();
 
         if (player != null)
@@ -44,15 +60,20 @@ public class DetectionManager : MonoBehaviour
         if (enemiesDetecting > 0)
         {
             detectionTimer += Time.deltaTime * enemiesDetecting;
+
+            StartMusic();
         }
         else
         {
             detectionTimer -= Time.deltaTime * 1.5f;
+
+            StopMusic();
         }
 
         detectionTimer = Mathf.Clamp(detectionTimer, 0, detectionTime);
 
         UpdateUI();
+        UpdateMusicFade();
 
         if (detectionTimer >= detectionTime)
         {
@@ -69,7 +90,49 @@ public class DetectionManager : MonoBehaviour
 
         if (fillImage != null)
         {
-            fillImage.color = detectionTimer > detectionTime * 0.7f ? Color.red : Color.yellow;
+            fillImage.color =
+                detectionTimer > detectionTime * 0.7f
+                ? Color.red
+                : Color.yellow;
+        }
+    }
+
+    void StartMusic()
+    {
+        if (musicSource == null || detectionMusic == null)
+            return;
+
+        if (!musicPlaying)
+        {
+            musicPlaying = true;
+
+            if (!musicSource.isPlaying)
+                musicSource.Play();
+        }
+    }
+
+    void StopMusic()
+    {
+        musicPlaying = false;
+    }
+
+    void UpdateMusicFade()
+    {
+        if (musicSource == null)
+            return;
+
+        float targetVolume = musicPlaying ? 1f : 0f;
+
+        musicSource.volume = Mathf.Lerp(
+            musicSource.volume,
+            targetVolume,
+            Time.deltaTime * fadeSpeed
+        );
+
+        // STOP completely when nearly silent
+        if (!musicPlaying && musicSource.volume < 0.01f)
+        {
+            musicSource.Stop();
         }
     }
 
@@ -93,12 +156,19 @@ public class DetectionManager : MonoBehaviour
             gameOverManager.Caught();
     }
 
-    // ⭐ THIS FIXES YOUR PROBLEM
     public void ResetDetection()
     {
         detectionTimer = 0f;
         enemiesDetecting = 0;
         playerCaught = false;
+
+        musicPlaying = false;
+
+        if (musicSource != null)
+        {
+            musicSource.Stop();
+            musicSource.volume = 0f;
+        }
 
         if (detectionSlider != null)
         {

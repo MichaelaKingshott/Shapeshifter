@@ -20,6 +20,11 @@ public class PlayerNoteReader : MonoBehaviour
 
     private InteractableHighlight currentHighlight;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip openNoteSound;
+    public AudioClip closeNoteSound;
+
     void Start()
     {
         notePanel.SetActive(false);
@@ -91,6 +96,10 @@ public class PlayerNoteReader : MonoBehaviour
         noteText.text = note.noteText;
         reading = true;
 
+        // PLAY OPEN SOUND
+        if (audioSource != null && openNoteSound != null)
+            audioSource.PlayOneShot(openNoteSound);
+
         GameObject animal = shapeshifter.GetCurrentAnimalInstance();
         if (animal != null)
         {
@@ -109,6 +118,10 @@ public class PlayerNoteReader : MonoBehaviour
     {
         notePanel.SetActive(false);
         reading = false;
+
+        // PLAY CLOSE SOUND
+        if (audioSource != null && closeNoteSound != null)
+            audioSource.PlayOneShot(closeNoteSound);
 
         GameObject animal = shapeshifter.GetCurrentAnimalInstance();
         if (animal != null)

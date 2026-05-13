@@ -2,6 +2,9 @@ using UnityEngine;
 
 public class PowerTrigger : MonoBehaviour
 {
+    [Header("Audio")]
+    public AudioClip blackoutSound;
+
     private void OnTriggerEnter(Collider other)
     {
         if (other.CompareTag("Player"))
@@ -10,9 +13,13 @@ public class PowerTrigger : MonoBehaviour
 
             if (player != null && player.IsFormUnlocked(AnimalForm.Snake))
             {
+                // PLAY BLACKOUT SOUND
+                if (blackoutSound != null)
+                    AudioSource.PlayClipAtPoint(blackoutSound, transform.position);
+
                 PowerSystem.instance.TriggerBlackout();
 
-                DestroyBlackoutEnemies(); // destroy selected enemies
+                DestroyBlackoutEnemies();
 
                 Destroy(gameObject);
             }

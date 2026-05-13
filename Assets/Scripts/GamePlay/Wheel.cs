@@ -11,7 +11,7 @@ public class Wheel : MonoBehaviour
     public float turnSpeed = 5f;
 
     [Tooltip("Choose the axis the wheel spins on")]
-    public Vector3 rotationAxis = Vector3.forward; // change to right/forward if needed
+    public Vector3 rotationAxis = Vector3.forward;
 
     [Header("Correct Position")]
     public int correctStep = 1;
@@ -21,9 +21,13 @@ public class Wheel : MonoBehaviour
     public GameObject interactPrompt;
 
     [Header("Visual Feedback")]
-    public Renderer wheelRenderer;
     public Color defaultColor = Color.white;
     public Color correctColor = Color.green;
+
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip rotateSound;
+    public AudioClip correctSound;
 
     private bool playerInRange = false;
     private bool isRotating = false;
@@ -33,8 +37,14 @@ public class Wheel : MonoBehaviour
 
     private InteractableHighlight highlight;
 
+    // Automatically grabs ALL renderers on this object + children
+    private Renderer[] wheelRenderers;
+
     void Start()
     {
+        // Get all renderers in children
+        wheelRenderers = GetComponentsInChildren<Renderer>();
+
         // Snap to nearest valid step on start
         float angle = GetCurrentAngle();
         currentStep = Mathf.RoundToInt(angle / stepAngle);
@@ -45,8 +55,11 @@ public class Wheel : MonoBehaviour
         if (interactPrompt != null)
             interactPrompt.SetActive(false);
 
-        if (wheelRenderer != null)
-            wheelRenderer.material.color = defaultColor;
+        // Set default color on all renderers
+        foreach (Renderer rend in wheelRenderers)
+        {
+            rend.material.color = defaultColor;
+        }
 
         highlight = GetComponent<InteractableHighlight>();
     }
@@ -66,15 +79,27 @@ public class Wheel : MonoBehaviour
         currentStep++;
 
         int maxSteps = Mathf.RoundToInt(360f / stepAngle);
+
         if (currentStep >= maxSteps)
             currentStep = 0;
 
         targetAngle = currentStep * stepAngle;
 
+        // Play rotate sound
+        if (audioSource != null && rotateSound != null)
+            audioSource.PlayOneShot(rotateSound);
+
         StartCoroutine(RotateToTarget());
 
         if (puzzleManager != null)
             puzzleManager.CheckPuzzle();
+
+        // Play correct sound
+        if (IsCorrect())
+        {
+            if (audioSource != null && correctSound != null)
+                audioSource.PlayOneShot(correctSound);
+        }
     }
 
     IEnumerator RotateToTarget()
@@ -83,12 +108,19 @@ public class Wheel : MonoBehaviour
 
         while (Mathf.Abs(Mathf.DeltaAngle(GetCurrentAngle(), targetAngle)) > 0.5f)
         {
-            float newAngle = Mathf.LerpAngle(GetCurrentAngle(), targetAngle, Time.deltaTime * turnSpeed);
+            float newAngle = Mathf.LerpAngle(
+                GetCurrentAngle(),
+                targetAngle,
+                Time.deltaTime * turnSpeed
+            );
+
             SetRotation(newAngle);
+
             yield return null;
         }
 
         SetRotation(targetAngle);
+
         isRotating = false;
     }
 
@@ -110,23 +142,44 @@ public class Wheel : MonoBehaviour
         Vector3 euler = transform.localEulerAngles;
 
         if (rotationAxis == Vector3.forward)
-            transform.localEulerAngles = new Vector3(euler.x, euler.y, angle);
-
+        {
+            transform.localEulerAngles = new Vector3(
+                euler.x,
+                euler.y,
+                angle
+            );
+        }
         else if (rotationAxis == Vector3.right)
-            transform.localEulerAngles = new Vector3(angle, euler.y, euler.z);
-
+        {
+            transform.localEulerAngles = new Vector3(
+                angle,
+                euler.y,
+                euler.z
+            );
+        }
         else
-            transform.localEulerAngles = new Vector3(euler.x, angle, euler.z);
+        {
+            transform.localEulerAngles = new Vector3(
+                euler.x,
+                angle,
+                euler.z
+            );
+        }
     }
 
     void UpdateColor()
     {
-        if (wheelRenderer == null) return;
+        if (wheelRenderers == null || wheelRenderers.Length == 0)
+            return;
 
-        if (IsCorrect())
-            wheelRenderer.material.color = correctColor;
-        else
-            wheelRenderer.material.color = defaultColor;
+        Color targetColor = IsCorrect()
+            ? correctColor
+            : defaultColor;
+
+        foreach (Renderer rend in wheelRenderers)
+        {
+            rend.material.color = targetColor;
+        }
     }
 
     public bool IsCorrect()

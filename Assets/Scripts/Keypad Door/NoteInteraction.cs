@@ -21,6 +21,11 @@ public class NoteInteraction : MonoBehaviour
 
     private InteractableHighlight highlight;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip openNoteSound;
+    public AudioClip closeNoteSound;
+
     void Start()
     {
         promptUI.SetActive(false);
@@ -53,6 +58,9 @@ public class NoteInteraction : MonoBehaviour
 
         noteTextUI.text = noteText;
 
+        if (audioSource != null && openNoteSound != null)
+            audioSource.PlayOneShot(openNoteSound);
+
         if (cameraController != null)
             cameraController.LockCameraControls(true);
 
@@ -64,6 +72,9 @@ public class NoteInteraction : MonoBehaviour
         noteOpen = false;
 
         noteUI.SetActive(false);
+
+        if (audioSource != null && closeNoteSound != null)
+            audioSource.PlayOneShot(closeNoteSound);
 
         if (cameraController != null)
             cameraController.LockCameraControls(false);

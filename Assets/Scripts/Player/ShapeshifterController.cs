@@ -27,6 +27,10 @@ public class ShapeshifterController : MonoBehaviour
 
     public System.Action OnRespawn;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip swapSound;
+
     void Start()
     {
         unlockedForms.Add(startingForm);
@@ -108,6 +112,10 @@ public class ShapeshifterController : MonoBehaviour
 
         currentAbilityForm = currentAnimalInstance.GetComponent<IAnimalForm>();
         currentForm = newForm;
+
+        // PLAY SWAP SOUND
+        if (audioSource != null && swapSound != null)
+            audioSource.PlayOneShot(swapSound);
 
         CameraController cam = FindFirstObjectByType<CameraController>();
 

@@ -9,6 +9,10 @@ public class SlidingDoor : MonoBehaviour
     private Vector3 openPos;
     private bool opening = false;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip openSound;
+
     void Start()
     {
         closedPos = transform.position;
@@ -35,5 +39,9 @@ public class SlidingDoor : MonoBehaviour
     public void OpenDoor()
     {
         opening = true;
+
+        // PLAY SOUND
+        if (audioSource != null && openSound != null)
+            audioSource.PlayOneShot(openSound);
     }
 }

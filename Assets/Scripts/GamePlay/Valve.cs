@@ -18,6 +18,10 @@ public class Valve : MonoBehaviour
     [Header("UI")]
     public GameObject interactPrompt;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip valveTurnSound;
+
     private bool playerInRange = false;
     private bool isTurning = false;
     private bool hasBeenUsed = false; // NEW
@@ -50,7 +54,12 @@ public class Valve : MonoBehaviour
 
     void Activate()
     {
-        hasBeenUsed = true; // mark as used immediately
+        hasBeenUsed = true;
+
+        // PLAY SOUND
+        if (audioSource != null && valveTurnSound != null)
+            audioSource.PlayOneShot(valveTurnSound);
+
         StartCoroutine(TurnValve());
     }
 

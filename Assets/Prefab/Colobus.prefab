@@ -813,7 +813,7 @@ MonoBehaviour:
   grappleLayer:
     serializedVersion: 2
     m_Bits: 512
-  maxDistance: 10
+  maxDistance: 8
   maxDistanceMultiplier: 0.8
   minDistanceMultiplier: 0.25
   spring: 4.5

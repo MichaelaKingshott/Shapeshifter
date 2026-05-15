@@ -16,6 +16,16 @@ public class WheelPuzzle : MonoBehaviour
     [Header("Flood Gate")]
     public FloodGate floodGate;
 
+    [Header("Cutscene Cameras")]
+    public GameObject mainCamera;
+    public GameObject gateCamera;
+
+    [Header("Cutscene Settings")]
+    public float gateCameraTime = 3f;
+
+    [Header("Player")]
+    public GameObject activePlayer;
+
     private bool solved = false;
 
     public void CheckPuzzle()
@@ -37,15 +47,43 @@ public class WheelPuzzle : MonoBehaviour
 
         Debug.Log("Puzzle Solved!");
 
-        // 1️⃣ Raise water first
+        // Raise water immediately
         if (water != null)
             water.SetWaterHeight(solvedWaterHeight);
 
-        // 2️⃣ Wait (gives time for water to rise)
+        // SHORT DELAY BEFORE CAMERA CUT
+        yield return new WaitForSeconds(1f);
+
+        // SWITCH TO GATE CAMERA
+        if (mainCamera != null)
+            mainCamera.SetActive(false);
+
+        if (gateCamera != null)
+            gateCamera.SetActive(true);
+
+        // Freeze player
+        if (activePlayer != null)
+            activePlayer.SetActive(false);
+
+        // Pause before gate opens
         yield return new WaitForSeconds(delayBeforeGateOpens);
 
-        // 3️⃣ Open gates AFTER delay
+        // Open gate
         if (floodGate != null)
             floodGate.OpenGate();
+
+        // Hold cutaway
+        yield return new WaitForSeconds(gateCameraTime);
+
+        // Return to gameplay
+        if (gateCamera != null)
+            gateCamera.SetActive(false);
+
+        if (mainCamera != null)
+            mainCamera.SetActive(true);
+
+        // Re-enable player
+        if (activePlayer != null)
+            activePlayer.SetActive(true);
     }
 }

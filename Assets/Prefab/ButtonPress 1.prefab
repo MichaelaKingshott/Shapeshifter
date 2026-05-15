@@ -623,7 +623,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c2c9287d50fac1e439f4462451a89af1, type: 2}
+  - {fileID: 2100000, guid: ea670e1ad36dc7f439235e9e4c35a79b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -1049,8 +1049,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   targetFan: {fileID: 0}
   buttonRenderer: {fileID: 0}
-  onMaterial: {fileID: 0}
-  offMaterial: {fileID: 0}
+  onMaterial: {fileID: 2100000, guid: e657129fb320cda41be25f8c2c52fa94, type: 2}
+  offMaterial: {fileID: 2100000, guid: ea670e1ad36dc7f439235e9e4c35a79b, type: 2}
   audioSource: {fileID: 4490741365197416433}
   buttonClickSound: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
 --- !u!114 &-1075958327928134176

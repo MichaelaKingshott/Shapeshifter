@@ -31,7 +31,7 @@ public class GeneratorLever : MonoBehaviour
         }
 
         // Close puzzle with ESC
-        if (puzzleOpen && Input.GetKeyDown(KeyCode.Escape))
+        if (puzzleOpen && Input.GetKeyDown(KeyCode.E))
         {
             ClosePuzzle();
         }

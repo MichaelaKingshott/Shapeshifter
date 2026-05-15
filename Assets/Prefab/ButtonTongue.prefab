@@ -566,7 +566,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 2383
+  m_VersionIndex: 2437
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -623,7 +623,7 @@ MeshRenderer:
   m_RenderingLayerMask: 1
   m_RendererPriority: 0
   m_Materials:
-  - {fileID: 2100000, guid: c2c9287d50fac1e439f4462451a89af1, type: 2}
+  - {fileID: 2100000, guid: ea670e1ad36dc7f439235e9e4c35a79b, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -930,7 +930,7 @@ MonoBehaviour:
   m_PreserveMeshAssetOnDestroy: 0
   assetGuid: 
   m_Mesh: {fileID: 0}
-  m_VersionIndex: 11010
+  m_VersionIndex: 11064
   m_IsSelectable: 1
   m_SelectedFaces: 
   m_SelectedEdges: []
@@ -1072,9 +1072,9 @@ MonoBehaviour:
   m_EditorClassIdentifier: '::'
   targetObject: {fileID: 0}
   toggle: 1
-  buttonRenderer: {fileID: 0}
-  onMaterial: {fileID: 0}
-  offMaterial: {fileID: 0}
+  buttonRenderer: {fileID: 7628813603827783411}
+  onMaterial: {fileID: 2100000, guid: e657129fb320cda41be25f8c2c52fa94, type: 2}
+  offMaterial: {fileID: 2100000, guid: ea670e1ad36dc7f439235e9e4c35a79b, type: 2}
   audioSource: {fileID: -4222148488578345083}
   buttonClickSound: {fileID: 8300000, guid: 6e8772b49f34d402a90016ed445d8a2f, type: 3}
 --- !u!114 &109896231021464164

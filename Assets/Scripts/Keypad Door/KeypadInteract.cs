@@ -23,7 +23,7 @@ public class KeypadInteract : MonoBehaviour
             OpenKeypad();
         }
 
-        if (keypadOpen && Input.GetKeyDown(KeyCode.Escape))
+        if (keypadOpen && Input.GetKeyDown(KeyCode.E))
         {
             CloseKeypad();
         }

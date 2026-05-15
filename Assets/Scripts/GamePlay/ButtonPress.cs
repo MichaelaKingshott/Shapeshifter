@@ -120,6 +120,7 @@ public class ButtonPress : MonoBehaviour
     {
         if (other.CompareTag("Player"))
         {
+            Debug.Log("player left");
             playerInRange = false;
 
             if (interactPopup != null)

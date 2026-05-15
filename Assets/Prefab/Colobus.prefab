@@ -785,7 +785,7 @@ MonoBehaviour:
   walkSpeed: 4
   runSpeed: 7
   turnSpeed: 12
-  jumpForce: 8
+  jumpForce: 7.5
   fallMultiplier: 2.5
   lowJumpMultiplier: 2
   rollSpeed: 12

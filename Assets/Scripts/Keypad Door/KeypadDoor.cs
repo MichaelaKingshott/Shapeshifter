@@ -10,6 +10,10 @@ public class KeypadDoor : MonoBehaviour
     public SlidingDoor door;
     public KeypadInteract keypadInteract;
 
+    [Header("Audio")]
+    public AudioSource audioSource;
+    public AudioClip deniedSound;
+
     public void AddNumber(string number)
     {
         Debug.Log("Button pressed: " + number);
@@ -27,6 +31,7 @@ public class KeypadDoor : MonoBehaviour
     public void CheckCode()
     {
         Debug.Log("Checking code: " + enteredCode);
+
         if (enteredCode == correctCode)
         {
             OpenDoor();
@@ -34,6 +39,13 @@ public class KeypadDoor : MonoBehaviour
         else
         {
             displayText.text = "Wrong";
+
+            // Play denied sound
+            if (audioSource != null && deniedSound != null)
+            {
+                audioSource.PlayOneShot(deniedSound);
+            }
+
             enteredCode = "";
         }
     }

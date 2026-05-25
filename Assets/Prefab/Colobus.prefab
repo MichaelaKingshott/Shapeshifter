@@ -786,8 +786,8 @@ MonoBehaviour:
   runSpeed: 7
   turnSpeed: 12
   jumpForce: 7.5
-  fallMultiplier: 2.5
-  lowJumpMultiplier: 2
+  fallMultiplier: 4
+  lowJumpMultiplier: 3
   rollSpeed: 12
   rollDuration: 0.5
   rollCooldown: 1.2
@@ -813,7 +813,7 @@ MonoBehaviour:
   grappleLayer:
     serializedVersion: 2
     m_Bits: 512
-  maxDistance: 8
+  maxDistance: 7.5
   maxDistanceMultiplier: 0.8
   minDistanceMultiplier: 0.25
   spring: 4.5

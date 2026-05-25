@@ -5,6 +5,7 @@ public class GeneratorLever : MonoBehaviour
 {
     [Header("References")]
     [SerializeField] MonoBehaviour pauseScript;
+
     public GameObject puzzleUI;
     public CameraController cameraController;
     public TMP_Text popupText;
@@ -22,80 +23,140 @@ public class GeneratorLever : MonoBehaviour
     private bool generatorStarted = false;
     private bool puzzleOpen = false;
 
-    void Update()
+    void Start()
     {
-        // Open puzzle
-        if (playerInRange && !generatorStarted && !puzzleOpen && Input.GetKeyDown(KeyCode.E))
-        {
-            OpenPuzzle();
-        }
-
-        // Close puzzle with ESC
-        if (puzzleOpen && Input.GetKeyDown(KeyCode.Escape))
-        {
-            ClosePuzzle();
-        }
-    }
-
-    void OpenPuzzle()
-    {
-        puzzleOpen = true;
-
-        puzzleUI.SetActive(true);
-
-        // PLAY OPEN SOUND
-        if (audioSource != null && openSound != null)
-            audioSource.PlayOneShot(openSound);
-
-        Cursor.lockState = CursorLockMode.None;
-        Cursor.visible = true;
-
-        Time.timeScale = 0f;
-
-        if (pauseScript != null)
-            pauseScript.enabled = false;
-
-        if (cameraController != null)
-            cameraController.LockCameraControls(true);
-    }
-
-    public void ActivateGenerator()
-    {
-        if (generatorStarted) return;
-
-        generatorStarted = true;
-
-        // PLAY GENERATOR START SOUND
-        if (audioSource != null && generatorStartSound != null)
-            audioSource.PlayOneShot(generatorStartSound);
-
-        PowerSystem.instance.SetPower(true);
-
-        ClosePuzzle();
-    }
-
-    void ClosePuzzle()
-    {
-        puzzleOpen = false;
-
         puzzleUI.SetActive(false);
-
-        // PLAY CLOSE SOUND
-        if (audioSource != null && closeSound != null)
-            audioSource.PlayOneShot(closeSound);
 
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
 
         Time.timeScale = 1f;
 
+        if (popupText != null)
+        {
+            popupText.gameObject.SetActive(false);
+        }
+    }
+
+    void Update()
+    {
+        // OPEN PUZZLE
+        if (playerInRange && !generatorStarted && !puzzleOpen && Input.GetKeyDown(KeyCode.E))
+        {
+            OpenPuzzle();
+        }
+
+        // CLOSE WITH ESC
+        if (puzzleOpen && Input.GetKeyDown(KeyCode.Escape))
+        {
+            ClosePuzzle();
+        }
+    }
+
+    public void OpenPuzzle()
+    {
+        puzzleOpen = true;
+
+        puzzleUI.SetActive(true);
+
+        // Hide popup while puzzle is open
+        if (popupText != null)
+        {
+            popupText.gameObject.SetActive(false);
+        }
+
+        // Play open sound
+        if (audioSource != null && openSound != null)
+        {
+            audioSource.PlayOneShot(openSound);
+        }
+
+        // Pause game
+        Time.timeScale = 0f;
+
+        // Unlock mouse
+        Cursor.lockState = CursorLockMode.None;
+        Cursor.visible = true;
+
+        // Disable pause menu
         if (pauseScript != null)
-            pauseScript.enabled = true;
+        {
+            pauseScript.enabled = false;
+        }
 
+        // Disable camera controls
         if (cameraController != null)
-            cameraController.LockCameraControls(false);
+        {
+            cameraController.LockCameraControls(true);
+        }
+    }
 
-        popupText.gameObject.SetActive(false);
+    public void ClosePuzzle()
+    {
+        puzzleOpen = false;
+
+        puzzleUI.SetActive(false);
+
+        // Play close sound
+        if (audioSource != null && closeSound != null)
+        {
+            audioSource.PlayOneShot(closeSound);
+        }
+
+        // Resume game
+        Time.timeScale = 1f;
+
+        // Lock mouse again
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        // Re-enable pause menu
+        if (pauseScript != null)
+        {
+            pauseScript.enabled = true;
+        }
+
+        // Re-enable camera controls
+        if (cameraController != null)
+        {
+            cameraController.LockCameraControls(false);
+        }
+
+        // Show popup again if player still nearby
+        if (playerInRange && !generatorStarted && popupText != null)
+        {
+            popupText.text = generatorMessage;
+            popupText.gameObject.SetActive(true);
+        }
+    }
+
+    public void ActivateGenerator()
+    {
+        if (generatorStarted)
+            return;
+
+        generatorStarted = true;
+
+        // Play generator start sound
+        if (audioSource != null && generatorStartSound != null)
+        {
+            audioSource.PlayOneShot(generatorStartSound);
+        }
+
+        // Turn on power
+        if (PowerSystem.instance != null)
+        {
+            PowerSystem.instance.SetPower(true);
+        }
+
+        // Close puzzle after solving
+        ClosePuzzle();
+
+        // Hide popup permanently
+        if (popupText != null)
+        {
+            popupText.gameObject.SetActive(false);
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -103,8 +164,13 @@ public class GeneratorLever : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = true;
-            popupText.text = generatorMessage;
-            popupText.gameObject.SetActive(true);
+
+            // Only show prompt if puzzle isn't open
+            if (!puzzleOpen && !generatorStarted && popupText != null)
+            {
+                popupText.text = generatorMessage;
+                popupText.gameObject.SetActive(true);
+            }
         }
     }
 
@@ -113,8 +179,17 @@ public class GeneratorLever : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerInRange = false;
-            popupText.gameObject.SetActive(false);
+
+            if (popupText != null)
+            {
+                popupText.gameObject.SetActive(false);
+            }
+
+            // Safety close if player walks away
+            if (puzzleOpen)
+            {
+                ClosePuzzle();
+            }
         }
     }
 }
-

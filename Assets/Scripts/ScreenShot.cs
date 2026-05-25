@@ -12,6 +12,6 @@ public class ScreenShot : MonoBehaviour
     public void TakeScreenshot()
     {
         Debug.Log("take screenshot");
-        ScreenCapture.CaptureScreenshot("C:\\Users\\michaela.kingshott.YORKSJ\\Downloads\\myscreenshot.png", 4);
+        ScreenCapture.CaptureScreenshot("D:\\University Work\\myscreenshot.png", 4);
     }
 }

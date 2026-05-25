@@ -2,9 +2,11 @@ using UnityEngine;
 
 public class KeypadInteract : MonoBehaviour
 {
+    [Header("UI")]
     public GameObject keypadUI;
     public GameObject interactPrompt;
 
+    [Header("Player")]
     [SerializeField] MonoBehaviour cameraScript;
 
     private bool playerNear = false;
@@ -14,48 +16,73 @@ public class KeypadInteract : MonoBehaviour
     {
         keypadUI.SetActive(false);
         interactPrompt.SetActive(false);
+
+        Cursor.lockState = CursorLockMode.Locked;
+        Cursor.visible = false;
+
+        Time.timeScale = 1f;
     }
 
     void Update()
     {
+        // OPEN KEYPAD
         if (playerNear && !keypadOpen && Input.GetKeyDown(KeyCode.E))
         {
             OpenKeypad();
         }
 
+        // CLOSE WITH ESC
         if (keypadOpen && Input.GetKeyDown(KeyCode.Escape))
         {
             CloseKeypad();
         }
     }
 
-    void OpenKeypad()
+    public void OpenKeypad()
     {
+        keypadOpen = true;
+
         keypadUI.SetActive(true);
         interactPrompt.SetActive(false);
 
-        keypadOpen = true;
-
+        // Pause game
         Time.timeScale = 0f;
 
-        cameraScript.enabled = false;
+        // Disable camera look
+        if (cameraScript != null)
+        {
+            cameraScript.enabled = false;
+        }
 
+        // Unlock mouse
         Cursor.lockState = CursorLockMode.None;
         Cursor.visible = true;
     }
 
     public void CloseKeypad()
     {
-        keypadUI.SetActive(false);
-
         keypadOpen = false;
 
+        keypadUI.SetActive(false);
+
+        // Resume game
         Time.timeScale = 1f;
 
-        cameraScript.enabled = true;
+        // Re-enable camera
+        if (cameraScript != null)
+        {
+            cameraScript.enabled = true;
+        }
 
+        // Lock mouse again
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+
+        // Show interact prompt again if still nearby
+        if (playerNear)
+        {
+            interactPrompt.SetActive(true);
+        }
     }
 
     void OnTriggerEnter(Collider other)
@@ -63,7 +90,12 @@ public class KeypadInteract : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerNear = true;
-            interactPrompt.SetActive(true);
+
+            // Only show prompt if keypad isn't open
+            if (!keypadOpen)
+            {
+                interactPrompt.SetActive(true);
+            }
         }
     }
 
@@ -72,7 +104,14 @@ public class KeypadInteract : MonoBehaviour
         if (other.CompareTag("Player"))
         {
             playerNear = false;
+
             interactPrompt.SetActive(false);
+
+            // Safety close if player walks away
+            if (keypadOpen)
+            {
+                CloseKeypad();
+            }
         }
     }
 }

@@ -6,7 +6,7 @@ public class PowerSystem : MonoBehaviour
     public static PowerSystem instance;
 
     [Header("Lights")]
-    public Light[] lights;
+    public LightFixture[] lights;
 
     [Header("Vents")]
     public VentBlocker[] vents;
@@ -40,10 +40,11 @@ public class PowerSystem : MonoBehaviour
     // ---------------------------
     public void SetPower(bool state)
     {
-        foreach (Light l in lights)
+        // Toggle all lights + effects
+        foreach (LightFixture l in lights)
         {
             if (l != null)
-                l.enabled = state;
+                l.SetState(state);
         }
 
         // Stop pending vent sequence

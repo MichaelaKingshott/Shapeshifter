@@ -12,6 +12,9 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility, IAnimalForm
     public float invisDuration = 3f;
     public float cooldown = 5f;
 
+    [Header("UI")]
+    public float maxEnergy = 100f;
+
     [Header("Materials")]
     public Material normalMaterial;
     public Material outlineMaterial;
@@ -37,6 +40,10 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility, IAnimalForm
     private Vector3 moveInput;
     private bool jumpPressed;
 
+    private float currentEnergy;
+
+    private ChameleonSliderUI sliderUI;
+
     void Awake()
     {
         rb = GetComponent<Rigidbody>();
@@ -45,6 +52,17 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility, IAnimalForm
         renderers = GetComponentsInChildren<Renderer>();
 
         FindCamera();
+
+        currentEnergy = maxEnergy;
+
+        sliderUI = FindFirstObjectByType<ChameleonSliderUI>();
+
+        if (sliderUI != null)
+        {
+            sliderUI.slider.maxValue = maxEnergy;
+            sliderUI.slider.value = maxEnergy;
+            sliderUI.Hide();
+        }
 
         if (groundCollider == null)
         {
@@ -192,10 +210,14 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility, IAnimalForm
     {
         if (Input.GetKeyDown(KeyCode.C) &&
             canUseInvisibility &&
-            !isInvisible)
+            !isInvisible &&
+            currentEnergy > 0f)
         {
             StartCoroutine(BecomeInvisible());
         }
+
+        if (sliderUI != null)
+            sliderUI.SetValue(currentEnergy);
     }
 
     IEnumerator BecomeInvisible()
@@ -206,14 +228,38 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility, IAnimalForm
         foreach (Renderer r in renderers)
             r.material = outlineMaterial;
 
-        yield return new WaitForSeconds(invisDuration);
+        float timer = invisDuration;
+
+        while (timer > 0f)
+        {
+            timer -= Time.deltaTime;
+
+            currentEnergy =
+                (timer / invisDuration) * maxEnergy;
+
+            yield return null;
+        }
 
         foreach (Renderer r in renderers)
             r.material = normalMaterial;
 
         isInvisible = false;
 
-        yield return new WaitForSeconds(cooldown);
+        currentEnergy = 0f;
+
+        float cooldownTimer = 0f;
+
+        while (cooldownTimer < cooldown)
+        {
+            cooldownTimer += Time.deltaTime;
+
+            currentEnergy =
+                (cooldownTimer / cooldown) * maxEnergy;
+
+            yield return null;
+        }
+
+        currentEnergy = maxEnergy;
 
         canUseInvisibility = true;
     }
@@ -248,7 +294,13 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility, IAnimalForm
         }
     }
 
-    public void OnFormActivated() => enabled = true;
+    public void OnFormActivated()
+    {
+        enabled = true;
+
+        if (sliderUI != null)
+            sliderUI.Show();
+    }
 
     public void OnFormDeactivated()
     {
@@ -256,6 +308,9 @@ public class ChameleonMovement : MonoBehaviour, IAnimalAbility, IAnimalForm
             r.material = normalMaterial;
 
         isInvisible = false;
+
+        if (sliderUI != null)
+            sliderUI.Hide();
 
         enabled = false;
     }

@@ -13506,7 +13506,7 @@ MonoBehaviour:
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
-  m_text: "Movment - WASD\nJump - Space\nInteract - E\n\n\nSprint - Shift \nTail
+  m_text: "Movement - WASD\nJump - Space\nInteract - E\n\n\nSprint - Shift \nTail
     swing - hold left click\nRoll - CTRL"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 8b3bcd1833a406f478e125db01fc0b6d, type: 2}
